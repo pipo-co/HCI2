@@ -3,16 +3,29 @@ import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
 
+
+import Homes from "@/components/Homes";
+
 const routes = [
     {
-        component: () => import(/*webpackChunkName:  "Favoritos"*/ "@/components/Favoritos"), //Lazy import
+        component: () => import("@/components/Favoritos"),
         name: "favoritos",
-        path: "/",
+        path: "/favoritos",
     },
     {
-        component: () => import(/*webpackChunkName:  "Hogares"*/ "@/components/Homes"),
+        component: Homes,
         name: "homes",
-        path: "/homes"
+        path: "/"
+    },
+    {
+        component: () => import("@/components/Rutinas"),
+        name: "rutinas",
+        path: "/rutinas"
+    },
+    {
+        component: () => import("@/components/NuevaRutina/NuevaRutina1"),
+        name: "nuevarutina1",
+        path: "/rutinas/nuevarutina1"
     }
 ];
 
