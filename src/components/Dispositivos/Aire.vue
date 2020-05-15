@@ -27,85 +27,115 @@
             </v-container>
         </v-col>
         <v-col cols="12" class="px-5">
-            <v-container class="py-0">
+            <v-container fluid class="py-0">
                 <v-row align="center" justify="left">
-                    <v-col cols="3">
-                        <p>Modo:</p>
+                    <v-col class="py-0 px-0">
+                        <v-list-item class="px-0">
+                            <v-list-item-content>
+                                <v-list-item-title class="title" align="left">Modo:</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-col>
-                    <v-col cols="9">
-                            <v-card flat class="py-12">
-                                <v-card-text>
-                                    <v-row>
-                                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
-                                            <v-btn text>Frío</v-btn>
-                                            <v-btn text>Calor</v-btn>
-                                            <v-btn text>Ventilación</v-btn>
-                                        </v-btn-toggle>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
+                    <v-col md="10" class="py-0"> <!--class="pr-10" -->
+                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
+                            <v-btn text>Frío</v-btn>
+                            <v-btn text>Calor</v-btn>
+                            <v-btn text>Ventilación</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
                 </v-row>
             </v-container>
-            <v-container>
-            <v-row>
-                <p>Desplazamiento de aspas</p>
-                    <v-row align="center" justify="center">
-                        <v-col>
-                            <v-card flat class="py-12">
-                                <v-card-text>
-                                    <p>Vertical:</p>
-                                    <v-row>
-                                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
-                                            <v-btn text>Auto</v-btn>
-                                            <v-btn text>22</v-btn>
-                                            <v-btn text>45</v-btn>
-                                            <v-btn text>67</v-btn>
-                                            <v-btn text>90</v-btn>
-                                        </v-btn-toggle>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                    <v-row align="center" justify="center">
-                        <v-col>
-                            <v-card flat class="py-12">
-                                <v-card-text>
-                                    <p>Horizontal:</p>
-                                    <v-row>
-                                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
-                                            <v-btn text>Auto</v-btn>
-                                            <v-btn text>-90</v-btn>
-                                            <v-btn text>-45</v-btn>
-                                            <v-btn text>0</v-btn>
-                                            <v-btn text>45</v-btn>
-                                            <v-btn text>90</v-btn>
-                                        </v-btn-toggle>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                    <p>Velocidad Ventilador:</p>
-                    <v-row align="center" justify="center">
-                        <v-col>
-                            <v-card flat class="py-12">
-                                <v-card-text>
-                                    <p>Horizontal:</p>
-                                    <v-row>
-                                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
-                                            <v-btn text>Auto</v-btn>
-                                            <v-btn text>25</v-btn>
-                                            <v-btn text>50</v-btn>
-                                            <v-btn text>75</v-btn>
-                                            <v-btn text>100</v-btn>
-                                        </v-btn-toggle>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
-                    </v-row>
+        </v-col>
+        <v-col cols="12" class="px-5">
+            <v-container fluid class="py-0">
+                <v-row align="center" justify="left">
+                    <v-col class="py-0 px-0">
+                        <v-list-item class="px-0">
+                            <v-list-item-content>
+                                <v-list-item-title class="title" align="left">Desplazamiento de Aspas</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-col>
+        <v-col cols="12" class="px-5">
+            <v-container fluid class="py-0">
+                <v-row align="center" justify="left">
+                    <v-col class="py-0 px-0">
+                        <v-list-item class="px-0">
+                            <v-list-item-content>
+                                <v-list-item-title class="text--primary" align="left">Vertical:</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                    <v-col md="10" class="py-0"> <!--class="pr-10" -->
+                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
+                            <v-btn text>Auto</v-btn>
+                            <v-btn text>22</v-btn>
+                            <v-btn text>45</v-btn>
+                            <v-btn text>67</v-btn>
+                            <v-btn text>90</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-col>
+        <v-col cols="12" class="px-5">
+            <v-container fluid class="py-0">
+                <v-row align="center" justify="left">
+                    <v-col class="py-0 px-0">
+                        <v-list-item class="px-0">
+                            <v-list-item-content>
+                                <v-list-item-title class="text--primary" align="left">Horizontal:</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                    <v-col md="10" class="py-0"> <!--class="pr-10" -->
+                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
+                            <v-btn text>Auto</v-btn>
+                            <v-btn text>-90</v-btn>
+                            <v-btn text>-45</v-btn>
+                            <v-btn text>0</v-btn>
+                            <v-btn text>45</v-btn>
+                            <v-btn text>90</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-col>
+        <v-col cols="12" class="px-5">
+            <v-container fluid class="py-0">
+                <v-row align="center" justify="left">
+                    <v-col class="py-0 px-0">
+                        <v-list-item class="px-0">
+                            <v-list-item-content>
+                                <v-list-item-title class="title" align="left">Velocidad Ventilador</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-col>
+        <v-col cols="12" class="px-5">
+            <v-container fluid class="py-0">
+                <v-row align="center" justify="left">
+                    <v-col class="py-0 px-0">
+                        <v-list-item class="px-0">
+                            <v-list-item-content>
+                                <v-list-item-title class="text--primary" align="left">Horizontal:</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                    <v-col md="10" class="py-0"> <!--class="pr-10" -->
+                        <v-btn-toggle v-model="toggle_exclusive" rounded dense>
+                            <v-btn text>Auto</v-btn>
+                            <v-btn text>25</v-btn>
+                            <v-btn text>50</v-btn>
+                            <v-btn text>75</v-btn>
+                            <v-btn text>100</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
                 </v-row>
             </v-container>
         </v-col>

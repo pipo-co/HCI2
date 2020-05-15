@@ -17,7 +17,7 @@
 <!--                <v-btn text>Consumos</v-btn>-->
                 <v-tabs right color="#3C3F58" background-color="#72E1C7">
                     <v-tabs-slider color="#87FFE3"></v-tabs-slider>
-                    <v-tab to="/favoritos">Favoritos</v-tab>
+                    <v-tab :to="{name:'favoritos'}">Favoritos</v-tab>
                     <v-tab to="/">Hogares</v-tab>
                     <v-tab to="/rutinas">Rutinas</v-tab>
                     <v-tab>Consumos</v-tab>

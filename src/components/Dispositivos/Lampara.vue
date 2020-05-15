@@ -24,17 +24,15 @@
 
         <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
             <v-row align="center" dense justify="space-around">
-                <v-col cols="4">
+                <v-col cols="12">
                     <v-list-item class="px-0">
                         <v-list-item-content class="ma-1 pa-1">
-                            <v-list-item-subtitle class="title">Seleccione Color:</v-list-item-subtitle>
+                            <v-list-item-title align="left" class="title">Seleccione Color</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-col>
-                <v-col>
-                    <template>
-                        <v-color-picker hide-inputs></v-color-picker>
-                    </template>
+                <v-col cols="12">
+                    <color-picker class="ma-auto" v-bind="color" @input="onInput"></color-picker>
                 </v-col>
             </v-row>
         </v-container>
@@ -43,11 +41,27 @@
 </template>
 
 <script>
-    export default {
-        name: "Lampara"
-    }
+import ColorPicker from '@radial-color-picker/vue-color-picker';
+export default {
+    components: { ColorPicker },
+    data() {
+        return {
+            color: {
+                hue: 50,
+                saturation: 100,
+                luminosity: 50,
+                alpha: 1
+            },
+        };
+    },
+    methods: {
+        onInput(hue) {
+            this.color.hue = hue;
+        },
+    },
+};
 </script>
 
 <style scoped>
-
+    @import '~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css';
 </style>

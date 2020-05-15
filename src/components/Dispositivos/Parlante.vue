@@ -33,14 +33,14 @@
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
                 <v-row align="center" justify="left">
-                    <v-col class="py-0 px-0">
+                    <v-col cols="3" class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>
                                 <v-list-item-title class="title" align="left">Genero:</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-col>
-                    <v-col md="10" class="py-0"> <!--class="pr-10" -->
+                    <v-col class="py-0"> <!--class="pr-10" -->
                         <v-select :items="items" dense value="Pop"></v-select>
                     </v-col>
                 </v-row>
@@ -67,7 +67,6 @@
                 </v-row>
             </v-container>
         </v-col>
-        {{argv}}
     </v-row>
 </template>
 
