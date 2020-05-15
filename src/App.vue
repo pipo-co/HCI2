@@ -14,7 +14,13 @@ export default {
   name: 'App',
   components: {
     NavBar,
-  }
+  }, 
+  data: function() {
+    return {
+      apiURL: 'localhost:8080',
+        dispType: 'parlante'
+    };
+}
 }
 </script>
 

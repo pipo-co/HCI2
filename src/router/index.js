@@ -3,19 +3,29 @@ import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
 
-import Favoritos from "@/components/Favoritos";
+
 import Homes from "@/components/Homes";
 
 const routes = [
     {
-        component: Favoritos,
+        component: () => import("@/components/Favoritos"),
         name: "favoritos",
-        path: "/",
+        path: "/favoritos",
     },
     {
         component: Homes,
         name: "homes",
-        path: "/homes"
+        path: "/"
+    },
+    {
+        component: () => import("@/components/Rutinas"),
+        name: "rutinas",
+        path: "/rutinas"
+    },
+    {
+        component: () => import("@/components/NuevaRutina/NuevaRutina1"),
+        name: "nuevarutina1",
+        path: "/rutinas/nuevarutina1"
     }
 ];
 
