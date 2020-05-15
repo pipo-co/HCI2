@@ -19,7 +19,7 @@
                     <v-tabs-slider color="#87FFE3"></v-tabs-slider>
                     <v-tab to="/">Favoritos</v-tab>
                     <v-tab to="/homes">Hogares</v-tab>
-                    <v-tab>Rutinas</v-tab>
+                    <v-tab to="/rutinas">Rutinas</v-tab>
                     <v-tab>Consumos</v-tab>
                 </v-tabs>
             </v-col>

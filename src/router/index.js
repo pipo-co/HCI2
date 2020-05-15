@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 import Favoritos from "@/components/Favoritos";
 import Homes from "@/components/Homes";
+import Rutinas from "@/components/Rutinas";
 
 const routes = [
     {
@@ -16,6 +17,11 @@ const routes = [
         component: Homes,
         name: "homes",
         path: "/homes"
+    },
+    {
+        component: Rutinas,
+        name: "rutinas",
+        path: "/rutinas"
     }
 ];
 
