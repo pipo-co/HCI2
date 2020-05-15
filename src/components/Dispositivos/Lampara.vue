@@ -1,0 +1,53 @@
+<template>
+    <v-row no-gutters dense>
+        <v-col md="12"  class="px-5">
+            <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
+                <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
+                    <v-col cols="1" class="ma-0 pa-0">
+                        <v-switch></v-switch><!--class="px-3 my-auto" -->
+                    </v-col>
+                    <v-col cols="1" class="ma-0 pa-0">
+                        <v-btn icon true>
+                            <v-icon color="primary" >mdi-weather-sunny</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="7" class="ma-0 pa-0">
+                        <v-slider class="mt-5"></v-slider>
+                    </v-col>
+                    <v-col cols="2" class="ma-0 pa-0"><!--class="pr-10" -->
+                        <v-btn text >Menos</v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-col>
+        <v-col md="12"  class="px-5">
+
+        <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
+            <v-row align="center" dense justify="space-around">
+                <v-col cols="4">
+                    <v-list-item class="px-0">
+                        <v-list-item-content class="ma-1 pa-1">
+                            <v-list-item-subtitle class="title">Seleccione Color:</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-col>
+                <v-col>
+                    <template>
+                        <v-color-picker hide-inputs></v-color-picker>
+                    </template>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-col>
+    </v-row>
+</template>
+
+<script>
+    export default {
+        name: "Lampara"
+    }
+</script>
+
+<style scoped>
+
+</style>

@@ -3,17 +3,14 @@ import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
 
-import Favoritos from "@/components/Favoritos";
-import Homes from "@/components/Homes";
-
 const routes = [
     {
-        component: Favoritos,
+        component: () => import(/*webpackChunkName:  "Favoritos"*/ "@/components/Favoritos"), //Lazy import
         name: "favoritos",
         path: "/",
     },
     {
-        component: Homes,
+        component: () => import(/*webpackChunkName:  "Hogares"*/ "@/components/Homes"),
         name: "homes",
         path: "/homes"
     }
