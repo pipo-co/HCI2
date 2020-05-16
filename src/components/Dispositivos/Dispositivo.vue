@@ -1,9 +1,5 @@
 <template>
-    <v-card class="disp">
-        <v-container >
-            <component :is="type" :disp="disp"/>
-        </v-container>
-    </v-card>
+    <component :is="type" :disp="disp"/>
 </template>
 
 <script>
