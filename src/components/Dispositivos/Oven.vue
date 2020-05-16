@@ -87,7 +87,7 @@
 
 <script>
     import DispInfo from "./DispInfo";
-    import device from "../../assets/js/device";
+    import device from "../../assets/js/Device";
 
     export default {
         name: "oven",
