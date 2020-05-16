@@ -12,14 +12,16 @@ export function createDevice(name, typeId, room) {
             device.type = data.result.type;
             device.state = data.result.state;
 
-            room.addDevice(device.id)
-                .then( () => {
-                    device.room = room;
-                    return device;
-                })
-                .catch( error => {
-                    Promise.reject(error);
-                });
+            return new Promise( (resolve, reject) => {
+                room.addDevice(device.id)
+                    .then(() => {
+                        device.room = room;
+                        resolve(device);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
         })
         .catch( error => {
             console.log(`Add Device: ${error}`);
@@ -32,14 +34,16 @@ export function createRoom(name, home){
         .then( data => {
             room.id = data.result.id;
 
-            home.addRoom(room.id)
-                .then( () => {
-                    room.home = home;
-                    return room;
-                })
-                .catch( error => {
-                    Promise.reject(error);
-                });
+            return new Promise( (resolve, reject) => {
+                home.addRoom(room.id)
+                    .then( () => {
+                        room.home = home;
+                        resolve(room);
+                    })
+                    .catch( error => {
+                        reject(error);
+                    });
+            });
         })
         .catch( error => {
             console.log(`Add Room: ${error}`);
@@ -48,14 +52,16 @@ export function createRoom(name, home){
 
 export function createHome(name){
     let home = new Home(null, name, {});
-    return Api.home.add(home)
-        .then( data => {
-            home.id = data.result.id;
-            return home;
-        })
-        .catch( error => {
-            console.log(`Add Home: ${error}`);
-        });
+    return new Promise( (resolve, reject) => {
+        Api.home.add(home)
+            .then( data => {
+                home.id = data.result.id;
+                resolve(home);
+            })
+            .catch( error => {
+                reject(`Couldn't Add Home: ${error}`);
+            });
+    })
 }
 
 export function deviceTypeActionParams(typeId, action){
