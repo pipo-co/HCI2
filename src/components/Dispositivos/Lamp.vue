@@ -1,4 +1,6 @@
 <template>
+    <v-card class="disp">
+        <v-container >
     <v-row no-gutters dense>
         <v-col cols="12" class="px-5">
             <disp-info
@@ -46,6 +48,8 @@
             </v-container>
         </v-col>
     </v-row>
+        </v-container>
+    </v-card>
 </template>
 
 <script>
