@@ -37,7 +37,7 @@
         </v-col>
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
-                <v-row align="center" justify="left">
+                <v-row align="center" justify="start">
                     <v-col class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>
@@ -57,7 +57,7 @@
         </v-col>
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
-                <v-row align="center" justify="left">
+                <v-row align="center" justify="start">
                     <v-col class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>
@@ -70,7 +70,7 @@
         </v-col>
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
-                <v-row align="center" justify="left">
+                <v-row align="center" justify="start">
                     <v-col class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>
@@ -92,7 +92,7 @@
         </v-col>
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
-                <v-row align="center" justify="left">
+                <v-row align="center" justify="start">
                     <v-col class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>
@@ -115,7 +115,7 @@
         </v-col>
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
-                <v-row align="center" justify="left">
+                <v-row align="center" justify="start">
                     <v-col class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>
@@ -128,7 +128,7 @@
         </v-col>
         <v-col cols="12" class="px-5">
             <v-container fluid class="py-0">
-                <v-row align="center" justify="left">
+                <v-row align="center" justify="start">
                     <v-col class="py-0 px-0">
                         <v-list-item class="px-0">
                             <v-list-item-content>

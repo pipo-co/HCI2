@@ -17,7 +17,10 @@
 
 <script>
     import Dispositivo from "./Dispositivos/Dispositivo";
-    import Api from "@/assets/js/Api.js"
+    import Api from "@/assets/js/Api.js";
+    // import lib from "../assets/js/lib.js"
+    // import("../assets/js/lib.js")
+    // const lib = require("../assets/js/lib.js")
     // import device from "@/assets/js/Device.js"
 
     export default {
@@ -29,17 +32,22 @@
                 }
         },
         mounted(){
-            console.log('mounted')
-            console.log(Api.baseUrl);
 
             Api.device.getAll().then(data => {
                 this.dispositivos = data.result;
-                console.log('Response');
-                console.log(data.result);
             }).catch(error => {
                 console.log(`Error ${error}`);
             })
-            //
+            // debugger;
+            // let home = lib.createHome('Ranchoneta').then(data=> {
+            //     console.log("DATA");
+            //     console.log(data);
+            // });
+            // console.log(home)
+            // let room = lib.createRoom('Living',home);
+            // let device = lib.createDevice('LocoLoco','im77xxyulpegfmv8',room);
+            // device.fav();
+
             // var hornoloco = new device(null,'Hornoloco',{id:'im77xxyulpegfmv8'},{});
             // api.device.add(hornoloco).then(data =>{
             //     hornoloco.id = data.result.id;
