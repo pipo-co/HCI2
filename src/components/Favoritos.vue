@@ -4,7 +4,7 @@
             <v-col md="8">
                 <v-row>
                     <v-col md="6" v-for="disp in dispositivos" :key="disp.id">
-                        <dispositivo :type="disp.type.name"></dispositivo>
+                        <dispositivo :type="disp.type.name" :disp="disp"></dispositivo>
                     </v-col>
 <!--                    <v-col md="6">-->
 <!--                        <dispositivo></dispositivo>-->

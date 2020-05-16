@@ -87,10 +87,9 @@
         name: "speaker",
         components:{DispInfo},
         props: {
-            argv: {
+            disp: {
                 type: Object,
                 required: true
-
             }
         }
 

@@ -2,10 +2,10 @@
     <v-row no-gutters dense>
         <v-col cols="12" class="px-5">
             <disp-info
-                    name="Equipo de musica"
+                    :name="disp.name"
                     state="Reproduciendo cachenge"
                     room="Living"
-                    icon="src/parlante.png"
+                    :icon="iconInfo"
                     :fav="false"
             ></disp-info>
         </v-col>
@@ -53,6 +53,12 @@ import ColorPicker from '@radial-color-picker/vue-color-picker';
 import DispInfo from "./DispInfo";
 export default {
     name:"lamp",
+    props: {
+        disp: {
+            type: Object,
+            required: true
+        }
+    },
     components: { ColorPicker, DispInfo},
     data() {
         return {
@@ -62,6 +68,11 @@ export default {
                 luminosity: 50,
                 alpha: 1
             },
+            iconInfo:{
+                bgColor: '#FFFBDB',
+                color: '#E9D94D',
+                src:'mdi-lightbulb-outline  '
+            }
         };
     },
     methods: {
