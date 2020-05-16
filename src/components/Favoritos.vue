@@ -39,22 +39,6 @@
                 console.log(`Error ${error}`);
             })
 
-            // Prueba Tobi
-            // let device;
-            // lib.createHome('Ranchoneta nueva4 tobi5550')
-            //     .then(home => {
-            //         lib.createRoom('habitacion4', home)
-            //             .then( room => {
-            //                 lib.createDevice('deviceTobi4', 'go46xmbqeomjrsjr', room)
-            //                     .then( dev => {
-            //                         device = dev;
-            //                     })
-            //                     .catch( errors => { console.log(errors) });
-            //             })
-            //             .catch( errors => { console.log(errors) });
-            //     })
-            //     .catch( errors => { console.log(errors) });
-
             // console.log(home)
             // let room = lib.createRoom('Living',home);
             // let device = lib.createDevice('LocoLoco','im77xxyulpegfmv8',room);

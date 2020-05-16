@@ -63,6 +63,22 @@ export function createHome(name){
     });
 }
 
+export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
+    return new Promise( (resolve, reject) => {
+        lib.createHome(homeName)
+            .then(home => {
+                lib.createRoom(roomName, home)
+                    .then( room => {
+                        lib.createDevice(deviceName, typeId, room)
+                            .then( device => resolve(device) )
+                            .catch( errors => reject(`Create Device ${deviceName} ${errors}`) );
+                    })
+                    .catch( errors => reject(`Create Room ${roomName} ${errors}`) );
+            })
+            .catch( errors => reject(`Create Home ${homeName} ${errors}`) );
+    });
+}
+
 export function deviceTypeActionParams(typeId, action){
     Api.deviceType.get(typeId)
         .then( data => {
