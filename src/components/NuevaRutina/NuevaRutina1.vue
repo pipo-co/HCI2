@@ -62,22 +62,30 @@
                             width="700"
                             height="150"
                     >
-                        <v-container>
-                            <v-row align="center" wrap no-gutters>
-                                <v-col v-for="dispositive in dispositives" :key="dispositive.name" cols="4" md="4">
-                                    <v-list-item>
-                                        <v-avatar class="mr-2">
-                                            <img :src="require(`@/assets/${dispositive.img}`)">
-                                        </v-avatar>
-                                        <v-list-item-content class="py-3 px-0">
-                                            <v-list-item-title align="left" class="headline pt-1 pb-2 ">{{dispositive.name}}</v-list-item-title>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-col>
-                            </v-row>
+                        <v-container fluid>
+                            <v-carousel
+                                    hide-delimiters
+                                    show-arrows-on-hover
+                                    height="150"
+                            >
+                                <v-carousel-item v-for="j in (0,2)" :key="j">
+                                    <v-row align="center" wrap no-gutters>
+                                        <v-col v-for="(dispositive, i) in dispositives" :key="dispositive.name" cols="4" md="4">
+                                            <v-list-item :key="i" v-if="(j===1)? i<6: i>=6">
+                                                <v-avatar class="mr-2">
+                                                    <img :src="require(`@/assets/${dispositive.img}`)">
+                                                </v-avatar>
+                                                <v-list-item-content class="py-3 px-0">
+                                                    <v-list-item-title align="left" class="headline black--text pt-1 pb-2 ">{{dispositive.name}}</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-col>
+                                    </v-row>
+                                </v-carousel-item>
+                            </v-carousel>
                         </v-container>
-
                     </v-card>
+
                 </v-row>
                 <v-row class="py-2 my-1">
                     <v-col cols="12" md="12" >
@@ -128,6 +136,8 @@
                     {name: "Hornos", img: 'horno.png', iconcolor: "#C01616", backcolor: "#FFBBBB"},
                     {name: "Aires", img: 'aire.png', iconcolor: "#FFC700", backcolor: "#FFF3C8"},
                     {name: "Parlantes", img: 'parlante.png', iconcolor: "#6563FF", backcolor: "#E1E0FE"},
+                    {name: "Regadores", img: 'regador.png', iconcolor: "#BF38FF", backcolor: "#F2D6FF"},
+                    {name: "Aspiradoras", img: 'aspiradora.png', iconcolor: "#0091B1", backcolor: "#BEF3FF"},
                     {name: "Regadores", img: 'regador.png', iconcolor: "#BF38FF", backcolor: "#F2D6FF"},
                     {name: "Aspiradoras", img: 'aspiradora.png', iconcolor: "#0091B1", backcolor: "#BEF3FF"}
                 ],
