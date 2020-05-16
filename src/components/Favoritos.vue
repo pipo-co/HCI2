@@ -20,7 +20,7 @@
     import Api from "@/assets/js/Api.js";
     // import lib from "../assets/js/lib.js"
     // import("../assets/js/lib.js")
-    // const lib = require("../assets/js/lib.js")
+    const lib = require("../assets/js/lib.js")
     // import device from "@/assets/js/Device.js"
 
     export default {
@@ -38,11 +38,23 @@
             }).catch(error => {
                 console.log(`Error ${error}`);
             })
-            // debugger;
-            // let home = lib.createHome('Ranchoneta').then(data=> {
-            //     console.log("DATA");
-            //     console.log(data);
-            // });
+
+            // Prueba Tobi
+            let device;
+            lib.createHome('Ranchoneta nueva4 tobi5550')
+                .then(home => {
+                    lib.createRoom('habitacion4', home)
+                        .then( room => {
+                            lib.createDevice('deviceTobi4', 'go46xmbqeomjrsjr', room)
+                                .then( dev => {
+                                    device = dev;
+                                })
+                                .catch( errors => { console.log(errors) });
+                        })
+                        .catch( errors => { console.log(errors) });
+                })
+                .catch( errors => { console.log(errors) });
+
             // console.log(home)
             // let room = lib.createRoom('Living',home);
             // let device = lib.createDevice('LocoLoco','im77xxyulpegfmv8',room);

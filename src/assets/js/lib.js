@@ -5,49 +5,48 @@ import Home from "./Home";
 
 
 export function createDevice(name, typeId, room) {
-    let device = new Device(null, name, {id: typeId}, {fav: false});
+    let device = new Device(null, name, { id: typeId }, {fav: false});
+    return new Promise( (resolve, reject) => {
     Api.device.add(device)
         .then( data => {
             device.id = data.result.id;
             device.type = data.result.type;
             device.state = data.result.state;
 
-            return new Promise( (resolve, reject) => {
-                room.addDevice(device.id)
-                    .then(() => {
-                        device.room = room;
-                        resolve(device);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-            });
+            room.addDevice(device.id)
+                .then( () => {
+                    device.room = room;
+                    resolve(device);
+                })
+                .catch(error => {
+                    reject(`Add Device to Room: ${error}`);
+                });
         })
         .catch( error => {
-            console.log(`Add Device: ${error}`);
+            reject(`Add Device: ${error}`);
         });
+    });
 }
 
 export function createRoom(name, home){
     let room = new Room(null, name, {});
-    Api.room.add(room)
-        .then( data => {
-            room.id = data.result.id;
-
-            return new Promise( (resolve, reject) => {
+    return new Promise( (resolve, reject) => {
+        Api.room.add(room)
+            .then( data => {
+                room.id = data.result.id;
                 home.addRoom(room.id)
                     .then( () => {
                         room.home = home;
                         resolve(room);
                     })
                     .catch( error => {
-                        reject(error);
+                        reject(`Add Room to Home: ${error}`);
                     });
+            })
+            .catch( error => {
+                reject(`Add Room: ${error}`);
             });
-        })
-        .catch( error => {
-            console.log(`Add Room: ${error}`);
-        });
+    });
 }
 
 export function createHome(name){
@@ -61,7 +60,7 @@ export function createHome(name){
             .catch( error => {
                 reject(`Couldn't Add Home: ${error}`);
             });
-    })
+    });
 }
 
 export function deviceTypeActionParams(typeId, action){
