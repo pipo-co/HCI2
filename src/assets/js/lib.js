@@ -77,15 +77,18 @@ export function deviceTypeActionParams(typeId, action){
 }
 
 export function getFavs() {
-    Api.device.getAll()
-        .then( data => {
-            return data.result.filter( elem => {
-                return elem.meta.fav;
+    return new Promise( (resolve, reject) => {
+        Api.device.getAll()
+            .then( data => {
+                resolve(data.result.filter( elem => {
+                    return elem.meta.fav;
+                }));
+            })
+            .catch( error => {
+                reject(`Get Favs: ${error}`);
             });
-        })
-        .catch( error => {
-            console.log(`Get Favs: ${error}`);
-        });
+    })
+
 }
 
 // function saveIdsToLocalStorage() {
