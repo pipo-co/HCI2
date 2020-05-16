@@ -3,7 +3,8 @@ import Device from "./Device";
 import Room from "./Room";
 import Home from "./Home";
 
-function createDevice(name, typeId, room) {
+
+export function createDevice(name, typeId, room) {
     let device = new Device(null, name, {id: typeId}, {fav: false});
     Api.device.add(device)
         .then( data => {
@@ -17,7 +18,7 @@ function createDevice(name, typeId, room) {
                     return device;
                 })
                 .catch( error => {
-                    reject(error);
+                    Promise.reject(error);
                 });
         })
         .catch( error => {
@@ -25,7 +26,7 @@ function createDevice(name, typeId, room) {
         });
 }
 
-function createRoom(name, home){
+export function createRoom(name, home){
     let room = new Room(null, name, {});
     Api.room.add(room)
         .then( data => {
@@ -37,7 +38,7 @@ function createRoom(name, home){
                     return room;
                 })
                 .catch( error => {
-                    reject(error);
+                    Promise.reject(error);
                 });
         })
         .catch( error => {
@@ -45,9 +46,9 @@ function createRoom(name, home){
         });
 }
 
-function createHome(name){
+export function createHome(name){
     let home = new Home(null, name, {});
-    Api.home.add(home)
+    return Api.home.add(home)
         .then( data => {
             home.id = data.result.id;
             return home;
@@ -57,7 +58,7 @@ function createHome(name){
         });
 }
 
-function deviceTypeActionParams(typeId, action){
+export function deviceTypeActionParams(typeId, action){
     Api.deviceType.get(typeId)
         .then( data => {
             data.result.actions.forEach( elem => {
@@ -70,7 +71,7 @@ function deviceTypeActionParams(typeId, action){
         });
 }
 
-function getFavs() {
+export function getFavs() {
     Api.device.getAll()
         .then( data => {
             return data.result.filter( elem => {

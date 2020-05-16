@@ -29,7 +29,7 @@ class Device {
     return Api.device.getState(this.id);
   }
 
-  excecute(action){
+  execute(action){
     return Api.device.excecuteAction(this.id, action);
   }
 
