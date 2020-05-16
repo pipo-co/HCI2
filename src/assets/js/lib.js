@@ -80,9 +80,7 @@ export function getFavs() {
     return new Promise( (resolve, reject) => {
         Api.device.getAll()
             .then( data => {
-                resolve(data.result.filter( elem => {
-                    return elem.meta.fav;
-                }));
+                resolve(data.result.filter( elem => elem.meta.fav ).map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)));
             })
             .catch( error => {
                 reject(`Get Favs: ${error}`);
