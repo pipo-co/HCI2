@@ -118,6 +118,10 @@
                   color: '#C01616',
                   src:'mdi-stove'
               },
+              extraControllers: {
+                  value: false,
+                  message: 'Mas',
+              },
               status:{
                   value: null,
               },
@@ -141,10 +145,6 @@
                   minValue: 60, //hardCoded
                   maxValue: 400, //hardCoded
                 },
-              extraControllers: {
-                  value: false,
-                  message: 'Mas',
-              },
               fav: false,
               isOn: this.disp.state.status === 'on',
               dev: new Device(this.disp.id, this.disp.name, this.disp.type, this.disp.meta, this.disp.state, this.disp.room, this.disp.home)

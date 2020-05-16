@@ -3,12 +3,9 @@
         <v-row justify="center">
             <v-col md="8">
                 <v-row>
-                    <v-col md="6" v-for="disp in dispositivos" :key="disp.id">
-                        <dispositivo :type="disp.type.name" :disp="disp"></dispositivo>
+                    <v-col md="6" v-for="card in cards" :key="card.id">
+                        <card-router :card="card"></card-router>
                     </v-col>
-<!--                    <v-col md="6">-->
-<!--                        <dispositivo></dispositivo>-->
-<!--                    </v-col>-->
                 </v-row>
             </v-col>
         </v-row>
@@ -16,43 +13,27 @@
 </template>
 
 <script>
-    import Dispositivo from "./Dispositivos/Dispositivo";
-    import Api from "@/assets/js/Api.js";
-    // import lib from "../assets/js/lib.js"
-    // import("../assets/js/lib.js")
-    //const lib = require("../assets/js/lib.js")
-    // import device from "@/assets/js/Device.js"
+    import CardRouter from "./Dispositivos/CardRouter";
+    const lib = require("../assets/js/lib.js")
 
     export default {
         name: "Favoritos",
-        components: {Dispositivo},
+        components: {CardRouter},
         data(){
             return{
-                dispositivos: []
-                }
+                cards: null,
+            }
         },
         mounted(){
-
-            Api.device.getAll().then(data => {
-                this.dispositivos = data.result;
-            }).catch(error => {
-                console.log(`Error ${error}`);
-            })
-
-            // console.log(home)
-            // let room = lib.createRoom('Living',home);
-            // let device = lib.createDevice('LocoLoco','im77xxyulpegfmv8',room);
-            // device.fav();
-
-            // var hornoloco = new device(null,'Hornoloco',{id:'im77xxyulpegfmv8'},{});
-            // api.device.add(hornoloco).then(data =>{
-            //     hornoloco.id = data.result.id;
-            // }).catch(error => {
-            //     console.log(`Error ${error}`);
-            // })
+            lib.getFavs()
+                .then(this.loadCards)
+                .catch(error => console.log(`Favorites ${error}`))
         },
-        computed: {
-        }
+        methods:{
+            loadCards(data){
+                this.cards = data;
+            }
+        },
     }
 </script>
 
