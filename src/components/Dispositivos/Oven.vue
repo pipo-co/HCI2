@@ -2,10 +2,10 @@
     <v-row dense>
         <v-col cols="12" class="px-5">
             <disp-info
-                    name="Equipo de musica"
-                    state="Reproduciendo cachenge"
+                    :name="disp.name"
+                    :state="state"
+                    :icon="iconInfo"
                     room="Living"
-                    icon="src/parlante.png"
                     :fav="false"
             ></disp-info>
         </v-col>
@@ -87,14 +87,32 @@
 
 <script>
     import DispInfo from "./DispInfo";
+    import device from "../../assets/js/Device";
 
     export default {
         name: "oven",
         components:{DispInfo},
-        argv: {
-            type: Object,
-            required: true
-
+        props: {
+            disp: {
+                type: device,
+                required: true
+            }
+        },
+        data(){
+          return{
+              iconInfo:{
+                  bgColor: '#FFBBBB',
+                  color: '#C01616',
+                  src:'mdi-stove'
+              }
+          }
+        },
+        computed:{
+            state(){
+                if(this.disp.state.status === 'off')
+                    return 'Off'
+                return `Prendido: ${this.disp.state.heat} ${this.disp.state.temperature}º`
+            }
         }
     }
 </script>

@@ -158,6 +158,12 @@
     export default {
         name: "ac",
         components:{DispInfo},
+        props: {
+            disp: {
+                type: Object,
+                required: true
+            }
+        }
     }
 </script>
 

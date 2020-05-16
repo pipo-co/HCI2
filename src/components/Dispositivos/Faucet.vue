@@ -64,10 +64,11 @@
     export default {
         name: "faucet",
         components:{DispInfo},
-        argv: {
-            type: Object,
-            required: true
-
+        props: {
+            disp: {
+                type: Object,
+                required: true
+            }
         }
     }
 </script>

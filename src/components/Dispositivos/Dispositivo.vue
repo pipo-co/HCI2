@@ -1,7 +1,7 @@
 <template>
     <v-card class="disp">
         <v-container >
-            <component :is="type" argv="hola"/>
+            <component :is="type" :disp="disp"/>
         </v-container>
     </v-card>
 </template>
@@ -19,7 +19,10 @@
 
     export default {
         name: "dispositivo",
-        props:['type'],
+        props: {
+            type: String,
+            disp: Object
+    },
         // props: {
         //     disp: {
         //         type: Object,

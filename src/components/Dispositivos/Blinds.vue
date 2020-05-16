@@ -2,10 +2,10 @@
     <v-row dense>
         <v-col cols="12" class="px-5">
             <disp-info
-                    name="Equipo de musica"
+                    :name="disp.name"
                     state="Reproduciendo cachenge"
                     room="Living"
-                    icon="src/parlante.png"
+                    :icon="iconInfo"
                     :fav="false"
             ></disp-info>
         </v-col>
@@ -66,15 +66,22 @@
     export default {
         name: "Blinds",
         components:{DispInfo},
-        argv: {
-            type: Object,
-            required: true
-
+        props: {
+            disp: {
+                type: Object,
+                required: true
+            }
         },
         data(){
             return{
                 slider: 5,
-                toggle_exclusive: 'subir'
+                toggle_exclusive: 'subir',
+                iconInfo:{
+                    bgColor: '#f2d6ff',
+                    color: '#BF38FF',
+                    src:'mdi-window-shutter'
+                //    mdi-blinds
+                }
             }
         }
     }

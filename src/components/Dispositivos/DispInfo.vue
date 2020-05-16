@@ -3,8 +3,8 @@
         <v-row align="center">
             <v-col cols="9" class="py-0 px-0" align="start">
                 <v-list-item class="pr-0">
-                    <v-list-item-avatar>
-                        <v-img ></v-img>
+                    <v-list-item-avatar :color="icon.bgColor" >
+                        <v-icon large :color="icon.color">{{icon.src}}</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-subtitle>{{room}}</v-list-item-subtitle>

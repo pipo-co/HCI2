@@ -4,7 +4,7 @@
             <v-col md="8">
                 <v-row>
                     <v-col md="6" v-for="disp in dispositivos" :key="disp.id">
-                        <dispositivo :type="disp.type.name"></dispositivo>
+                        <dispositivo :type="disp.type.name" :disp="disp"></dispositivo>
                     </v-col>
 <!--                    <v-col md="6">-->
 <!--                        <dispositivo></dispositivo>-->
@@ -17,8 +17,8 @@
 
 <script>
     import Dispositivo from "./Dispositivos/Dispositivo";
-    import api from "@/assets/js/api.js"
-    // import device from "@/assets/js/device.js"
+    import Api from "@/assets/js/Api.js"
+    // import device from "@/assets/js/Device.js"
 
     export default {
         name: "Favoritos",
@@ -30,9 +30,9 @@
         },
         mounted(){
             console.log('mounted')
-            console.log(api.baseUrl);
+            console.log(Api.baseUrl);
 
-            api.device.getAll().then(data => {
+            Api.device.getAll().then(data => {
                 this.dispositivos = data.result;
                 console.log('Response');
                 console.log(data.result);
