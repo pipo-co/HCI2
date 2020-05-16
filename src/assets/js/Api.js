@@ -108,11 +108,11 @@ Api.room = class {
   }
 
   static addDevice(roomId, deviceId){
-    return Api.post(`${Api.home.url}/${roomId}/devices/${deviceId}`);
+    return Api.post(`${Api.room.url}/${roomId}/devices/${deviceId}`);
   }
 
   static removeDevice(deviceId){
-    return Api.delete(`${Api.home.url}/devices/${deviceId}`);
+    return Api.delete(`${Api.room.url}/devices/${deviceId}`);
   }
 }
 
@@ -157,8 +157,8 @@ Api.device = class {
     return Api.get(`${Api.device.url}/${id}/logs/limit/${limit}/offset/${offset}`);
   }
 
-  static excecuteAction(id, actionName){
-    return Api.put(`${Api.device.url}/${id}/${actionName}`, {});
+  static excecuteAction(id, actionName, params){
+    return Api.put(`${Api.device.url}/${id}/${actionName}`, params);
   }
 }
 

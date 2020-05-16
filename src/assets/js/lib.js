@@ -5,49 +5,48 @@ import Home from "./Home";
 
 
 export function createDevice(name, typeId, room) {
-    let device = new Device(null, name, {id: typeId}, {fav: false});
+    let device = new Device(null, name, { id: typeId }, {fav: false});
+    return new Promise( (resolve, reject) => {
     Api.device.add(device)
         .then( data => {
             device.id = data.result.id;
             device.type = data.result.type;
             device.state = data.result.state;
 
-            return new Promise( (resolve, reject) => {
-                room.addDevice(device.id)
-                    .then(() => {
-                        device.room = room;
-                        resolve(device);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-            });
+            room.addDevice(device.id)
+                .then( () => {
+                    device.room = room;
+                    resolve(device);
+                })
+                .catch(error => {
+                    reject(`Add Device to Room: ${error}`);
+                });
         })
         .catch( error => {
-            console.log(`Add Device: ${error}`);
+            reject(`Add Device: ${error}`);
         });
+    });
 }
 
 export function createRoom(name, home){
     let room = new Room(null, name, {});
-    Api.room.add(room)
-        .then( data => {
-            room.id = data.result.id;
-
-            return new Promise( (resolve, reject) => {
+    return new Promise( (resolve, reject) => {
+        Api.room.add(room)
+            .then( data => {
+                room.id = data.result.id;
                 home.addRoom(room.id)
                     .then( () => {
                         room.home = home;
                         resolve(room);
                     })
                     .catch( error => {
-                        reject(error);
+                        reject(`Add Room to Home: ${error}`);
                     });
+            })
+            .catch( error => {
+                reject(`Add Room: ${error}`);
             });
-        })
-        .catch( error => {
-            console.log(`Add Room: ${error}`);
-        });
+    });
 }
 
 export function createHome(name){
@@ -61,32 +60,44 @@ export function createHome(name){
             .catch( error => {
                 reject(`Couldn't Add Home: ${error}`);
             });
-    })
+    });
+}
+
+export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
+    return new Promise( (resolve, reject) => {
+        lib.createHome(homeName)
+            .then(home => {
+                lib.createRoom(roomName, home)
+                    .then( room => {
+                        lib.createDevice(deviceName, typeId, room)
+                            .then( device => resolve(device) )
+                            .catch( errors => reject(`Create Device ${deviceName} ${errors}`) );
+                    })
+                    .catch( errors => reject(`Create Room ${roomName} ${errors}`) );
+            })
+            .catch( errors => reject(`Create Home ${homeName} ${errors}`) );
+    });
 }
 
 export function deviceTypeActionParams(typeId, action){
-    Api.deviceType.get(typeId)
-        .then( data => {
-            data.result.actions.forEach( elem => {
-                if(elem.name === action)
-                    return elem.params;
-            });
-        })
-        .catch( error => {
-            console.log(`Get DeviceType: ${error}`);
-        });
+    return new Promise( (resolve, reject) => {
+        Api.deviceType.get(typeId)
+            .then( data => resolve( data.result.actions.find(elem => elem.name === action).params ) )
+            .catch( error => reject(`Get DeviceType: ${error}` ) );
+    });
 }
 
 export function getFavs() {
-    Api.device.getAll()
-        .then( data => {
-            return data.result.filter( elem => {
-                return elem.meta.fav;
+    return new Promise( (resolve, reject) => {
+        Api.device.getAll()
+            .then( data => {
+                resolve(data.result.filter( elem => elem.meta.fav ).map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)));
+            })
+            .catch( error => {
+                reject(`Get Favs: ${error}`);
             });
-        })
-        .catch( error => {
-            console.log(`Get Favs: ${error}`);
-        });
+    })
+
 }
 
 // function saveIdsToLocalStorage() {

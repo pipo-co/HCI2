@@ -20,7 +20,7 @@
     import Api from "@/assets/js/Api.js";
     // import lib from "../assets/js/lib.js"
     // import("../assets/js/lib.js")
-    // const lib = require("../assets/js/lib.js")
+    const lib = require("../assets/js/lib.js")
     // import device from "@/assets/js/Device.js"
 
     export default {
@@ -38,12 +38,7 @@
             }).catch(error => {
                 console.log(`Error ${error}`);
             })
-            // eslint-disable-next-line no-debugger
-            // debugger;
-            // let home = lib.createHome('Ranch').then(data=> {
-            //     console.log("DATA");
-            //     console.log(data);
-            // });
+
             // console.log(home)
             // let room = lib.createRoom('Living',home);
             // let device = lib.createDevice('LocoLoco','im77xxyulpegfmv8',room);
