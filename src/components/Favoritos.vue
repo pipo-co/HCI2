@@ -38,23 +38,6 @@
             }).catch(error => {
                 console.log(`Error ${error}`);
             })
-            // eslint-disable-next-line no-debugger
-            // debugger;
-            // let home = lib.createHome('Ranch').then(data=> {
-            //     console.log("DATA");
-            //     console.log(data);
-            // });
-            // console.log(home)
-            // let room = lib.createRoom('Living',home);
-            // let device = lib.createDevice('LocoLoco','im77xxyulpegfmv8',room);
-            // device.fav();
-
-            // var hornoloco = new device(null,'Hornoloco',{id:'im77xxyulpegfmv8'},{});
-            // api.device.add(hornoloco).then(data =>{
-            //     hornoloco.id = data.result.id;
-            // }).catch(error => {
-            //     console.log(`Error ${error}`);
-            // })
         },
         computed: {
         }

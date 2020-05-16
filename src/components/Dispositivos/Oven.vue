@@ -8,7 +8,7 @@
                             :state="state"
                             :icon="iconInfo"
                             room="Living"
-                            :fav="false"
+                            :fav="fav"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12"  class="px-5">
@@ -29,7 +29,6 @@
                                         solo rounded flat outlined dense
                                         suffix="º"
                                         hide-details="true"
-
                                 ></v-text-field>
                             </v-col>
                             <v-col>
@@ -125,14 +124,17 @@
               grill: {
                   value: null,
                   supportedValue: null,
+                  actionName: 'setGrill',
               },
               heat:{
                   value: null,
                   supportedValue: null,
+                  actionName: 'setHeat',
               },
               convection:{
                   value: null,
                   supportedValue: null,
+                  actionName: 'setConvection',
               },
               temperature:{
                   value: null,
@@ -143,6 +145,7 @@
                   value: false,
                   message: 'Mas',
               },
+              fav: false,
               isOn: this.disp.state.status === 'on',
               dev: new Device(this.disp.id, this.disp.name, this.disp.type, this.disp.meta, this.disp.state, this.disp.room, this.disp.home)
           }
@@ -158,27 +161,31 @@
             Api.deviceType.get(this.disp.type.id).then(data =>{
                 let action;
 
-                action = data.result.actions.filter(act => act.name === 'setHeat')[0];
+                action = data.result.actions.filter(act => act.name === this.heat.actionName)[0];
                 this.heat.supportedValue = action.params[0].supportedValues;
 
-                action = data.result.actions.filter(act => act.name === 'setGrill')[0];
+                action = data.result.actions.filter(act => act.name === this.grill.actionName)[0];
                 this.grill.supportedValue = action.params[0].supportedValues;
 
-                action = data.result.actions.filter(act => act.name === 'setConvection')[0];
+                action = data.result.actions.filter(act => act.name === this.convection.actionName)[0];
                 this.convection.supportedValue = action.params[0].supportedValues;
 
-                console.log(this.disp.state)
                 this.convection.value = this.disp.state.convection
                 this.grill.value = this.disp.state.grill
                 this.heat.value = this.disp.state.heat
                 this.temperature.value = this.disp.state.temperature
+                this.status.value = this.disp.state.status
+
+                this.fav = this.dev.isFav();
+                console.log("isFAv");
+                console.log(this.dev.isFav());
 
             }).catch(error => {
                 console.log(`Error ${error}`);
             })
         },
         watch:{
-            'status.value': function() {
+            'status.value'() {
                 if (this.status.value){
                     this.dev.execute('turnOn').then(this.updateState).catch(error => {
                         console.log(`Error ${error}`);
@@ -189,6 +196,11 @@
                         console.log(`Error ${error}`);
                     });
                 }
+            },
+            'heat.value'(){
+                // this.dev.execute(this.heat.actionName).then(this.updateState).catch(error => {
+                //     console.log(`Error ${error}`);
+                // });
             }
         },
         methods: {
@@ -206,7 +218,6 @@
             decreaseTemperature(){
                 if(this.temperature.minValue < this.temperature.value)
                     this.temperature.value -= 5;
-
             },
             controllerHandler(){
                 this.extraControllers.value = ! this.extraControllers.value;
@@ -214,7 +225,6 @@
                     this.extraControllers.message = 'Menos';
                 else
                     this.extraControllers.message = 'Mas';
-
             },
         }
     }
