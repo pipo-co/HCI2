@@ -65,11 +65,11 @@ export function createHome(name){
 
 export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
     return new Promise( (resolve, reject) => {
-        lib.createHome(homeName)
+        createHome(homeName)
             .then(home => {
-                lib.createRoom(roomName, home)
+                createRoom(roomName, home)
                     .then( room => {
-                        lib.createDevice(deviceName, typeId, room)
+                        createDevice(deviceName, typeId, room)
                             .then( device => resolve(device) )
                             .catch( errors => reject(`Create Device ${deviceName} ${errors}`) );
                     })
@@ -90,14 +90,22 @@ export function deviceTypeActionParams(typeId, action){
 export function getFavs() {
     return new Promise( (resolve, reject) => {
         Api.device.getAll()
-            .then( data => {
-                resolve(data.result.filter( elem => elem.meta.fav ).map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)));
-            })
+            .then( data => resolve( data.result
+                .filter( elem => elem.meta.fav )
+                .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room))
+            ))
             .catch( error => {
                 reject(`Get Favs: ${error}`);
             });
-    })
+    });
+}
 
+export function getRoomsFromHome(homeId){
+    return new Promise( (resolve, reject) => {
+        Api.room.getAll()
+            .then( data => resolve(data.result.filter( room => room.home.id === homeId)))
+            .catch( error => reject(`Get All Rooms ${error}`));
+    });
 }
 
 // function saveIdsToLocalStorage() {

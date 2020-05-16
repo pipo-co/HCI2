@@ -20,7 +20,7 @@
     import Api from "@/assets/js/Api.js";
     // import lib from "../assets/js/lib.js"
     // import("../assets/js/lib.js")
-    const lib = require("../assets/js/lib.js")
+    //const lib = require("../assets/js/lib.js")
     // import device from "@/assets/js/Device.js"
 
     export default {
