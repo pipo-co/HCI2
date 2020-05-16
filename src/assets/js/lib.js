@@ -80,16 +80,11 @@ export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
 }
 
 export function deviceTypeActionParams(typeId, action){
-    Api.deviceType.get(typeId)
-        .then( data => {
-            data.result.actions.forEach( elem => {
-                if(elem.name === action)
-                    return elem.params;
-            });
-        })
-        .catch( error => {
-            console.log(`Get DeviceType: ${error}`);
-        });
+    return new Promise( (resolve, reject) => {
+        Api.deviceType.get(typeId)
+            .then( data => resolve( data.result.actions.find(elem => elem.name === action).params ) )
+            .catch( error => reject(`Get DeviceType: ${error}` ) );
+    });
 }
 
 export function getFavs() {
