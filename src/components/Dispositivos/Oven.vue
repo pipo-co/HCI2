@@ -1,5 +1,14 @@
 <template>
     <v-row dense>
+        <v-col cols="12" class="px-5">
+            <disp-info
+                    name="Equipo de musica"
+                    state="Reproduciendo cachenge"
+                    room="Living"
+                    icon="src/parlante.png"
+                    :fav="false"
+            ></disp-info>
+        </v-col>
         <v-col cols="12"  class="px-5">
             <v-container class="py-0"> <!--class="px-3 py-0" -->
                 <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
@@ -36,7 +45,7 @@
                         </v-list-item>
                     </v-col>
                     <v-col class="py-0"> <!--class="pr-10" -->
-                        <v-select :items="fuenteCalor" dense value="Convencional"></v-select>
+                        <v-select dense value="Convencional"></v-select>
                     </v-col>
                 </v-row>
             </v-container>
@@ -52,7 +61,7 @@
                         </v-list-item>
                     </v-col>
                     <v-col class="py-0"> <!--class="pr-10" -->
-                        <v-select :items="fuenteCalor" dense value="Convencional"></v-select>
+                        <v-select dense value="Convencional"></v-select>
                     </v-col>
                 </v-row>
             </v-container>
@@ -68,18 +77,20 @@
                         </v-list-item>
                     </v-col>
                     <v-col class="py-0"> <!--class="pr-10" -->
-                        <v-select :items="fuenteCalor" dense value="Convencional"></v-select>
+                        <v-select  dense value="Convencional"></v-select>
                     </v-col>
                 </v-row>
             </v-container>
         </v-col>
-
     </v-row>
 </template>
 
 <script>
+    import DispInfo from "./DispInfo";
+
     export default {
-        name: "Horno",
+        name: "oven",
+        components:{DispInfo},
         argv: {
             type: Object,
             required: true

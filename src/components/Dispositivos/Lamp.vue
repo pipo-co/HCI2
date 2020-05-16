@@ -1,5 +1,14 @@
 <template>
     <v-row no-gutters dense>
+        <v-col cols="12" class="px-5">
+            <disp-info
+                    name="Equipo de musica"
+                    state="Reproduciendo cachenge"
+                    room="Living"
+                    icon="src/parlante.png"
+                    :fav="false"
+            ></disp-info>
+        </v-col>
         <v-col md="12"  class="px-5">
             <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
                 <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
@@ -21,29 +30,30 @@
             </v-container>
         </v-col>
         <v-col md="12"  class="px-5">
-
-        <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
-            <v-row align="center" dense justify="space-around">
-                <v-col cols="12">
-                    <v-list-item class="px-0">
-                        <v-list-item-content class="ma-1 pa-1">
-                            <v-list-item-title align="left" class="title">Seleccione Color</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-col>
-                <v-col cols="12">
-                    <color-picker class="ma-auto" v-bind="color" @input="onInput"></color-picker>
-                </v-col>
-            </v-row>
-        </v-container>
-    </v-col>
+            <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
+                <v-row align="center" dense justify="space-around">
+                    <v-col cols="12">
+                        <v-list-item class="px-0">
+                            <v-list-item-content class="ma-1 pa-1">
+                                <v-list-item-title align="left" class="title">Seleccione Color</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                    <v-col cols="12">
+                        <color-picker class="ma-auto" v-bind="color" @input="onInput"></color-picker>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-col>
     </v-row>
 </template>
 
 <script>
 import ColorPicker from '@radial-color-picker/vue-color-picker';
+import DispInfo from "./DispInfo";
 export default {
-    components: { ColorPicker },
+    name:"lamp",
+    components: { ColorPicker, DispInfo},
     data() {
         return {
             color: {

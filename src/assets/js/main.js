@@ -1,3 +1,4 @@
+import api from "@/assets/js/api.js";
 var room;
 var createButton, updateButton, deleteButton, getButton, getAllButton;
 var resultTextArea;

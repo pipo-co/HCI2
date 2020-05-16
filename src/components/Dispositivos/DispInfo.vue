@@ -4,7 +4,7 @@
             <v-col cols="9" class="py-0 px-0" align="start">
                 <v-list-item class="pr-0">
                     <v-list-item-avatar>
-                        <v-img :src="icon"></v-img>
+                        <v-img ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-subtitle>{{room}}</v-list-item-subtitle>

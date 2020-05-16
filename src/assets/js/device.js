@@ -1,6 +1,8 @@
+import api from "@/assets/js/api.js";
+
 api.model = api.model || {};
 
-api.model.device = class {
+class device {
   constructor(id, name, type, meta, state, room, home) {
     if (id) {
       this.id = id;
@@ -33,3 +35,4 @@ api.model.device = class {
     return api.device.excecuteAction(this.id, action);
   }
 }
+export default device;

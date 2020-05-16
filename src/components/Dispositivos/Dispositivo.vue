@@ -1,35 +1,25 @@
 <template>
     <v-card class="disp">
         <v-container >
-            <v-row dense>
-                <v-col cols="12" class="px-5">
-                    <disp-info
-                            name="Equipo de musica"
-                            state="Reproduciendo cachenge"
-                            room="Living"
-                            icon="src/parlante.png"
-                            :fav="false"
-                    ></disp-info>
-                </v-col>
-            </v-row>
-            <component :is="dispType" argv="hola"/>
+            <component :is="type" argv="hola"/>
         </v-container>
     </v-card>
 </template>
 
 <script>
-    import DispInfo from "./DispInfo";
-    import Aire from "./Aire";
-    import Parlante from "./Parlante";
-    import Aspiradora from "./Aspiradora";
-    import Puerta from "./Puerta";
-    import Regador from "./Regador";
-    import Horno from "./Horno";
-    import Persiana from "./Persiana";
-    import Lampara from "./Lampara";
+    import AC from "./AC";
+    import Speaker from "./Speaker";
+    import Vacuum from "./Vacuum";
+    import Door from "./Door";
+    import Faucet from "./Faucet";
+    import Oven from "./Oven";
+    import Blinds from "./Blinds";
+    import Lamp from "./Lamp";
+
 
     export default {
         name: "dispositivo",
+        props:['type'],
         // props: {
         //     disp: {
         //         type: Object,
@@ -37,11 +27,11 @@
         //     },
         // },
         components:{
-            DispInfo, Parlante, Aire, Aspiradora, Puerta, Regador, Horno, Persiana, Lampara
+            Speaker, AC, Vacuum, Door, Faucet, Oven, Blinds, Lamp
         },
         data() {
             return {
-                dispType: 'horno'
+                dispType: 'oven'
             }
 
         }

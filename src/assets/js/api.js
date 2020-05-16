@@ -1,4 +1,4 @@
-var api = class {
+class api {
   static get baseUrl() {
     return 'http://127.0.0.1:8080/api';
   }
@@ -208,3 +208,5 @@ api.home = class {
     return api.delete(`${api.home.url}/rooms/${roomId}`);
   }
 }
+
+export default api;

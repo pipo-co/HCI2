@@ -1,3 +1,5 @@
+import api from "@/assets/js/api.js";
+
 api.model = api.model || {};
 
 api.model.home = class {
