@@ -39,7 +39,7 @@
                             <v-col cols="1" >
                                 <v-list-item-avatar color="primary" height="60" width="60" class="ma-1 white--text">{{stepController.value}}</v-list-item-avatar>
                             </v-col>
-                            <v-col >
+                            <v-col>
                                 <v-container fluid class="pa-0">
                                     <v-row no-gutters class="ma-0 pa-0" align="top">
                                         <v-col cols="2">
@@ -53,7 +53,7 @@
                                     </v-row>
                                     <v-row no-gutters class="ma-0 pa-0">
                                         <v-col cols="2">
-                                            <v-list class="ml-3">
+                                            <v-list class="ml-3" >
                                                 <v-list-item-subtitle  align="left">Descripcion:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
@@ -62,17 +62,20 @@
                                         </v-col>
                                     </v-row>
                                 </v-container>
+                            </v-col>
+                        </v-row>
                                 <!--<v-list class="ml-3">
                                     <v-list-item-title class="headline " align="left">Titulo:</v-list-item-title>
                                     <v-list-item-subtitle align="left" class="ml-1">Descripcion:</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                             <v-col>
-                                <v-text-field v-model="newRoutine.dispname" class="pa-0 my-0" height="28" ></v-text-field>
-                                <v-text-field v-model="newRoutine.desc" class="pa-0" height="18" ></v-text-field>-->
+                                <v-list class="ml-3 pa-0">
+                                        <v-text-field v-model="newRoutine.dispname" class="pa-0 my-0" height="28" ></v-text-field>
+                                        <v-text-field v-model="newRoutine.desc" class="pa-0" height="18" ></v-text-field>
+                                </v-list>
                             </v-col>
-                        </v-row>
-
+                        </v-row>-->
                     </v-container>
                     <v-container class="py-0 my-0">
                         <v-row class="py-0 my-0">
