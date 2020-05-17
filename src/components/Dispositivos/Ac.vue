@@ -170,7 +170,7 @@
         },
         //TODO que no se pueda elegir null en los grupos de botones
         //TODO acomodar el textfield de temperatura
-        //TODO agregar menu overflow
+        //TODO hacer el debounce del input
         data() {
             return {
                 iconInfo: {
@@ -189,9 +189,16 @@
                         else
                             target.props.fav();
                     },
-                    overflow(){
-                        console.log(`Overflow handler ${this}`);
-                    }
+                    edit(target){
+                        console.log(`Edit handler ${target}`);
+                    },
+                    history(target){
+                        console.log(`History handler ${target}`);
+                    },
+                    delete(target){
+                        console.log(`Delete handler ${target}`);
+                    },
+
                 },
                 mode:{
                     supportedValues: null,
@@ -232,6 +239,7 @@
             },
         },
         methods: {
+            //Deprecated
             updateState() {
                 this.dev.getState().then(data => {
                     this.disp.state = data.result;
@@ -319,8 +327,6 @@
                     .catch( errors => console.log(`Fan speed - Update value ${errors}`) );
             },
             'props.state.temperature'(){
-
-                //TODO hacer el debounce del input
                 this.props.execute(this.temperature.action, [this.props.state.temperature])
                     .then(console.log)
                     .catch( errors => console.log(`Temperature - Update value ${errors}`) );

@@ -16,11 +16,24 @@
 
             <v-col align="end" class="pl-0">
                 <v-btn icon>
-                    <v-icon :color="color" @click="handleFav()">mdi-heart</v-icon>
+                    <v-icon :color="color" @click="eventDispatcher('fav')">mdi-heart</v-icon>
                 </v-btn>
-                <v-btn icon>
-                    <v-icon @click="handleOverflow()">mdi-dots-vertical</v-icon>
-                </v-btn>
+
+
+                <v-menu bottom :offset-x="true">
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on">
+                            <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item v-for="(option, index) in overflowOptions"
+                                     @click="eventDispatcher(option.eventName)" :key="index">
+                            <v-list-item-title>{{option.message}}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+
             </v-col>
         </v-row>
     </v-container>
@@ -53,6 +66,20 @@
         data(){
             return{
                 color: this.fav ? 'red' : 'disable',
+                overflowOptions:{
+                    editar: {
+                        message: 'Editar',
+                        eventName: 'edit'
+                    },
+                    historial: {
+                        message: 'Historial',
+                        eventName: 'history'
+                    },
+                    eliminar: {
+                        message: 'Eliminar',
+                        eventName: 'delete'
+                    },
+                }
             }
         },
         watch:{
@@ -64,12 +91,9 @@
             }
         },
         methods:{
-            handleFav(){
-                this.$emit('disp-event', {event: 'fav'})
+            eventDispatcher(eventName){
+                this.$emit('disp-event', {event: eventName})
             },
-            handleOverflow(){
-                this.$emit('disp-event', {event: 'overflow'})
-            }
         }
 
     }
