@@ -200,4 +200,34 @@ Api.home = class {
   }
 }
 
+Api.routine = class {
+  static get url() {
+    return `${Api.baseUrl}/routines`;
+  }
+
+  static add(routine) {
+    return Api.post(Api.routine.url, routine);
+  }
+
+  static modify(routine) {
+    return Api.put(`${Api.routine.url}/${routine.id}`, routine);
+  }
+
+  static delete(id) {
+    return Api.delete(`${Api.routine.url}/${id}`);
+  }
+
+  static get(id) {
+    return Api.get(`${Api.routine.url}/${id}`);
+  }
+
+  static getAll() {
+    return Api.get(Api.routine.url);
+  }
+
+  static excecute(id){
+    return Api.get(`${Api.routine.url}/${id}/execute`);
+  }
+}
+
 export default Api;

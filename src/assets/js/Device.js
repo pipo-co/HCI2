@@ -29,8 +29,8 @@ class Device {
     return Api.device.getState(this.id);
   }
 
-  execute(action){
-    return Api.device.excecuteAction(this.id, action);
+  execute(action, params){
+    return Api.device.excecuteAction(this.id, action, params);
   }
 
   fav(){

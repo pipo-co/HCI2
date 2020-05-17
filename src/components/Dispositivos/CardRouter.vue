@@ -1,9 +1,9 @@
 <template>
-    <component :is="type" :disp="disp"/>
+    <component :is="typeName" :props="card"/>
 </template>
 
 <script>
-    import AC from "./AC";
+    import Ac from "./Ac";
     import Speaker from "./Speaker";
     import Vacuum from "./Vacuum";
     import Door from "./Door";
@@ -12,27 +12,24 @@
     import Blinds from "./Blinds";
     import Lamp from "./Lamp";
 
-
     export default {
-        name: "dispositivo",
+        name: "card-router",
         props: {
-            type: String,
-            disp: Object
-    },
-        // props: {
-        //     disp: {
-        //         type: Object,
-        //         required: true
-        //     },
-        // },
+            card: {
+                type: Object,
+                require: true,
+                // validator(value){
+                //     return value instanceof Device
+                // }
+            }
+        },
         components:{
-            Speaker, AC, Vacuum, Door, Faucet, Oven, Blinds, Lamp
+            Speaker, Ac, Vacuum, Door, Faucet, Oven, Blinds, Lamp
         },
         data() {
             return {
-                dispType: 'oven'
+                typeName: this.card.type.name
             }
-
         }
     }
 </script>
