@@ -16,7 +16,7 @@
                     <v-container class="py-0"> <!--class="px-3 py-0" -->
                         <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
-                                <v-switch v-model="status.value" dense></v-switch><!--class="px-3 my-auto" -->
+                                <v-switch v-model="status.value" dense ></v-switch><!--class="px-3 my-auto" -->
                             </v-col>
                             <v-col>
                                 <v-btn icon >
@@ -25,12 +25,10 @@
                             </v-col>
                             <v-col>
                                 <v-text-field
-                                        class="inputNumber"
                                         v-model="props.state.temperature"
                                         solo rounded flat outlined dense
                                         suffix="º"
                                         :rules="temperature.validate"
-
                                 ></v-text-field>
                             </v-col>
                             <v-col>
@@ -181,8 +179,8 @@
                     value: false,
                     message: 'Mas',
                 },
-                events:{
-                    fav(target){
+                eventHandlers:{
+                    fav(target){ //target == this
                         if (target.props.isFav())
                             target.props.unFav();
                         else
@@ -197,7 +195,6 @@
                     delete(target){
                         console.log(`Delete handler ${target}`);
                     },
-
                 },
                 mode:{
                     supportedValues: null,
@@ -252,6 +249,7 @@
                     console.log(`Error ${error}`);
                 });
             },
+
             loadSupportedModes(params){
                 this.mode.supportedValues = params[0].supportedValues;
                 // console.log(this.mode.supportedValues);
@@ -274,6 +272,7 @@
                 // console.log(this.temperature.minValue);
                 // console.log(this.temperature.maxValue);
             },
+
             increaseTemperature() {
                 this.props.state.temperature = parseInt(this.props.state.temperature);
                 if (this.props.state.temperature < this.temperature.maxValue)
@@ -284,6 +283,7 @@
                 if (this.temperature.minValue < this.props.state.temperature)
                     this.props.state.temperature -= 1;
             },
+
             controllerHandler() {
                 this.extraControllers.value = !this.extraControllers.value;
                 if (this.extraControllers.value)
@@ -291,79 +291,59 @@
                 else
                     this.extraControllers.message = 'Mas';
             },
+
             handleDispInfoEvents(event){
-                this.events[event.event](this);
+                this.eventHandlers[event.eventName](this);
             },
 
-            // eslint-disable-next-line no-undef
-            // updateStateValue: _.debounce(function (action, params) {
-            //     this.props.execute(action, params)
-            //         .then(console.log)
-            //         .catch( errors => console.log(`Temperature - Update value ${errors}`) );
-            // }, 500)
+            updateStateValue(action, params = []){
+                this.props.execute(action, params)
+                    .then(console.log)
+                    .catch( errors => console.log(`${action} - Update value ${errors}`) );
+            },
+
+            getSupportedValues(action, handler){
+                lib.deviceTypeActionParams(this.props.type.id, action)
+                    .then(handler)
+                    .catch( errors => console.log(`${action} - Supported values  ${errors}`) );
+            }
         },
         mounted() {
-            lib.deviceTypeActionParams(this.props.type.id, this.mode.action)
-                .then(this.loadSupportedModes)
-                .catch( errors => console.log(`Mode - Supported values  ${errors}`) );
-            lib.deviceTypeActionParams(this.props.type.id, this.swing.vertical.action)
-                .then(this.loadSupportedVerticalSwing)
-                .catch( errors => console.log(`Vertical swing - Supported values  ${errors}`) );
-            lib.deviceTypeActionParams(this.props.type.id, this.swing.horizontal.action)
-                .then(this.loadSupportedHorizontalSwing)
-                .catch( errors => console.log(`Horizontal swing - Supported values  ${errors}`) );
-            lib.deviceTypeActionParams(this.props.type.id, this.fan.action)
-                .then(this.loadSupportedFanSpeeds)
-                .catch( errors => console.log(`Fan speed - Supported values  ${errors}`) );
-            lib.deviceTypeActionParams(this.props.type.id, this.temperature.action)
-                .then(this.loadSupportedTemperature)
-                .catch( errors => console.log(`Temperature - Supported values  ${errors}`) );
+            this.getSupportedValues(this.mode.action,this.loadSupportedModes);
+            this.getSupportedValues(this.swing.vertical.action,this.loadSupportedVerticalSwing);
+            this.getSupportedValues(this.swing.horizontal.action,this.loadSupportedHorizontalSwing);
+            this.getSupportedValues(this.fan.action,this.loadSupportedFanSpeeds);
+            this.getSupportedValues(this.temperature.action,this.loadSupportedTemperature);
         },
         watch:{
             'props.state.mode'(){
-                this.props.execute(this.mode.action, [this.props.state.mode])
-                    .then(console.log)
-                    .catch( errors => console.log(`Mode - Update value ${errors}`) );
+                this.updateStateValue(this.mode.action, [this.props.state.mode]);
             },
             'props.state.verticalSwing'(){
-                this.props.execute(this.swing.vertical.action, [this.props.state.verticalSwing])
-                    .then(console.log)
-                    .catch( errors => console.log(`Vertical swing - Update value ${errors}`) );
+                this.updateStateValue(this.swing.vertical.action, [this.props.state.verticalSwing]);
             },
             'props.state.horizontalSwing'(){
-                this.props.execute(this.swing.horizontal.action, [this.props.state.horizontalSwing])
-                    .then(console.log)
-                    .catch( errors => console.log(`Vertical swing - Update value ${errors}`) );
+                this.updateStateValue(this.swing.horizontal.action, [this.props.state.horizontalSwing]);
             },
             'props.state.fanSpeed'(){
-                this.props.execute(this.fan.action, [this.props.state.fanSpeed])
-                    .then(console.log)
-                    .catch( errors => console.log(`Fan speed - Update value ${errors}`) );
+                this.updateStateValue(this.fan.action, [this.props.state.fanSpeed]);
             },
+            //TODO agregar todas las validaciones
             'props.state.temperature'(){
                 if(!this.temperature.validate[0](this.props.state.temperature))
                     return;
 
-                // this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
-
-                this.props.execute(this.temperature.action, [this.props.state.temperature])
-                    .then(console.log)
-                    .catch( errors => console.log(`Temperature - Update value ${errors}`) );
+                this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
             },
             'status.value'(){
                 if(this.status.value){
                     this.props.state.status = 'on';
-                    this.props.execute('turnOn')
-                        .then(console.log)
-                        .catch( errors => console.log(`Status - Update value ${errors}`) );
+                    this.updateStateValue('turnOn');
                 }
                 else{
                     this.props.state.status = 'off';
-                    this.props.execute('turnOff')
-                        .then(console.log)
-                        .catch( errors => console.log(`Status - Update value ${errors}`) );
+                    this.updateStateValue('turnOff');
                 }
-                console.log(this.props.state.status);
             },
             'props.state.status'(){
                 this.status.value = this.props.state.status === 'on'
