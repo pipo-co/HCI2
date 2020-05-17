@@ -8,7 +8,7 @@
                             :state="state"
                             :room="location"
                             :icon="iconInfo"
-                            :fav="false"
+                            :fav="props.isFav()"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -322,10 +322,10 @@
                         .catch( errors => console.log(`Status - Update value ${errors}`) );
                 }
                 console.log(this.props.state.status);
-            }
-            // 'props.state.status'(){
-            //
-            // }
+            },
+            'props.state.status'(){
+                this.status.value = this.props.state.status === 'on'
+            },
         }
     }
 </script>
