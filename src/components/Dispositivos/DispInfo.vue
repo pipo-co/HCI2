@@ -65,7 +65,6 @@
         },
         data(){
             return{
-                color: this.fav ? 'red' : 'disable',
                 overflowOptions:{
                     editar: {
                         message: 'Editar',
@@ -82,17 +81,16 @@
                 }
             }
         },
-        watch:{
-            fav(){
+        computed:{
+            color(){
                 if(this.fav)
-                    this.color = 'red';
-                else
-                    this.color = 'disable';
+                    return 'red';
+                return 'disable';
             }
         },
         methods:{
             eventDispatcher(eventName){
-                this.$emit('disp-event', {event: eventName})
+                this.$emit('disp-event', {eventName: eventName})
             },
         }
 
