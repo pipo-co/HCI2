@@ -6,7 +6,7 @@ import Routine from "./Routine";
 
 
 export function createDevice(name, typeId, room) {
-    let device = new Device(null, `${room.home.name}.${room.name}.${name}`, { id: typeId }, {fav: false});
+    let device = new Device(null, `${room.name}_${name}`, { id: typeId }, {fav: false});
     return new Promise( (resolve, reject) => {
     Api.device.add(device)
         .then( data => {
@@ -30,7 +30,7 @@ export function createDevice(name, typeId, room) {
 }
 
 export function createRoom(name, home){
-    let room = new Room(null, `${home.name}.${name}`, {});
+    let room = new Room(null, `${home.name}_${name}`, {});
     return new Promise( (resolve, reject) => {
         Api.room.add(room)
             .then( data => {
@@ -128,6 +128,18 @@ export function getFavs() {
             )))
             .catch( error => reject(`Get Favs: ${error}`));
     });
+}
+
+export function suscribeToDeviceEvent(f, deviceId){
+    let source;
+    if(deviceId)
+        source = Api.device.getEventSource(deviceId);
+    else
+        source = Api.device.getAllEventSource();
+
+    source.addEventListener('message', function(event) {
+        f(JSON.parse(event.data));
+    }, false);
 }
 
 // function saveIdsToLocalStorage() {

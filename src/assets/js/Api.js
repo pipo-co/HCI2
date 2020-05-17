@@ -160,6 +160,14 @@ Api.device = class {
   static excecuteAction(id, actionName, params){
     return Api.put(`${Api.device.url}/${id}/${actionName}`, params);
   }
+
+  static getAllEventSource(){
+    return new EventSource(`${Api.device.url}/events`);
+  }
+
+  static getEventSource(id){
+    return new EventSource(`${Api.device.url}/${id}/events`);
+  }
 }
 
 Api.home = class {
