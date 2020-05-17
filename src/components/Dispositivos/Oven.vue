@@ -101,6 +101,7 @@
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
     import Api from "../../assets/js/Api.js";
+    const lib = require("../../assets/js/lib")
 
     export default {
         name: "oven",
@@ -113,11 +114,7 @@
         },
         data(){
           return{
-              iconInfo:{
-                  bgColor: '#FFBBBB',
-                  color: '#C01616',
-                  src:'mdi-stove'
-              },
+              iconInfo:lib.getIconInfo(this.props.type.name),
               extraControllers: {
                   value: false,
                   message: 'Mas',

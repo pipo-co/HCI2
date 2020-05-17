@@ -312,8 +312,6 @@
                     {action: this.temperature.action, handler: this.loadSupportedTemperature}
                 ]
             lib.loadAllSupportedValues(this.props.type.id, actions);
-
-            lib.getDeviceTypesInHome();
         },
         watch:{
             'props.state.mode'(){
