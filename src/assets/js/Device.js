@@ -25,6 +25,14 @@ class Device {
     return Api.device.delete(this.id);
   }
 
+  getName(){
+    return this.name.split(".").pop();
+  }
+
+  setNewName(name){
+    this.name = `${this.room.home.name}.${this.room.name}.${name}`;
+  }
+
   getLogs(limit, offset){
     return Api.device.getLogs(this.id, limit, offset);
   }

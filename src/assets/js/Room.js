@@ -18,6 +18,14 @@ class Room {
     return Api.room.delete(this.id);
   }
 
+  getName(){
+    return this.name.split(".").pop();
+  }
+
+  setNewName(name){
+    this.name = `${this.home.name}.${name}`;
+  }
+
   getDevices(){
     return Api.room.getRoomDevices(this.id);
   }
