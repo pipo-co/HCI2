@@ -30,7 +30,6 @@
                                         solo rounded flat outlined dense
                                         suffix="º"
                                         :rules="temperature.validate"
-
                                 ></v-text-field>
                             </v-col>
                             <v-col>
@@ -197,7 +196,6 @@
                     delete(target){
                         console.log(`Delete handler ${target}`);
                     },
-
                 },
                 mode:{
                     supportedValues: null,
