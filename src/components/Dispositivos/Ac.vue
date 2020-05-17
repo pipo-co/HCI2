@@ -9,6 +9,7 @@
                             :room="location"
                             :icon="iconInfo"
                             :fav="props.isFav()"
+                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -167,6 +168,9 @@
                 required: true
             }
         },
+        //TODO que no se pueda elegir null en los grupos de botones
+        //TODO acomodar el textfield de temperatura
+        //TODO agregar menu overflow
         data() {
             return {
                 iconInfo: {
@@ -177,6 +181,17 @@
                 extraControllers: {
                     value: false,
                     message: 'Mas',
+                },
+                events:{
+                    fav(target){
+                        if (target.props.isFav())
+                            target.props.unFav();
+                        else
+                            target.props.fav();
+                    },
+                    overflow(){
+                        console.log(`Overflow handler ${this}`);
+                    }
                 },
                 mode:{
                     supportedValues: null,
@@ -226,25 +241,25 @@
             },
             loadSupportedModes(params){
                 this.mode.supportedValues = params[0].supportedValues;
-                console.log(this.mode.supportedValues);
+                // console.log(this.mode.supportedValues);
             },
             loadSupportedVerticalSwing(params){
                 this.swing.vertical.supportedValues = params[0].supportedValues;
-                console.log(this.swing.vertical.supportedValues);
+                // console.log(this.swing.vertical.supportedValues);
             },
             loadSupportedHorizontalSwing(params){
                 this.swing.horizontal.supportedValues = params[0].supportedValues;
-                console.log(this.swing.horizontal.supportedValues);
+                // console.log(this.swing.horizontal.supportedValues);
             },
             loadSupportedFanSpeeds(params){
                 this.fan.supportedValues = params[0].supportedValues;
-                console.log(this.fan.supportedValues);
+                // console.log(this.fan.supportedValues);
             },
             loadSupportedTemperature(params){
                 this.temperature.minValue = params[0].minValue;
                 this.temperature.maxValue = params[0].maxValue;
-                console.log(this.temperature.minValue);
-                console.log(this.temperature.maxValue);
+                // console.log(this.temperature.minValue);
+                // console.log(this.temperature.maxValue);
             },
             increaseTemperature() {
                 if (this.props.state.temperature < this.temperature.maxValue)
@@ -261,6 +276,9 @@
                 else
                     this.extraControllers.message = 'Mas';
             },
+            handleDispInfoEvents(event){
+                this.events[event.event](this);
+            }
         },
         mounted() {
             lib.deviceTypeActionParams(this.props.type.id, this.mode.action)
@@ -278,7 +296,6 @@
             lib.deviceTypeActionParams(this.props.type.id, this.temperature.action)
                 .then(this.loadSupportedTemperature)
                 .catch( errors => console.log(`Temperature - Supported values  ${errors}`) );
-
         },
         watch:{
             'props.state.mode'(){
