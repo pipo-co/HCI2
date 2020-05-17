@@ -26,11 +26,11 @@ class Device {
   }
 
   getName(){
-    return this.name.split(".").pop();
+    return this.name.split("_").pop();
   }
 
   setNewName(name){
-    this.name = `${this.room.home.name}.${this.room.name}.${name}`;
+    this.name = `${this.room.name}_${name}`;
   }
 
   getLogs(limit, offset){
