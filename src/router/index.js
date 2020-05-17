@@ -23,9 +23,19 @@ const routes = [
         path: "/rutinas"
     },
     {
+        component: () => import("@/components/NuevaRutina/NuevaRutina"),
+        name: "nuevarutina",
+        path: "/rutinas/nuevarutina"
+    },
+    {
         component: () => import("@/components/NuevaRutina/NuevaRutina1"),
         name: "nuevarutina1",
         path: "/rutinas/nuevarutina1"
+    },
+    {
+        component: () => import("@/components/NuevoDispositivo/NuevoDispositivo1"),
+        name: "nuevodispositivo1",
+        path: "/dispositivo/nuevodispositivo1"
     }
 ];
 

@@ -38,7 +38,7 @@
                 <v-spacer></v-spacer>
             </v-col>
             <v-col align-self="center" justify="center" md="6">
-                <v-btn height="70" width="750"  class="ma-auto text--secondary border-dashed rounded" :to="{ name: 'nuevarutina1' }"  text>
+                <v-btn height="70" width="750"  class="ma-auto text--secondary border-dashed rounded" :to="{ name: 'nuevarutina' }"  text>
                     <v-icon large dark>mdi-plus</v-icon>
                     Agregar Rutina
                 </v-btn>

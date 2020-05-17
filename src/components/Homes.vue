@@ -79,6 +79,11 @@
                     >
                         <v-container fluid class="pa-0 ma-1">
                             <v-row align="center" no-gutters>
+                                <v-col cols="1" class="pa-0 ma-1">
+                                    <v-btn class="pa-0 ma-1" text>
+                                        <v-icon>mdi-overflow</v-icon>
+                                    </v-btn>
+                                </v-col>
                                 <v-col cols="5" md="5">
                                     <h1 class="headline ml-3 " align="left" >{{room.name}}</h1>
                                 </v-col>
