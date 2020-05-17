@@ -28,6 +28,8 @@
             lib.getFavs()
                 .then(this.loadCards)
                 .catch(error => console.log(`Favorites ${error}`))
+
+            setTimeout(() => { this.cards[0].state.status = 'on' }, 2000);
         },
         methods:{
             loadCards(data){
