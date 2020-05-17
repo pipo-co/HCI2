@@ -2,6 +2,7 @@ import Api from "./Api.js";
 import Device from "./Device";
 import Room from "./Room";
 import Home from "./Home";
+import Routine from "./Routine";
 
 
 export function createDevice(name, typeId, room) {
@@ -63,6 +64,17 @@ export function createHome(name){
     });
 }
 
+export function createRoutine(name, actions){
+    let routine = new Routine(null, name, { fav: false}, actions, true);
+    return new Promise( (resolve, reject) =>
+        Api.routine.add(routine)
+            .then( data => {
+                routine.id = data.result.id;
+                resolve(routine);
+            })
+            .catch( error => reject(`Add Routine ${name} ${error}`)))
+}
+
 export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
     return new Promise( (resolve, reject) => {
         createHome(homeName)
@@ -79,6 +91,18 @@ export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
     });
 }
 
+export function createDeviceFromNotExistingRoom(home, roomName, deviceName, typeId){
+    return new Promise( (resolve, reject) => {
+        createRoom(roomName, home)
+            .then( room => {
+                createDevice(deviceName, typeId, room)
+                    .then( device => resolve(device) )
+                    .catch( errors => reject(`Create Device ${deviceName} ${errors}`) );
+            })
+            .catch( errors => reject(`Create Room ${roomName} ${errors}`) );
+    });
+}
+
 export function deviceTypeActionParams(typeId, action){
     return new Promise( (resolve, reject) => {
         Api.deviceType.get(typeId)
@@ -87,26 +111,34 @@ export function deviceTypeActionParams(typeId, action){
     });
 }
 
+// No se que preferis Nacho, un array mezclado, o las dos arrays separadas.
 export function getFavs() {
+    let p1 = Api.device.getAll();
+    let p2 = Api.routine.getAll();
+
     return new Promise( (resolve, reject) => {
-        Api.device.getAll()
-            .then( data => resolve( data.result
-                .filter( elem => elem.meta.fav )
-                .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room))
-            ))
-            .catch( error => {
-                reject(`Get Favs: ${error}`);
-            });
+        Promise.all([p1, p2])
+            .then( values => resolve( [].concat(
+                values[0].result
+                    .filter( elem => elem.meta.fav )
+                    .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)),
+                values[1].result
+                    .filter( elem => elem.meta.fav)
+                    .map( elem => new Routine(elem.id, elem.name, elem.meta))
+            )))
+            .catch( error => reject(`Get Favs: ${error}`));
     });
 }
 
 export function getRoomsFromHome(homeId){
     return new Promise( (resolve, reject) => {
         Api.room.getAll()
-            .then( data => resolve(data.result.filter( room => room.home.id === homeId)))
+            .then( data => data.result.filter( room => room.home.id === homeId))
             .catch( error => reject(`Get All Rooms ${error}`));
     });
 }
+
+
 
 // function saveIdsToLocalStorage() {
 //     Api.deviceType.getAll()
