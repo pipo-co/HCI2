@@ -14,7 +14,11 @@ class Device {
   }
 
   persistChanges(){
-    return Api.device.modify(this);
+    return Api.device.modify({
+      id: this.id,
+      name: this.name,
+      meta: this.meta
+    });
   }
 
   delete(){

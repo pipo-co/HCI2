@@ -130,16 +130,6 @@ export function getFavs() {
     });
 }
 
-export function getRoomsFromHome(homeId){
-    return new Promise( (resolve, reject) => {
-        Api.room.getAll()
-            .then( data => data.result.filter( room => room.home.id === homeId))
-            .catch( error => reject(`Get All Rooms ${error}`));
-    });
-}
-
-
-
 // function saveIdsToLocalStorage() {
 //     Api.deviceType.getAll()
 //         .then(data => {
