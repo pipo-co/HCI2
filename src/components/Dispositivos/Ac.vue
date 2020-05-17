@@ -296,11 +296,11 @@
             },
 
             // eslint-disable-next-line no-undef
-            updateStateValue: _.debounce(function (action, params) {
-                this.props.execute(action, params)
-                    .then(console.log)
-                    .catch( errors => console.log(`Temperature - Update value ${errors}`) );
-            }, 500)
+            // updateStateValue: _.debounce(function (action, params) {
+            //     this.props.execute(action, params)
+            //         .then(console.log)
+            //         .catch( errors => console.log(`Temperature - Update value ${errors}`) );
+            // }, 500)
         },
         mounted() {
             lib.deviceTypeActionParams(this.props.type.id, this.mode.action)
@@ -344,11 +344,11 @@
                 if(!this.temperature.validate[0](this.props.state.temperature))
                     return;
 
-                this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
+                // this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
 
-                // this.props.execute(this.temperature.action, [this.props.state.temperature])
-                //     .then(console.log)
-                //     .catch( errors => console.log(`Temperature - Update value ${errors}`) );
+                this.props.execute(this.temperature.action, [this.props.state.temperature])
+                    .then(console.log)
+                    .catch( errors => console.log(`Temperature - Update value ${errors}`) );
             },
             'status.value'(){
                 if(this.status.value){
