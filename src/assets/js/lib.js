@@ -6,7 +6,7 @@ import Routine from "./Routine";
 
 
 export function createDevice(name, typeId, room) {
-    let device = new Device(null, name, { id: typeId }, {fav: false});
+    let device = new Device(null, `${room.home.name}.${room.name}.${name}`, { id: typeId }, {fav: false});
     return new Promise( (resolve, reject) => {
     Api.device.add(device)
         .then( data => {
@@ -30,7 +30,7 @@ export function createDevice(name, typeId, room) {
 }
 
 export function createRoom(name, home){
-    let room = new Room(null, name, {});
+    let room = new Room(null, `${home.name}.${name}`, {});
     return new Promise( (resolve, reject) => {
         Api.room.add(room)
             .then( data => {
@@ -65,7 +65,7 @@ export function createHome(name){
 }
 
 export function createRoutine(name, actions){
-    let routine = new Routine(null, name, { fav: false}, actions, true);
+    let routine = new Routine(null, name, {fav: false}, actions, true);
     return new Promise( (resolve, reject) =>
         Api.routine.add(routine)
             .then( data => {
