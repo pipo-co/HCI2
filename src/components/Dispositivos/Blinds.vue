@@ -81,12 +81,7 @@
         },
         data(){
             return{
-                iconInfo:{
-                    bgColor: '#f2d6ff',
-                    color: '#BF38FF',
-                    src:'mdi-window-shutter'
-                //    mdi-blinds
-                },
+                iconInfo: lib.getIconInfo(this.props.type.name),
                 extraControllers: {
                     value: false,
                     message: 'Mas',
@@ -160,12 +155,14 @@
             }
         },
         mounted(){
-            lib.deviceTypeActionParams(this.props.type.id, this.level.action)
-                .then(this.loadSupportedLevels)
-                .catch(errors => console.log(`Level - Supported Values ${errors}`));
-            console.log(this.props.state.level);
-            console.log(this.level.textFieldValue);
-            console.log(this.level.sliderValue);
+            let actions = [
+                {action: this.level.action, handler: this.loadSupportedLevels}
+            ]
+            lib.loadAllSupportedValues(this.props.type.id, actions);
+
+            // lib.deviceTypeActionParams(this.props.type.id, this.level.action)
+            //     .then(this.loadSupportedLevels)
+            //     .catch(errors => console.log(`Level - Supported Values ${errors}`));
         }
     }
 </script>

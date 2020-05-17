@@ -103,12 +103,8 @@ export function createDeviceFromNotExistingRoom(home, roomName, deviceName, type
     });
 }
 
-export function deviceTypeActionParams(typeId, action){
-    return new Promise( (resolve, reject) => {
-        Api.deviceType.get(typeId)
-            .then( data => resolve( data.result.actions.find(elem => elem.name === action).params ) )
-            .catch( error => reject(`Get DeviceType: ${error}` ) );
-    });
+export function getActionParams(actions, action){
+    return actions.find(elem => elem.name === action).params;
 }
 
 // No se que preferis Nacho, un array mezclado, o las dos arrays separadas.
@@ -137,11 +133,17 @@ export function suscribeToDeviceEvent(f, deviceId){
     else
         source = Api.device.getAllEventSource();
 
-    source.addEventListener('message', function(event) {
-        f(JSON.parse(event.data));
-    }, false);
+    source.addEventListener('message', event => f(JSON.parse(event.data)), false);
 }
 
+export function loadAllSupportedValues(deviceID, actions) {
+    Api.deviceType.get(deviceID)
+        .then(data => {
+            let actionsArray = data.result.actions;
+            actions.forEach( entry => entry.handler(getActionParams(actionsArray, entry.action)))
+        })
+        .catch( error => console.log(`Load all supported values: ${error}`));
+}
 // function saveIdsToLocalStorage() {
 //     Api.deviceType.getAll()
 //         .then(data => {
@@ -150,3 +152,26 @@ export function suscribeToDeviceEvent(f, deviceId){
 //             });
 //         })
 // }
+
+export function getIconInfo(deviceName) {
+    let iconInfo = {
+        ac : {
+            bgColor: '#FFF3C8',
+            color: '#FDC701',
+            src: 'mdi-fan'
+        },
+        blinds: {
+            bgColor: '#f2d6ff',
+            color: '#BF38FF',
+            src:'mdi-window-shutter'
+        },
+
+    }
+    return iconInfo[deviceName];
+}
+export function getDeviceTypesInHome() {
+
+    Api.device.getAll().then(
+        data => data.result.filter(entry => console.log(entry))
+    ).catch( error => console.log(`Load all supported values: ${error}`));
+}

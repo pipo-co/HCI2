@@ -170,11 +170,7 @@
         //TODO hacer el debounce del input
         data() {
             return {
-                iconInfo: {
-                    bgColor: '#FFF3C8',
-                    color: '#FDC701',
-                    src: 'mdi-fan'
-                },
+                iconInfo: lib.getIconInfo(this.props.type.name),
                 extraControllers: {
                     value: false,
                     message: 'Mas',
@@ -197,26 +193,31 @@
                     },
                 },
                 mode:{
+                    // value: this.props.state.mode,
                     supportedValues: null,
                     action: 'setMode',
                 },
                 swing:{
                     vertical:{
+                        // value: this.props.state.verticalSwing,
                         supportedValues: null,
                         action: 'setVerticalSwing',
                     },
                     horizontal:{
+                        // value: this.props.state.horizontalSwing,
                         supportedValues: null,
                         action: 'setHorizontalSwing',
                     }
                 },
                 fan:{
+                    // value: this.props.state.fan,
                     supportedValues: null,
                     action: 'setFanSpeed',
                 },
                 temperature: {
-                    minValue:null,
-                    maxValue:null,
+                    // value: this.props.state.temperature,
+                    minValue: null,
+                    maxValue: null,
                     action:'setTemperature',
                     validate:
                         [
@@ -301,19 +302,18 @@
                     .then(console.log)
                     .catch( errors => console.log(`${action} - Update value ${errors}`) );
             },
-
-            getSupportedValues(action, handler){
-                lib.deviceTypeActionParams(this.props.type.id, action)
-                    .then(handler)
-                    .catch( errors => console.log(`${action} - Supported values  ${errors}`) );
-            }
         },
         mounted() {
-            this.getSupportedValues(this.mode.action,this.loadSupportedModes);
-            this.getSupportedValues(this.swing.vertical.action,this.loadSupportedVerticalSwing);
-            this.getSupportedValues(this.swing.horizontal.action,this.loadSupportedHorizontalSwing);
-            this.getSupportedValues(this.fan.action,this.loadSupportedFanSpeeds);
-            this.getSupportedValues(this.temperature.action,this.loadSupportedTemperature);
+            let actions = [
+                    {action: this.mode.action, handler: this.loadSupportedModes},
+                    {action: this.swing.vertical.action, handler: this.loadSupportedVerticalSwing},
+                    {action: this.swing.horizontal.action, handler: this.loadSupportedHorizontalSwing},
+                    {action: this.fan.action, handler: this.loadSupportedFanSpeeds},
+                    {action: this.temperature.action, handler: this.loadSupportedTemperature}
+                ]
+            lib.loadAllSupportedValues(this.props.type.id, actions);
+
+            lib.getDeviceTypesInHome();
         },
         watch:{
             'props.state.mode'(){
