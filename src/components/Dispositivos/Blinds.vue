@@ -109,8 +109,8 @@
                     },
                 },
                 level:{
-                    textFieldValue: this.props.state.level,
-                    sliderValue: this.props.state.level,
+                    textFieldValue: 0,
+                    sliderValue: 0,
                     minValue: 0,
                     maxValue: 0,
                     action: 'setLevel',
@@ -134,11 +134,11 @@
         computed: {
             state() {
                 if (this.props.state.level >= 90)
-                    return 'Abierta'
+                    return 'Abierta';
                 else if (this.props.state.level >=30)
-                    return 'Entreabierta'
+                    return 'Entreabierta';
                 else
-                    return 'Cerrada'
+                    return 'Cerrada';
             },
             location() {
                 return `${this.props.room.home.name} - ${this.props.room.name}`
@@ -148,6 +148,8 @@
             loadSupportedLevels(params){
               this.level.minValue = params[0].minValue;
               this.level.maxValue = params[0].maxValue;
+              this.level.sliderValue = this.props.state.level;
+              this.level.textFieldValue = this.props.state.level;
             },
             controllerHandler() {
                 this.extraControllers.value = !this.extraControllers.value;
