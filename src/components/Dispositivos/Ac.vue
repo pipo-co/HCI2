@@ -14,7 +14,7 @@
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container class="py-0"> <!--class="px-3 py-0" -->
-                        <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
+                        <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-switch v-model="status.value" dense></v-switch><!--class="px-3 my-auto" -->
                             </v-col>
@@ -29,8 +29,8 @@
                                         v-model="props.state.temperature"
                                         solo rounded flat outlined dense
                                         suffix="º"
-                                        type="number"
-                                        hide-details="true"
+                                        :rules="temperature.validate"
+
                                 ></v-text-field>
                             </v-col>
                             <v-col>
@@ -58,7 +58,7 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle v-model="props.state.mode" rounded dense>
+                                <v-btn-toggle v-model="props.state.mode" rounded dense :mandatory="true">
                                     <v-btn v-for="mode in mode.supportedValues" text :key="mode" :value="mode">{{mode}}</v-btn>
                                 </v-btn-toggle>
                             </v-col>
@@ -89,7 +89,7 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle v-model="props.state.verticalSwing" rounded dense>
+                                <v-btn-toggle v-model="props.state.verticalSwing" rounded dense :mandatory="true">
                                     <v-btn v-for="mode in swing.vertical.supportedValues" text :key="mode" :value="mode">
                                         {{mode}}
                                     </v-btn>
@@ -109,7 +109,7 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle v-model="props.state.horizontalSwing" rounded dense>
+                                <v-btn-toggle v-model="props.state.horizontalSwing" rounded dense :mandatory="true">
                                     <v-btn v-for="mode in swing.horizontal.supportedValues" text :key="mode" :value="mode">
                                         {{mode}}
                                     </v-btn>
@@ -142,7 +142,7 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle v-model="props.state.fanSpeed" rounded dense>
+                                <v-btn-toggle v-model="props.state.fanSpeed" rounded dense :mandatory="true">
                                     <v-btn v-for="mode in fan.supportedValues" text :key="mode" :value="mode">{{mode}}</v-btn>
                                 </v-btn-toggle>
                             </v-col>
@@ -168,8 +168,7 @@
                 required: true
             }
         },
-        //TODO que no se pueda elegir null en los grupos de botones
-        //TODO acomodar el textfield de temperatura
+        //TODO acomodar el textfield de temperatura -- Ponele que esta listo
         //TODO hacer el debounce del input
         data() {
             return {
@@ -222,6 +221,12 @@
                     minValue:null,
                     maxValue:null,
                     action:'setTemperature',
+                    validate:
+                        [
+                            temp => /[0-9]+/.test(temp) || "La temperatura debe ser un numero",
+                            temp => temp >= this.temperature.minValue || "Valor por debajo del minimo",
+                            temp => temp <= this.temperature.maxValue || "Valor por arriba del maximo",
+                        ],
                 },
                 status:{
                     value: this.props.state.status === 'on',
@@ -270,10 +275,12 @@
                 // console.log(this.temperature.maxValue);
             },
             increaseTemperature() {
+                this.props.state.temperature = parseInt(this.props.state.temperature);
                 if (this.props.state.temperature < this.temperature.maxValue)
                     this.props.state.temperature += 1;
             },
             decreaseTemperature() {
+                this.props.state.temperature = parseInt(this.props.state.temperature);
                 if (this.temperature.minValue < this.props.state.temperature)
                     this.props.state.temperature -= 1;
             },
@@ -286,7 +293,14 @@
             },
             handleDispInfoEvents(event){
                 this.events[event.event](this);
-            }
+            },
+
+            // eslint-disable-next-line no-undef
+            updateStateValue: _.debounce(function (action, params) {
+                this.props.execute(action, params)
+                    .then(console.log)
+                    .catch( errors => console.log(`Temperature - Update value ${errors}`) );
+            }, 500)
         },
         mounted() {
             lib.deviceTypeActionParams(this.props.type.id, this.mode.action)
@@ -327,9 +341,14 @@
                     .catch( errors => console.log(`Fan speed - Update value ${errors}`) );
             },
             'props.state.temperature'(){
-                this.props.execute(this.temperature.action, [this.props.state.temperature])
-                    .then(console.log)
-                    .catch( errors => console.log(`Temperature - Update value ${errors}`) );
+                if(!this.temperature.validate[0](this.props.state.temperature))
+                    return;
+
+                this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
+
+                // this.props.execute(this.temperature.action, [this.props.state.temperature])
+                //     .then(console.log)
+                //     .catch( errors => console.log(`Temperature - Update value ${errors}`) );
             },
             'status.value'(){
                 if(this.status.value){
