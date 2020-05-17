@@ -19,11 +19,11 @@ class Room {
   }
 
   getName(){
-    return this.name.split(".").pop();
+    return this.name.split("_").pop();
   }
 
   setNewName(name){
-    this.name = `${this.home.name}.${name}`;
+    this.name = `${this.home.name}_${name}`;
   }
 
   getDevices(){
