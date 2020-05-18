@@ -9,15 +9,16 @@
                             :room="location"
                             :icon="iconInfo"
                             :fav="props.isFav()"
+                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center" ><!--class="my-0 py-0" -->
                             <v-col>
-                                <v-btn-toggle rounded dense>
-                                    <v-btn text>Subir</v-btn>
-                                    <v-btn text>Bajar</v-btn>
+                                <v-btn-toggle color="white" rounded dense>
+                                    <v-btn text @click="closeBlinds()">Bajar</v-btn>
+                                    <v-btn text @click="openBlinds()">Subir</v-btn>
                                 </v-btn-toggle>
                             </v-col>
                             <v-col align="end">
@@ -86,8 +87,8 @@
                     value: false,
                     message: 'Mas',
                 },
-                events:{
-                    fav(target){
+                eventHandlers:{
+                    fav(target){ //target == this
                         if (target.props.isFav())
                             target.props.unFav();
                         else
@@ -121,16 +122,18 @@
         watch: {
           'level.sliderValue'(){
               this.level.textFieldValue = this.level.sliderValue;
+              this.props.state.level = this.level.sliderValue;
           },
             'level.textFieldValue'(){
               this.level.sliderValue = this.level.textFieldValue;
+              this.props.state.level = this.level.textFieldValue;
             }
         },
         computed: {
             state() {
-                if (this.props.state.level >= 90)
+                if (this.props.state.level >= 75)
                     return 'Abierta';
-                else if (this.props.state.level >=30)
+                else if (this.props.state.level >=25)
                     return 'Entreabierta';
                 else
                     return 'Cerrada';
@@ -152,6 +155,19 @@
                     this.extraControllers.message = 'Menos';
                 else
                     this.extraControllers.message = 'Mas';
+            },
+            handleDispInfoEvents(event){
+                this.eventHandlers[event.eventName](this);
+            },
+            openBlinds(){
+                this.props.state.level = this.level.maxValue;
+                this.level.sliderValue = this.props.state.level;
+                this.level.textFieldValue = this.props.state.level;
+            },
+            closeBlinds(){
+                this.props.state.level = this.level.minValue;
+                this.level.sliderValue = this.props.state.level;
+                this.level.textFieldValue = this.props.state.level;
             }
         },
         mounted(){
