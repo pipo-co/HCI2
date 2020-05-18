@@ -144,6 +144,7 @@ export function loadAllSupportedValues(deviceID, actions) {
         })
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
+
 // function saveIdsToLocalStorage() {
 //     Api.deviceType.getAll()
 //         .then(data => {
@@ -184,6 +185,7 @@ export function getIconInfo(deviceName) {
     }
     return iconInfo[deviceName];
 }
+
 export function getDeviceTypesInHome(homeID) {
      return new Promise( (resolve, reject) => {
          Api.device.getAll().then(
@@ -212,5 +214,17 @@ export function getDeviceTypesInRoom(roomID) {
                 });
                 resolve(ans);
             }).catch(error => reject(`Load all supported values: ${error}`));
+    });
+}
+
+export function getRoomsAndDeviceTypesMapFromHome(homeID) {
+    return new Promise( (resolve, reject) => {
+        Api.home.getHomeRooms(homeID).then(data => {
+            let ans = {};
+            data.result.forEach(room => getDeviceTypesInRoom(room.id).then(data => {
+                ans[room.id] = data;
+            }).catch(console.log));
+            resolve(ans);
+        }).catch(error => reject(`Load all supported values: ${error}`));
     });
 }
