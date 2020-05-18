@@ -179,8 +179,12 @@ export function getIconInfo(deviceName) {
             bgColor: '#B5FFB4',
             color: '#08B106',
             src:'mdi-sprinkler-variant'
+        },
+        lamp: {
+            bgColor: '#FFFBDB',
+            color: '#E9D94D',
+            src:'mdi-lightbulb-outline  '
         }
-
     }
     return iconInfo[deviceName];
 }
