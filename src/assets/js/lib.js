@@ -226,7 +226,9 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
         Api.home.getHomeRooms(homeID).then(data => {
             let ans = {};
             data.result.forEach(room => getDeviceTypesInRoom(room.id).then(data => {
-                ans[room.id] = data;
+                ans[room.id] = {}
+                ans[room.id]['deviceTypeArray'] = data;
+                ans[room.id]['roomName'] = room.name;
             }).catch(console.log));
             resolve(ans);
         }).catch(error => reject(`Load all supported values: ${error}`));
