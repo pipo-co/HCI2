@@ -89,6 +89,7 @@
 
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
+    const lib = require("../../assets/js/lib")
 
     export default {
         name: "speaker",
@@ -101,11 +102,7 @@
         },
         data(){
             return{
-                iconInfo:{
-                    bgColor: '#E1E0FE',
-                    color: '#6563FF',
-                    src:'mdi-speaker'
-                },
+                iconInfo:lib.getIconInfo(this.props.type.name),
                 extraControllers: {
                     value: false,
                     message: 'Mas',

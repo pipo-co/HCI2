@@ -165,13 +165,52 @@ export function getIconInfo(deviceName) {
             color: '#BF38FF',
             src:'mdi-window-shutter'
         },
+        speaker: {
+            bgColor: '#E1E0FE',
+            color: '#6563FF',
+            src:'mdi-speaker'
+        },
+        oven: {
+            bgColor: '#FFBBBB',
+            color: '#C01616',
+            src:'mdi-stove'
+        },
+        faucet: {
+            bgColor: '#B5FFB4',
+            color: '#08B106',
+            src:'mdi-sprinkler-variant'
+        }
 
     }
     return iconInfo[deviceName];
 }
-export function getDeviceTypesInHome() {
+export function getDeviceTypesInHome(homeID) {
+     return new Promise( (resolve, reject) => {
+         Api.device.getAll().then(
+             data => {
+                 let ans = data.result
+                     .filter(entry => entry.room.home.id === homeID)
+                     .map(entry => entry.type.name);
+                 ans = ans.filter((entry, index) => ans.indexOf(entry) === index);
+                 ans = ans.map(entry => {
+                     return {deviceTypeName: entry, iconInfo: getIconInfo(entry)}
+                 });
+                 resolve(ans);
+             }).catch(error => reject(`Load all supported values: ${error}`));
+     });
+}
 
-    Api.device.getAll().then(
-        data => data.result.filter(entry => console.log(entry))
-    ).catch( error => console.log(`Load all supported values: ${error}`));
+export function getDeviceTypesInRoom(roomID) {
+    return new Promise( (resolve, reject) => {
+        Api.room.getRoomDevices(roomID).then(
+            data => {
+                let ans = data.result
+                    .map(entry => entry.type.name);
+                ans = ans.filter((entry, index) => ans.indexOf(entry) === index);
+                ans = ans.map(entry => {
+                    return {deviceTypeName: entry, iconInfo: getIconInfo(entry)}
+                });
+                resolve(ans);
+            }).catch(error => reject(`Load all supported values: ${error}`));
+    });
 }

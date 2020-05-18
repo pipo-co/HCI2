@@ -60,6 +60,7 @@
 
 <script>
     import DispInfo from "./DispInfo";
+    const lib = require("../../assets/js/lib")
 
     export default {
         name: "faucet",
@@ -68,6 +69,11 @@
             disp: {
                 type: Object,
                 required: true
+            }
+        },
+        data(){
+            return{
+                iconInfo: lib.getIconInfo(this.props.type.name),
             }
         }
     }
