@@ -242,6 +242,28 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
     });
 }
 
+const deviceEventHandlers = {
+    fav(target){ //target == this
+        if (target.props.isFav())
+            target.props.unFav();
+        else
+            target.props.fav();
+    },
+    edit(target){
+        console.log(`Edit handler ${target}`);
+    },
+    history(target){
+        console.log(`History handler ${target}`);
+    },
+    delete(target){
+        console.log(`Delete handler ${target}`);
+    },
+}
+
+export function handleDeviceEvents(event, device) {
+    deviceEventHandlers[event.eventName](device);
+}
+
 // https://css-tricks.com/converting-color-spaces-in-javascript/
 export function HSLtoHex(hue, satur, lumin) {
     satur /= 100;
@@ -285,16 +307,10 @@ export function HSLtoHex(hue, satur, lumin) {
 
 export function hexToHSL(H) {
     // Convert hex to RGB first
-    let r = 0, g = 0, b = 0;
-    if (H.length === 4) {
-        r = "0x" + H[1] + H[1];
-        g = "0x" + H[2] + H[2];
-        b = "0x" + H[3] + H[3];
-    } else if (H.length === 7) {
-        r = "0x" + H[1] + H[2];
-        g = "0x" + H[3] + H[4];
-        b = "0x" + H[5] + H[6];
-    }
+    let r = "0x" + H[0] + H[1];
+    let g = "0x" + H[2] + H[3];
+    let b = "0x" + H[4] + H[5];
+
     // Then to HSL
     r /= 255;
     g /= 255;
