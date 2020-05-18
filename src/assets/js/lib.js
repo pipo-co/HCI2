@@ -184,8 +184,14 @@ export function getIconInfo(deviceName) {
         lamp: {
             bgColor: '#FFFBDB',
             color: '#E9D94D',
-            src:'mdi-lightbulb-outline  '
+            src:'mdi-lamp'
+        },
+        vacuum: {
+            bgColor: "#BEF3FF",
+            color: "#0091B1",
+            src:'mdi-robot-vacuum-variant'
         }
+
     }
     return iconInfo[deviceName];
 }
@@ -224,11 +230,12 @@ export function getDeviceTypesInRoom(roomID) {
 export function getRoomsAndDeviceTypesMapFromHome(homeID) {
     return new Promise( (resolve, reject) => {
         Api.home.getHomeRooms(homeID).then(data => {
-            let ans = {};
+            let ans = [];
             data.result.forEach(room => getDeviceTypesInRoom(room.id).then(data => {
-                ans[room.id] = {}
-                ans[room.id]['deviceTypeArray'] = data;
-                ans[room.id]['roomName'] = room.name;
+                let aux = {};
+                aux['deviceTypeArray'] = data;
+                aux['roomName'] = room.name;
+                ans.push(aux);
             }).catch(console.log));
             resolve(ans);
         }).catch(error => reject(`Load all supported values: ${error}`));

@@ -161,7 +161,7 @@
                         </v-row>
                         <v-row >
                             <v-container fluid class="mb-0 pb-0" >
-                                <v-row no-gutters>
+                                <v-row no-gutters align="baseline">
                                     <v-col cols="4" >
                                         <v-list-item class="pa-1 mt-1">
                                             <v-list-item-content class="ml-1 my-0 md-0">
@@ -171,7 +171,7 @@
                                     </v-col>
                                     <v-col cols="6">
                                         <v-container fluid class="pa-0">
-                                            <v-row no-gutters wrap>
+                                            <v-row no-gutters wrap >
                                                 <v-col cols="12" md="12">
                                                     <v-form
                                                             ref="form"
@@ -183,7 +183,7 @@
                                                                 :rules="newDispRules"
                                                                 @click="changeDispFlag()"
                                                                 :error-messages="disperrormessage"
-                                                                class="py-0 pr-2" height="40" ></v-text-field>
+                                                                class="py-0 pr-2" height="25" ></v-text-field>
                                                     </v-form>
                                                 </v-col>
                                                 <v-col cols="12" md="12">
@@ -328,6 +328,7 @@
                             this.flagErrorHome = true;
                         } else {
                             this.flagErrorHome = false;
+                            this.$router.push( { name: 'nuevodispositivo1', value: this.stepController.value+1} );
                             this.stepController.value++;
                         }
                     } else if (this.newdisp.home != null && this.newdisp.home !== 0) {
