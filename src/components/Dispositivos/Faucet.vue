@@ -60,7 +60,7 @@
                                 </v-form>
                             </v-col>
                             <v-col>
-                                <v-btn text @click="excecuteDispense()" :disabled="validDispense">Dispensar</v-btn>
+                                <v-btn text @click="excecuteDispense()" :disabled="!validDispense">Dispensar</v-btn>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -114,8 +114,7 @@
                     validInput: true,
                     validate:
                         [
-                            v => !!v || "Debe ingresar un valor",
-                            v => /[0-9]+/.test(v) || "Solo se aceptan numeros",
+                            v => /[0-9]+/.test(v) || "Debe ingresar un valor numerico",
                             v => v >= this.dispense.minValue && v <= this.dispense.maxValue || `El valor debe estar entre ${this.dispense.minValue} y ${this.dispense.maxValue}`
                         ]
                 }
@@ -136,7 +135,7 @@
                 return 'Cerrar';
             },
             validDispense(){
-                return this.props.state.status === 'opened' && this.dispense.validInput;
+                return this.props.state.status === 'closed' && this.dispense.validInput;
             }
         },
         methods: {
@@ -150,7 +149,7 @@
                 this.dispense.selectedUnit = this.dispense.unitSupportedValues[0];
                 this.dispense.selectedValue = this.dispense.maxValue;
             },
-            excecuteAction(action, params = []){
+            excecuteAction(action, params){
                 this.props.execute(action, params)
                     .then(console.log)
                     .catch( errors => console.log(`${action} -  ${errors}`) );
@@ -166,8 +165,10 @@
                 }
             },
             excecuteDispense(){
-                this.excecuteAction(this.dispense.action, [this.dispense.selectedValue, this.dispense.selectedUnit]);
-                this.props.state.status = 'opened';
+                if(this.validDispense) {
+                    this.excecuteAction(this.dispense.action, [this.dispense.selectedValue, this.dispense.selectedUnit]);
+                    this.props.state.status = 'opened';
+                }
             }
         },
         mounted(){

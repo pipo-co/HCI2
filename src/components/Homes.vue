@@ -166,8 +166,8 @@
                     {name: "Parlantes", img: 'parlante.png', iconcolor: "#6563FF", backcolor: "#E1E0FE"},
                     {name: "Regadores", img: 'regador.png', iconcolor: "#BF38FF", backcolor: "#F2D6FF"},
                     {name: "Aspiradoras", img: 'aspiradora.png', iconcolor: "#0091B1", backcolor: "#BEF3FF"},
-                    {name: "Regadores", img: 'regador.png', iconcolor: "#BF38FF", backcolor: "#F2D6FF"},
-                    {name: "Aspiradoras", img: 'aspiradora.png', iconcolor: "#0091B1", backcolor: "#BEF3FF"}
+                    //{name: "Regadores", img: 'regador.png', iconcolor: "#BF38FF", backcolor: "#F2D6FF"},
+                    //{name: "Aspiradoras", img: 'aspiradora.png', iconcolor: "#0091B1", backcolor: "#BEF3FF"}
                 ]
             }
         }
