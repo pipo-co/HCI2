@@ -224,7 +224,7 @@
                             temp => /[0-9]+/.test(temp) || "La temperatura debe ser un numero",
                             temp => temp >= this.temperature.minValue || "Valor por debajo del minimo",
                             temp => temp <= this.temperature.maxValue || "Valor por arriba del maximo",
-                        ],
+                        ]
                 },
                 status:{
                     value: this.props.state.status === 'on',
@@ -310,7 +310,7 @@
                     {action: this.swing.horizontal.action, handler: this.loadSupportedHorizontalSwing},
                     {action: this.fan.action, handler: this.loadSupportedFanSpeeds},
                     {action: this.temperature.action, handler: this.loadSupportedTemperature}
-                ]
+                ];
             lib.loadAllSupportedValues(this.props.type.id, actions);
         },
         watch:{

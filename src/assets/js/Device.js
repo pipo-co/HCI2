@@ -29,6 +29,14 @@ class Device {
     return this.name.split("_").pop();
   }
 
+  getRoomName(){
+    return `${this.room.name.split("_").pop()}`;
+  }
+
+  getHomeName(){
+    return `${this.room.home.name}`;
+  }
+
   setNewName(name){
     this.name = `${this.room.name}_${name}`;
   }
