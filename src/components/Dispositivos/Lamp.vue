@@ -26,6 +26,7 @@
                                             prepend-icon="mdi-weather-sunny"
                                             :max="brightness.maxValue"
                                             :min="brightness.minValue"
+                                            @change="changeBrightness"
                                             hide-details
                                             thumb-label
                                     ></v-slider>
@@ -45,12 +46,12 @@
                             <v-col cols="12">
                                 <v-list-item class="px-0">
                                     <v-list-item-content class="ma-1 pa-1">
-                                        <v-list-item-title align="left" class="title">Seleccione Color</v-list-item-title>
+                                        <v-list-item-title align="left" class="title">Seleccione Nuevo Color</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
                             <v-col cols="12">
-                                <color-picker class="ma-auto" v-bind="color" @input="onInput"></color-picker>
+                                <color-picker variant="persistent" :hue="color.hue" v-model="color.hue"  @change="changeColor"></color-picker>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -76,12 +77,6 @@
         },
         data() {
             return {
-                color: {
-                    hue: 50,
-                    saturation: 100,
-                    luminosity: 50,
-                    alpha: 1
-                },
                 iconInfo: lib.getIconInfo(this.props.type.name),
                 extraControllers: {
                     value: false,
@@ -105,14 +100,14 @@
                     }
                 },
                 booleanStatus: {
+                    value: this.props.state.status === 'on',
                     actionTrue: 'turnOn',
                     statusFalse: 'off',
                     statusTrue: 'on',
-                    actionFalse: 'turnOff',
-                    value: this.props.state.status === 'on'
+                    actionFalse: 'turnOff'
                 },
                 brightness: {
-                    selectedValue: this.props.state.brightness,
+                    selectedValue: null,
                     minValue: null,
                     maxValue: null,
                     action: 'setBrightness',
@@ -122,7 +117,14 @@
                             v => !!v || "Debe ingresar un valor numerico",
                             v => v >= this.dispense.minValue && v <= this.dispense.maxValue || `El valor debe estar entre ${this.dispense.minValue} y ${this.dispense.maxValue}`
                         ]
-                }
+                },
+                color: {
+                    hue: null,
+                    saturation: 100, //Hardcoded
+                    luminosity: 50, //Hardcoded
+                    action: 'setColor'
+                },
+
             }
         },
         computed: {
@@ -162,6 +164,11 @@
                     this.props.state.brightness = this.brightness.selectedValue;
                 }
             },
+            changeColor(){
+                let hex = lib.HSLtoHex(this.color.hue, this.color.saturation, this.color.luminosity);
+                this.excecuteAction(this.color.action, [hex]);
+                this.props.state.color = hex;
+            },
             invertBooleanState(){
                 if(this.booleanStatus.value) {
                     this.excecuteAction(this.booleanStatus.actionTrue);
@@ -171,9 +178,6 @@
                     this.excecuteAction(this.booleanStatus.actionFalse);
                     this.props.state.status = this.booleanStatus.statusFalse;
                 }
-            },
-            onInput(hue) {
-                this.color.hue = hue;
             }
         },
         mounted(){
@@ -181,8 +185,7 @@
                 {action: this.brightness.action, handler: this.loadSupportedBrightness}
             ];
             lib.loadAllSupportedValues(this.props.type.id, actions);
-            console.log(this.brightness.selectedValue);
-            console.log(this.props.state.brightness);
+            this.color.hue = lib.hexToHSL(this.props.state.color);
         }
     };
 </script>
