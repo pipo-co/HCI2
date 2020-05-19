@@ -4,18 +4,25 @@
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="disp.name"
+                            :name="props.getName()"
                             :state="state"
                             :icon="iconInfo"
-                            room="Living"
-                            :fav="fav"
+                            :room="location"
+                            :fav="props.isFav()"
+                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12"  class="px-5">
                     <v-container class="py-0"> <!--class="px-3 py-0" -->
                         <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
-                                <v-switch v-model="status.value" dense hide-details="true"></v-switch><!--class="px-3 my-auto" -->
+                                <v-switch
+                                          hide-details="true"
+                                          v-model="status.value"
+                                          @change="status.changeState()"
+                                          :loading="status.awaitingResponse"
+                                          :disabled="status.awaitingResponse">
+                                </v-switch><!--class="px-3 my-auto" -->
                             </v-col>
                             <v-col>
                                 <v-btn icon >
@@ -46,7 +53,7 @@
             <v-row dense v-show="extraControllers.value">
                     <v-col cols="12" class="px-5">
                         <v-container class="py-0">
-                            <v-row align="center" justify="start">
+                            <v-row align="baseline" justify="start">
                                 <v-col cols="3">
                                     <v-list-item class="px-0">
                                         <v-list-item-content>
@@ -55,14 +62,19 @@
                                     </v-list-item>
                                 </v-col>
                                 <v-col class="py-0"> <!--class="pr-10" -->
-                                    <v-select :items="heat.supportedValue" v-model="heat.value" dense ></v-select>
+                                    <v-form v-model="heat.validInput">
+                                        <v-select :items="heat.supportedValues" v-model="heat.value"
+                                                  @change="heat.changeState()" dense
+                                                  :loading="heat.awaitingResponse"
+                                                  :disabled="heat.awaitingResponse" ></v-select>
+                                    </v-form>
                                 </v-col>
                             </v-row>
                         </v-container>
                     </v-col>
                     <v-col cols="12" class="px-5">
                         <v-container class="py-0">
-                            <v-row align="center" justify="start">
+                            <v-row align="baseline" justify="start">
                                 <v-col cols="3">
                                     <v-list-item class="px-0">
                                         <v-list-item-content>
@@ -70,15 +82,24 @@
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-col>
+<!--                                <v-col class="py-0"> &lt;!&ndash;class="pr-10" &ndash;&gt;-->
+<!--                                    <v-select :items="grill.supportedValues" v-model="grill.value" dense value="Convencional"></v-select>-->
+<!--                                </v-col>-->
                                 <v-col class="py-0"> <!--class="pr-10" -->
-                                    <v-select :items="grill.supportedValue" v-model="grill.value" dense value="Convencional"></v-select>
+                                    <v-form v-model="grill.validInput">
+                                        <v-select :items="grill.supportedValues" v-model="grill.value"
+                                                  @change="grill.changeState()" dense
+                                                  :loading="grill.awaitingResponse"
+                                                  :disabled="grill.awaitingResponse" >
+                                        </v-select>
+                                    </v-form>
                                 </v-col>
                             </v-row>
                         </v-container>
                     </v-col>
                     <v-col cols="12" class="px-5">
                     <v-container class="py-0">
-                        <v-row align="center" justify="start">
+                        <v-row align="baseline" justify="start">
                             <v-col cols="3">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
@@ -87,7 +108,12 @@
                                 </v-list-item>
                             </v-col>
                             <v-col class="py-0"> <!--class="pr-10" -->
-                                <v-select :items="convection.supportedValue" v-model="convection.value" dense ></v-select>
+                                <v-form v-model="convection.validInput">
+                                    <v-select :items="convection.supportedValues" v-model="convection.value"
+                                              @change="convection.changeState()" dense
+                                              :loading="convection.awaitingResponse"
+                                              :disabled="convection.awaitingResponse" ></v-select>
+                                </v-form>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -100,15 +126,15 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
-    import Api from "../../assets/js/Api.js";
+    import {SelectionField, BooleanStatus } from "../../assets/js/DevicesLib";
     const lib = require("../../assets/js/lib")
 
     export default {
         name: "oven",
         components:{DispInfo},
         props: {
-            disp: {
-                type: Object,
+            props: {
+                type: Device,
                 required: true
             }
         },
@@ -119,88 +145,51 @@
                   value: false,
                   message: 'Mas',
               },
-              status:{
-                  value: null,
-              },
-              grill: {
-                  value: null,
-                  supportedValue: null,
-                  actionName: 'setGrill',
-              },
-              heat:{
-                  value: null,
-                  supportedValue: null,
-                  actionName: 'setHeat',
-              },
-              convection:{
-                  value: null,
-                  supportedValue: null,
-                  actionName: 'setConvection',
-              },
+              status: new BooleanStatus(this.props, 'status', 'turnOn', 'turnOff','on','off'),
+              grill: new SelectionField(this.props,'grill','setGrill'),
+              heat: new SelectionField(this.props,'heat','setHeat',),
+              convection: new SelectionField(this.props,'convection','setConvection'),
               temperature:{
-                  value: null,
-                  minValue: 60, //hardCoded
-                  maxValue: 400, //hardCoded
+                  value: 0,
+                  action: 'setTemperature',
+                  minValue: 0, //hardCoded
+                  maxValue: 0, //hardCoded
                 },
-              fav: false,
-              isOn: this.disp.state.status === 'on',
-              dev: new Device(this.disp.id, this.disp.name, this.disp.type, this.disp.meta, this.disp.state, this.disp.room, this.disp.home)
           }
         },
         computed:{
             state(){
-                if(this.disp.state.status === 'off')
+                if(!this.status.value)
                     return 'Off'
-                return `Prendido: ${this.disp.state.heat} ${this.disp.state.temperature}º`
-            }
+                return `Prendido: ${this.props.state.heat} ${this.props.state.temperature}º`
+            },
+            location() {
+                return `${this.props.getHomeName()} - ${this.props.getRoomName()}`
+            },
         },
         mounted() {
-            Api.deviceType.get(this.disp.type.id).then(data =>{
-                let action;
 
-                action = data.result.actions.filter(act => act.name === this.heat.actionName)[0];
-                this.heat.supportedValue = action.params[0].supportedValues;
+            let actions = [
+                this.convection.getActionLoaderObject(),
+                this.heat.getActionLoaderObject(),
+                this.grill.getActionLoaderObject(),
+                {action: this.temperature.action, handler: this.loadSupportedTemperature}
+            ];
+            lib.loadAllSupportedValues(this.props.type.id, actions);
+            console.log(this.convection);
 
-                action = data.result.actions.filter(act => act.name === this.grill.actionName)[0];
-                this.grill.supportedValue = action.params[0].supportedValues;
-
-                action = data.result.actions.filter(act => act.name === this.convection.actionName)[0];
-                this.convection.supportedValue = action.params[0].supportedValues;
-
-                this.convection.value = this.disp.state.convection
-                this.grill.value = this.disp.state.grill
-                this.heat.value = this.disp.state.heat
-                this.temperature.value = this.disp.state.temperature
-                this.status.value = this.disp.state.status
-
-                this.fav = this.dev.isFav();
-                console.log("isFAv");
-                console.log(this.dev.isFav());
-
-            }).catch(error => {
-                console.log(`Error ${error}`);
-            })
-        },
-        watch:{
-            'status.value'() {
-                if (this.status.value){
-                    this.dev.execute('turnOn').then(this.updateState).catch(error => {
-                        console.log(`Error ${error}`);
-                    });
-                }
-                else{
-                    this.dev.execute('turnOff').then(this.updateState).catch(error => {
-                        console.log(`Error ${error}`);
-                    });
-                }
-            },
-            'heat.value'(){
-                // this.dev.execute(this.heat.actionName).then(this.updateState).catch(error => {
-                //     console.log(`Error ${error}`);
-                // });
-            }
         },
         methods: {
+
+            loadSupportedTemperature(params){
+                this.temperature.minValue = params[0].minValue;
+                this.temperature.maxValue = params[0].maxValue;
+                this.temperature.value = this.props.state.temperature;
+                // console.log(this.temperature.minValue);
+                // console.log(this.temperature.maxValue);
+            },
+
+
             updateState() {
                 this.dev.getState().then(data => {
                     this.disp.state = data.result;
