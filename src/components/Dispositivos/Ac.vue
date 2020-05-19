@@ -24,12 +24,14 @@
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-text-field
-                                        v-model="props.state.temperature"
-                                        solo rounded flat outlined dense
-                                        suffix="º"
-                                        :rules="temperature.validate"
-                                ></v-text-field>
+                                <v-form v-model="temperature.isValid">
+                                    <v-text-field
+                                            v-model="props.state.temperature"
+                                            solo rounded flat outlined dense
+                                            suffix="º"
+                                            :rules="temperature.validate"
+                                    ></v-text-field>
+                                </v-form>
                             </v-col>
                             <v-col>
                                 <v-btn icon >
@@ -45,6 +47,7 @@
                 </v-col>
             </v-row>
             <v-row dense v-show="extraControllers.value">
+                <!--    MODE    -->
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
                         <v-row align="center" justify="start">
@@ -56,13 +59,14 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle v-model="props.state.mode" rounded dense :mandatory="true">
+                                <v-btn-toggle v-model="mode.value" rounded dense :mandatory="true">
                                     <v-btn v-for="mode in mode.supportedValues" text :key="mode" :value="mode">{{mode}}</v-btn>
                                 </v-btn-toggle>
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-col>
+                <!--    SWING    -->
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
                         <v-row align="center" justify="start">
@@ -76,6 +80,7 @@
                         </v-row>
                     </v-container>
                 </v-col>
+                <!--    VERTICAL    -->
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
                         <v-row align="center" justify="start">
@@ -96,6 +101,7 @@
                         </v-row>
                     </v-container>
                 </v-col>
+                <!--    HORIZONTAL    -->
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
                         <v-row align="center" justify="start">
@@ -116,6 +122,7 @@
                         </v-row>
                     </v-container>
                 </v-col>
+                <!--    FAN    -->
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
                         <v-row align="center" justify="start">
@@ -129,6 +136,7 @@
                         </v-row>
                     </v-container>
                 </v-col>
+                <!--    SPEED    -->
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
                         <v-row align="center" justify="start">
@@ -175,29 +183,12 @@
                     value: false,
                     message: 'Mas',
                 },
-                eventHandlers:{
-                    fav(target){ //target == this
-                        if (target.props.isFav())
-                            target.props.unFav();
-                        else
-                            target.props.fav();
-                    },
-                    edit(target){
-                        console.log(`Edit handler ${target}`);
-                    },
-                    history(target){
-                        console.log(`History handler ${target}`);
-                    },
-                    delete(target){
-                        console.log(`Delete handler ${target}`);
-                    },
-                },
-                mode:{
-                    // value: this.props.state.mode,
+                mode: {
+                    value: this.props.state.mode,
                     supportedValues: null,
                     action: 'setMode',
                 },
-                swing:{
+                swing: {
                     vertical:{
                         // value: this.props.state.verticalSwing,
                         supportedValues: null,
@@ -218,6 +209,7 @@
                     // value: this.props.state.temperature,
                     minValue: null,
                     maxValue: null,
+                    isValid: true,
                     action:'setTemperature',
                     validate:
                         [
@@ -249,6 +241,10 @@
                 }).catch(error => {
                     console.log(`Error ${error}`);
                 });
+            },
+
+            handleDispInfoEvents(event){
+                lib.handleDeviceEvents(event, this)
             },
 
             loadSupportedModes(params){
@@ -293,15 +289,16 @@
                     this.extraControllers.message = 'Mas';
             },
 
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
-            },
-
-            updateStateValue(action, params){
+            updateStateValue(action, params = []){
                 this.props.execute(action, params)
                     .then(console.log)
                     .catch( errors => console.log(`${action} - Update value ${errors}`) );
             },
+            errorExecutingAction(action, error){
+                console.log(`${action} - Update value ${error}`);
+
+            },
+
         },
         mounted() {
             let actions = [
@@ -314,26 +311,11 @@
             lib.loadAllSupportedValues(this.props.type.id, actions);
         },
         watch:{
-            'props.state.mode'(){
-                this.updateStateValue(this.mode.action, [this.props.state.mode]);
-            },
-            'props.state.verticalSwing'(){
-                this.updateStateValue(this.swing.vertical.action, [this.props.state.verticalSwing]);
-            },
-            'props.state.horizontalSwing'(){
-                this.updateStateValue(this.swing.horizontal.action, [this.props.state.horizontalSwing]);
-            },
-            'props.state.fanSpeed'(){
-                this.updateStateValue(this.fan.action, [this.props.state.fanSpeed]);
-            },
-            //TODO agregar todas las validaciones
-            'props.state.temperature'(){
-                if(!this.temperature.validate[0](this.props.state.temperature))
+            'status.value'(){
+
+                if(this.status.value === (this.props.state.status === 'on'))
                     return;
 
-                this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
-            },
-            'status.value'(){
                 if(this.status.value){
                     this.props.state.status = 'on';
                     this.updateStateValue('turnOn');
@@ -346,6 +328,39 @@
             'props.state.status'(){
                 this.status.value = this.props.state.status === 'on'
             },
+
+            'mode.value'(){
+                if(this.mode.value === this.props.state.mode)
+                    return;
+                // this.updateStateValue(this.mode.action,[this.mode.value]);
+                this.props.execute(this.mode.action,[this.mode.value])
+                    .then(() => this.props.state.mode = this.mode.value)
+                    .catch( error => this.errorExecutingAction(this.mode.action, error));
+
+                this.props.state.mode = this.mode.value;
+            },
+            'props.state.mode'(){
+                this.mode.value = this.props.state.mode;
+            },
+
+            'props.state.verticalSwing'(){
+                this.updateStateValue(this.swing.vertical.action, [this.props.state.verticalSwing]);
+            },
+            'props.state.horizontalSwing'(){
+                this.updateStateValue(this.swing.horizontal.action, [this.props.state.horizontalSwing]);
+            },
+            'props.state.fanSpeed'(){
+                this.updateStateValue(this.fan.action, [this.props.state.fanSpeed]);
+            },
+            //TODO agregar todas las validaciones
+            'props.state.temperature'(){
+
+                if(!this.temperature.isValid)
+                    return;
+
+                this.updateStateValue(this.temperature.action, [this.props.state.temperature]);
+            },
+
         }
     }
 </script>
