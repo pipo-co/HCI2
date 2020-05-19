@@ -23,7 +23,7 @@ class Room {
   }
 
   setNewName(name){
-    this.name = `${this.home.name}_${name}`;
+    this.name = `${this.home.id}_${name}`;
   }
 
   getDevices(){

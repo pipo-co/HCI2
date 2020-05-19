@@ -38,7 +38,7 @@ class Device {
   }
 
   setNewName(name){
-    this.name = `${this.room.name}_${name}`;
+    this.name = `${this.room.home.id}_${this.room.id}_${name}`;
   }
 
   getLogs(limit, offset){

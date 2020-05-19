@@ -16,7 +16,7 @@
                     <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col cols="1" class="ma-0 pa-0">
-                                <v-switch v-model="booleanStatus.value" @change="invertBooleanState"></v-switch><!--class="px-3 my-auto" -->
+                                <v-switch v-model="booleanStatus.value" @change="invertBooleanState" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" ></v-switch><!--class="px-3 my-auto" -->
                             </v-col>
                             <v-col cols="7" class="ma-0 pa-0">
                                 <v-form v-model="brightness.validInput">
@@ -27,13 +27,15 @@
                                             :max="brightness.maxValue"
                                             :min="brightness.minValue"
                                             @change="changeBrightness"
+                                            :loading="brightness.awaitingResponse"
+                                            :disabled="brightness.awaitingResponse"
                                             hide-details
                                             thumb-label
                                     ></v-slider>
                                 </v-form>
                             </v-col>
                             <v-col cols="2" class="ma-0 pa-0"><!--class="pr-10" -->
-                                <v-btn text @click="controllerHandler()">{{extraControllers.message}}</v-btn>
+                                <v-btn text @click="controllerHandler">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -51,7 +53,7 @@
                                 </v-list-item>
                             </v-col>
                             <v-col cols="12">
-                                <color-picker variant="persistent" :hue="color.hue" v-model="color.hue"  @change="changeColor"></color-picker>
+                                <color-picker :hue="color.hue" variant="persistent" v-model="color.hue" :disabled="color.awaitingResponse" @change="changeColor"></color-picker>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -104,7 +106,8 @@
                     actionTrue: 'turnOn',
                     statusFalse: 'off',
                     statusTrue: 'on',
-                    actionFalse: 'turnOff'
+                    actionFalse: 'turnOff',
+                    awaitingResponse: false
                 },
                 brightness: {
                     selectedValue: null,
@@ -112,6 +115,7 @@
                     maxValue: null,
                     action: 'setBrightness',
                     validInput: true,
+                    awaitingResponse: false,
                     validate:
                         [
                             v => !!v || "Debe ingresar un valor numerico",
@@ -122,7 +126,8 @@
                     hue: null,
                     saturation: 100, //Hardcoded
                     luminosity: 50, //Hardcoded
-                    action: 'setColor'
+                    action: 'setColor',
+                    awaitingResponse: false
                 },
 
             }
@@ -160,23 +165,35 @@
             },
             changeBrightness(){
                 if(this.brightness.validInput){
-                    this.excecuteAction(this.brightness.action, [this.brightness.selectedValue]);
-                    this.props.state.brightness = this.brightness.selectedValue;
+                    this.brightness.awaitingResponse = true;
+                    this.props.execute(this.brightness.action, [this.brightness.selectedValue])
+                        .then( response => response.result && (this.props.state.brightness = this.brightness.selectedValue))
+                        .catch(console.log)
+                        .finally( () => this.brightness.awaitingResponse = false);
                 }
             },
             changeColor(){
                 let hex = lib.HSLtoHex(this.color.hue, this.color.saturation, this.color.luminosity);
-                this.excecuteAction(this.color.action, [hex]);
-                this.props.state.color = hex;
+                this.color.awaitingResponse = true;
+                this.props.execute(this.color.action, [hex])
+                    .then( response => response.result && (this.props.state.color = hex))
+                    .catch(console.log)
+                    .finally( () => this.color.awaitingResponse = false);
             },
             invertBooleanState(){
                 if(this.booleanStatus.value) {
-                    this.excecuteAction(this.booleanStatus.actionTrue);
-                    this.props.state.status = this.booleanStatus.statusTrue;
+                    this.booleanStatus.awaitingResponse = true;
+                    this.props.execute(this.booleanStatus.actionTrue)
+                        .then( response => response.result && (this.props.state.status = this.booleanStatus.statusTrue))
+                        .catch(console.log)
+                        .finally( () => this.booleanStatus.awaitingResponse = false);
                 }
                 else {
-                    this.excecuteAction(this.booleanStatus.actionFalse);
-                    this.props.state.status = this.booleanStatus.statusFalse;
+                    this.booleanStatus.awaitingResponse = true;
+                    this.props.execute(this.booleanStatus.actionFalse)
+                        .then( response => response.result && (this.props.state.status = this.booleanStatus.statusFalse))
+                        .catch(console.log)
+                        .finally( () => this.booleanStatus.awaitingResponse = false);
                 }
             }
         },
@@ -185,7 +202,7 @@
                 {action: this.brightness.action, handler: this.loadSupportedBrightness}
             ];
             lib.loadAllSupportedValues(this.props.type.id, actions);
-            this.color.hue = lib.hexToHSL(this.props.state.color);
+            this.color.hue = lib.hexToHSL(this.props.state.color).hue;
         }
     };
 </script>

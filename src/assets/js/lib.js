@@ -6,7 +6,7 @@ import Routine from "./Routine";
 
 
 export function createDevice(name, typeId, room) {
-    let device = new Device(null, `${room.name}_${name}`, { id: typeId }, {fav: false});
+    let device = new Device(null, `${room.home.id}_${room.id}_${name}`, { id: typeId }, {fav: false});
     return new Promise( (resolve, reject) => {
     Api.device.add(device)
         .then( data => {
@@ -30,7 +30,7 @@ export function createDevice(name, typeId, room) {
 }
 
 export function createRoom(name, home){
-    let room = new Room(null, `${home.name}_${name}`, {});
+    let room = new Room(null, `${home.id}_${name}`, {});
     return new Promise( (resolve, reject) => {
         Api.room.add(room)
             .then( data => {
@@ -144,15 +144,6 @@ export function loadAllSupportedValues(deviceID, actions) {
         })
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
-
-// function saveIdsToLocalStorage() {
-//     Api.deviceType.getAll()
-//         .then(data => {
-//             data.result.forEach(elem => {
-//                 localStorage[elem.name] = elem.id;
-//             });
-//         })
-// }
 
 export function getIconInfo(deviceName) {
     let iconInfo = {

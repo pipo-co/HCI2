@@ -63,6 +63,7 @@
                                         ref="form"
                                         v-model="validHome"
                                         lazy-validation
+                                        @submit="controllerNextPlus() && false"
                                 >
                                 <v-text-field
                                         class="ma-auto"
@@ -108,6 +109,7 @@
                                         ref="form"
                                         v-model="validRoom"
                                         lazy-validation
+                                        @submit="controllerNextPlus() && false"
                                 >
                                     <v-text-field
                                             class="ma-auto"
@@ -177,6 +179,7 @@
                                                             ref="form"
                                                             v-model="validDisp"
                                                             lazy-validation
+                                                            @submit="saveDisp() && false"
                                                     >
                                                         <v-text-field
                                                                 v-model="newdisp.dispname"
@@ -228,18 +231,18 @@
                 },
                 newHomeRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 15) || 'El nombre debe tener entre 3 y 15 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
+                    v=> (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
                 newRoomRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 20) || 'El nombre debe tener entre 3 y 20 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
+                    v=> (v && v.length >= 3 && v.length <= 43) || 'El nombre debe tener entre 3 y 43 caracteres',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
                 newDispRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 23) || 'El nombre debe tener entre 3 y 23 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
+                    v=> (v && v.length >= 3 && v.length <= 26) || 'El nombre debe tener entre 3 y 26 caracteres',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
                 newdisp: {
                     home: null,
@@ -306,7 +309,6 @@
                 else
                     return null;
             }
-
         },
         methods: {
             changeHomeFlag(){
@@ -328,7 +330,7 @@
                             this.flagErrorHome = true;
                         } else {
                             this.flagErrorHome = false;
-                            this.$router.push( { name: 'nuevodispositivo1', value: this.stepController.value+1} );
+                            this.$router.push( { name: 'nuevodispositivo1', value: this.stepController.value + 1} );
                             this.stepController.value++;
                         }
                     } else if (this.newdisp.home != null && this.newdisp.home !== 0) {
@@ -340,7 +342,7 @@
                 }
                 else if (this.stepController.value === 2){
                     if(this.newdisp.room === 0){
-                        if (this.rooms != null && this.rooms.some(elem => elem.name ===`${this.newdisp.home.name}_${this.newroomname}`)) {
+                        if (this.rooms != null && this.rooms.some(elem => elem.name ===`${this.newdisp.home.id}_${this.newroomname}`)) {
                             this.flagErrorRoom = true;
                         } else {
                             this.flagErrorHome = false;
@@ -362,7 +364,7 @@
                 }
             },
             saveDisp(){
-                if(this.newdisp.room !== 0 && this.disps != null && this.disps.some( elem => elem.name ===`${this.newdisp.room.name}_${this.newdisp.dispname}`)){
+                if(this.newdisp.room !== 0 && this.disps != null && this.disps.some( elem => elem.name ===`${this.newdisp.home.id}_${this.newdisp.room.id}_${this.newdisp.dispname}`)){
                     this.flagErrorDisp = true;
                 }
                 else if (this.newdisp.home === 0) {
@@ -370,7 +372,7 @@
                         .then(() => this.$router.push({name: 'homes'}))
                         .catch(error => console.log(`Error ${error}`));
                 }
-                else if (this.newdisp.room===0){
+                else if (this.newdisp.room === 0){
                     createDeviceFromNotExistingRoom(new Home(this.newdisp.home.id, this.newdisp.home.name, this.newdisp.home.meta), this.newroomname, this.newdisp.dispname, this.newdisp.typeid)
                         .then(() => this.$router.push( { name:'homes'} ))
                         .catch(error => console.log(`Error ${error}`));
