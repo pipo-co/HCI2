@@ -123,10 +123,12 @@
           'level.sliderValue'(){
               this.level.textFieldValue = this.level.sliderValue;
               this.props.state.level = this.level.sliderValue;
+              this.updateStateValue(this.level.action, [this.props.state.level]);
           },
             'level.textFieldValue'(){
               this.level.sliderValue = this.level.textFieldValue;
               this.props.state.level = this.level.textFieldValue;
+              this.updateStateValue(this.level.action, [this.props.state.level]);
             }
         },
         computed: {
@@ -168,6 +170,11 @@
                 this.props.state.level = this.level.minValue;
                 this.level.sliderValue = this.props.state.level;
                 this.level.textFieldValue = this.props.state.level;
+            },
+            updateStateValue(action, params = []){
+                this.props.execute(action, params)
+                    .then(console.log)
+                    .catch(errors => console.log(`${action} - Update Value ${errors}`))
             }
         },
         mounted(){
