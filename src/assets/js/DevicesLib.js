@@ -1,4 +1,4 @@
-export {SelectionField, BooleanStatus, NumberFieldWithButtons}
+export {SelectionField, BooleanStatus, NumberFieldWithButtons, DeviceEventHandler, ExtraControls, getLocation}
 
 class SelectionField{
 
@@ -13,7 +13,6 @@ class SelectionField{
     }
 
     changeState(){
-        console.log(this);
         if(this.validInput){
             this.awaitingResponse = true;
             this.device.execute(this.action, [this.value])
@@ -47,7 +46,6 @@ class BooleanStatus{
         this.statusTrue = statusTrue;
         this.statusFalse = statusFalse;
         this.awaitingResponse = false;
-        console.log(this.value)
     }
 
     changeState(){
@@ -80,11 +78,17 @@ class NumberField{
         this.maxValue = 0;
         this.awaitingResponse = false;
         this.validInput = true;
+        this.rules =
+            [
+                entry => /[0-9]+/.test(entry) || "La temperatura debe ser un numero",
+                entry => entry >= this.minValue || "Valor por debajo del minimo",
+                entry => entry <= this.maxValue || "Valor por arriba del maximo",
+            ];
     }
 
     changeState(){
-        console.log(this);
         if(this.validInput){
+            this.value = parseInt(this.value);
             this.awaitingResponse = true;
             this.device.execute(this.action, [this.value])
                 .then( response => response.result && (this.device.state[this.valueKey] = this.value))
@@ -115,7 +119,73 @@ class NumberFieldWithButtons extends NumberField{
     }
 
     increment(){
-
+        this.value = parseInt(this.value);
+        this.value += this.incrementFactor;
+        if(this.value > this.maxValue)
+            this.value = this.maxValue;
+        this.changeState();
     }
 
+    decrement(){
+        this.value = parseInt(this.value);
+        this.value -= this.incrementFactor;
+        if(this.value < this.minValue)
+            this.value = this.minValue;
+        this.changeState();
+    }
+
+}
+
+const deviceEventHandlers = {
+
+    fav: (device) => {
+        if (device.isFav())
+            device.unFav();
+        else
+            device.fav();
+    },
+
+    edit: (device) => {
+        console.log(`Edit handler ${device}`);
+    },
+
+    history: (device) => {
+        console.log(`History handler ${device}`);
+    },
+
+    delete: (device) => {
+        console.log(`Delete handler ${device}`);
+    }
+}
+
+class DeviceEventHandler {
+
+    constructor(device) {
+        this.device = device
+    }
+
+    handle(event){
+        deviceEventHandlers[event.eventName](this.device)
+    }
+}
+
+class ExtraControls {
+
+    constructor() {
+        this.value = false;
+        this.message = 'Mas'
+    }
+
+    changeState() {
+        this.value = !this.value;
+        if (this.value)
+            this.message = 'Menos';
+        else
+            this.message = 'Mas';
+    }
+}
+
+function getLocation(device) {
+
+    return `${device.getHomeName()} - ${device.getRoomName()}`
 }

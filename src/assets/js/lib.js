@@ -145,45 +145,46 @@ export function loadAllSupportedValues(deviceID, actions) {
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
 
-export function getIconInfo(deviceName) {
-    let iconInfo = {
-        ac : {
-            bgColor: '#FFF3C8',
-            color: '#FDC701',
-            src: 'mdi-fan'
-        },
-        blinds: {
-            bgColor: '#f2d6ff',
-            color: '#BF38FF',
-            src:'mdi-window-shutter'
-        },
-        speaker: {
-            bgColor: '#E1E0FE',
-            color: '#6563FF',
-            src:'mdi-speaker'
-        },
-        oven: {
-            bgColor: '#FFBBBB',
-            color: '#C01616',
-            src:'mdi-stove'
-        },
-        faucet: {
-            bgColor: '#B5FFB4',
-            color: '#08B106',
-            src:'mdi-sprinkler-variant'
-        },
-        lamp: {
-            bgColor: '#FFFBDB',
-            color: '#E9D94D',
-            src:'mdi-lamp'
-        },
-        vacuum: {
-            bgColor: "#BEF3FF",
-            color: "#0091B1",
-            src:'mdi-robot-vacuum-variant'
-        }
-
+const iconInfo = {
+    ac : {
+        bgColor: '#FFF3C8',
+        color: '#FDC701',
+        src: 'mdi-fan'
+    },
+    blinds: {
+        bgColor: '#f2d6ff',
+        color: '#BF38FF',
+        src:'mdi-window-shutter'
+    },
+    speaker: {
+        bgColor: '#E1E0FE',
+        color: '#6563FF',
+        src:'mdi-speaker'
+    },
+    oven: {
+        bgColor: '#FFBBBB',
+        color: '#C01616',
+        src:'mdi-stove'
+    },
+    faucet: {
+        bgColor: '#B5FFB4',
+        color: '#08B106',
+        src:'mdi-sprinkler-variant'
+    },
+    lamp: {
+        bgColor: '#FFFBDB',
+        color: '#E9D94D',
+        src:'mdi-lamp'
+    },
+    vacuum: {
+        bgColor: "#BEF3FF",
+        color: "#0091B1",
+        src:'mdi-robot-vacuum-variant'
     }
+
+}
+
+export function getIconInfo(deviceName) {
     return iconInfo[deviceName];
 }
 
@@ -231,28 +232,6 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
             resolve(ans);
         }).catch(error => reject(`Load all supported values: ${error}`));
     });
-}
-
-const deviceEventHandlers = {
-    fav(target){ //target == this
-        if (target.props.isFav())
-            target.props.unFav();
-        else
-            target.props.fav();
-    },
-    edit(target){
-        console.log(`Edit handler ${target}`);
-    },
-    history(target){
-        console.log(`History handler ${target}`);
-    },
-    delete(target){
-        console.log(`Delete handler ${target}`);
-    },
-}
-
-export function handleDeviceEvents(event, device) {
-    deviceEventHandlers[event.eventName](device);
 }
 
 // https://css-tricks.com/converting-color-spaces-in-javascript/
