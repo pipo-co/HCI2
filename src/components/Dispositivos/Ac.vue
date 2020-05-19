@@ -297,7 +297,7 @@
                 this.eventHandlers[event.eventName](this);
             },
 
-            updateStateValue(action, params = []){
+            updateStateValue(action, params){
                 this.props.execute(action, params)
                     .then(console.log)
                     .catch( errors => console.log(`${action} - Update value ${errors}`) );

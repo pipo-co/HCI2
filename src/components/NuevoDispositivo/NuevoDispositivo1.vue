@@ -3,35 +3,35 @@
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
                 <v-col cols="3" md="3" class=" ma-1 pa-0" >
-                    <v-btn rounded outlined color="#A5A5A5" @click='controllerBack()' v-show="stepController.value>1">
+                    <v-btn rounded outlined color="#A5A5A5" @click='controllerBack()' v-show="stepController.value > 1">
                         Volver
                     </v-btn>
                 </v-col>
                 <v-col cols="6" md="6">
                     <v-stepper class="rounded my-4" v-model="stepController.value">
                         <v-stepper-header>
-                            <v-stepper-step :complete="stepController.value >1" step="1"></v-stepper-step>
+                            <v-stepper-step :complete="stepController.value > 1" step="1"></v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step :complete="stepController.value >2" step="2"></v-stepper-step>
+                            <v-stepper-step :complete="stepController.value > 2" step="2"></v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step :complete="stepController.value >3" step="3"></v-stepper-step>
+                            <v-stepper-step :complete="stepController.value > 3" step="3"></v-stepper-step>
                             <v-divider></v-divider>
                             <v-stepper-step step="4"></v-stepper-step>
                         </v-stepper-header>
                     </v-stepper>
                 </v-col>
                 <v-col>
-                    <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()' v-show="stepController.value<4" :disabled="validation">
+                    <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()' v-show="stepController.value < 4" :disabled="validation">
                         Siguiente
                     </v-btn>
-                    <v-btn rounded outlined color="#A5A5A5"  @click='saveDisp()' v-show="stepController.value===4" :disabled="newdisp.dispname === null || validDisp === false">
+                    <v-btn rounded outlined color="#A5A5A5"  @click='saveDisp()' v-show="stepController.value === 4" :disabled="newdisp.dispname === null || validDisp === false">
                         Guardar
                     </v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-card class="rounded ma-auto pa-auto" width="600" elevation="3">
-                    <v-container fluid v-show="stepController.value===1">
+                    <v-container fluid v-show="stepController.value === 1">
                         <v-row>
                             <v-col cols="1">
                                 <v-list-item-avatar color="primary" height="60" width="60" class="white--text">{{stepController.value}}</v-list-item-avatar>
@@ -49,15 +49,15 @@
                                 <v-radio-group v-model="newdisp.home">
                                     <v-radio
                                             v-for="home in homes"
-                                            :key="home"
+                                            :key="home.id"
                                             :label="home.name"
                                             :value="home"
                                     ></v-radio>
-                                    <v-radio :label="`Crear nuevo Hogar`" :value="null"></v-radio>
+                                    <v-radio label="Crear nuevo Hogar" :value="null"></v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
-                        <v-row justify="center" v-show="newdisp.home===0">
+                        <v-row justify="center" v-show="newdisp.home === 0">
                             <v-col cols="9" class="pa-0 ma-0">
                                 <v-form
                                         ref="form"
@@ -76,7 +76,7 @@
                             </v-col>
                         </v-row>
                     </v-container>
-                    <v-container fluid v-show="stepController.value===2">
+                    <v-container fluid v-show="stepController.value === 2">
                         <v-row>
                             <v-col cols="1">
                                 <v-list-item-avatar color="primary" height="60" width="60" class="white--text">{{stepController.value}}</v-list-item-avatar>
@@ -94,7 +94,7 @@
                                 <v-radio-group v-model="newdisp.room">
                                     <v-radio
                                             v-for="homeroom in rooms"
-                                            :key="homeroom"
+                                            :key="homeroom.id"
                                             :label="homeroom.name.split('_').pop()"
                                             :value="homeroom"
                                     ></v-radio>
@@ -102,7 +102,7 @@
                                 </v-radio-group>
                             </v-col>
                         </v-row>
-                        <v-row justify="center" v-show="newdisp.room===0">
+                        <v-row justify="center" v-show="newdisp.room === 0">
                             <v-col cols="9">
                                 <v-form
                                         ref="form"
@@ -121,7 +121,7 @@
                             </v-col>
                         </v-row>
                     </v-container>
-                    <v-container fluid v-show="stepController.value===3">
+                    <v-container fluid v-show="stepController.value === 3">
                         <v-row>
                             <v-col cols="1">
                                 <v-list-item-avatar color="primary" height="60" width="60" class="white--text">{{stepController.value}}</v-list-item-avatar>
@@ -139,7 +139,7 @@
                                 <v-radio-group v-model="newdisp.typeid">
                                     <v-radio
                                             v-for="disps in disptypes"
-                                            :key="disps"
+                                            :key="disps.id"
                                             :label="disps.name"
                                             :value="disps.id"
                                     ></v-radio>
@@ -147,7 +147,7 @@
                             </v-col>
                         </v-row>
                     </v-container>
-                    <v-container fluid v-show="stepController.value===4">
+                    <v-container fluid v-show="stepController.value === 4">
                         <v-row>
                             <v-col cols="1">
                                 <v-list-item-avatar color="primary" height="60" width="60" class="white--text">{{stepController.value}}</v-list-item-avatar>
@@ -161,7 +161,7 @@
                         </v-row>
                         <v-row >
                             <v-container fluid class="mb-0 pb-0" >
-                                <v-row no-gutters>
+                                <v-row no-gutters align="baseline">
                                     <v-col cols="4" >
                                         <v-list-item class="pa-1 mt-1">
                                             <v-list-item-content class="ml-1 my-0 md-0">
@@ -171,7 +171,7 @@
                                     </v-col>
                                     <v-col cols="6">
                                         <v-container fluid class="pa-0">
-                                            <v-row no-gutters wrap>
+                                            <v-row no-gutters wrap >
                                                 <v-col cols="12" md="12">
                                                     <v-form
                                                             ref="form"
@@ -183,7 +183,7 @@
                                                                 :rules="newDispRules"
                                                                 @click="changeDispFlag()"
                                                                 :error-messages="disperrormessage"
-                                                                class="py-0 pr-2" height="40" ></v-text-field>
+                                                                class="py-0 pr-2" height="25" ></v-text-field>
                                                     </v-form>
                                                 </v-col>
                                                 <v-col cols="12" md="12">
@@ -216,29 +216,29 @@
         name: "NuevoDispositivo1",
         data() {
             return {
-                validHome:false,
-                validRoom:false,
-                validDisp:false,
+                validHome: false,
+                validRoom: false,
+                validDisp: false,
                 homes: null,
                 disptypes: null,
-                rooms:null,
-                disps:null,
+                rooms: null,
+                disps: null,
                 stepController: {
                     value: 1,
                 },
                 newHomeRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length>=3 && v.length<=15) || 'El nombre debe tener entre 3 y 15 caracteres',
+                    v=> (v && v.length >= 3 && v.length <= 15) || 'El nombre debe tener entre 3 y 15 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
                 ],
                 newRoomRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length>=3 && v.length<=20) || 'El nombre debe tener entre 3 y 20 caracteres',
+                    v=> (v && v.length >= 3 && v.length <= 20) || 'El nombre debe tener entre 3 y 20 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
                 ],
                 newDispRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length>=3 && v.length<=23) || 'El nombre debe tener entre 3 y 23 caracteres',
+                    v=> (v && v.length >= 3 && v.length <= 23) || 'El nombre debe tener entre 3 y 23 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
                 ],
                 newdisp: {
@@ -247,34 +247,41 @@
                     typeid: null,
                     dispname: null,
                 },
-                flagErrorHome:false,
-                flagErrorRoom:false,
-                flagErrorDisp:false,
+                flagErrorHome: false,
+                flagErrorRoom: false,
+                flagErrorDisp: false,
                 newhomename: null,
                 newroomname: null,
             }
         },
         mounted() {
-            Api.home.getAll().then(data => {
-                this.homes = data.result;
-            }).catch(error => {
-                console.log(`Error ${error}`);
-            });
-            Api.deviceType.getAll().then(data => {
-                this.disptypes = data.result;
-            }).catch(error => {
-                console.log(`Error ${error}`);
-            });
+            Api.home.getAll()
+                .then(data => this.homes = data.result)
+                .catch(error => console.log(`Error ${error}`));
 
+            Api.deviceType.getAll()
+                .then(data => this.disptypes = data.result)
+                .catch(error => console.log(`Error ${error}`));
         },
         computed : {
             validation() {
                 if(this.stepController.value === 1)
-                    return (this.newdisp.home === null && this.newhomename === null || this.newdisp.home !== 0 && this.newhomename !== null && this.newhomename !== '' || this.newdisp.home === 0 && ( this.newhomename === '' || this.newhomename === null || !this.validHome));
+                    return (
+                        (this.newdisp.home === null && this.newhomename === null) ||
+                        (this.newdisp.home !== 0 && this.newhomename !== null && this.newhomename !== '') ||
+                        this.newdisp.home === 0 && ( this.newhomename === '' || this.newhomename === null || !this.validHome)
+                    );
+
                 else if (this.stepController.value === 2)
-                    return (this.newdisp.room === null && this.newroomname === null || this.newdisp.room !== 0 && this.newroomname !== null && this.newroomname !== '' || this.newdisp.room === 0 && ( this.newroomname === '' || this.newroomname === null || !this.validRoom));
+                    return (
+                        (this.newdisp.room === null && this.newroomname === null) ||
+                        (this.newdisp.room !== 0 && this.newroomname !== null && this.newroomname !== '') ||
+                        (this.newdisp.room === 0 && ( this.newroomname === '' || this.newroomname === null || !this.validRoom))
+                    );
+
                 else if (this.stepController.value === 3)
-                    return (this.newdisp.typeid===null)
+                    return (this.newdisp.typeid === null)
+
                 else
                     return true;
             },
@@ -303,13 +310,13 @@
         },
         methods: {
             changeHomeFlag(){
-                this.flagErrorHome=false;
+                this.flagErrorHome = false;
             },
             changeRoomFlag(){
-                this.flagErrorRoom=false;
+                this.flagErrorRoom = false;
             },
             changeDispFlag(){
-                this.flagErrorDisp=false;
+                this.flagErrorDisp = false;
             },
             controllerBack() {
                 this.stepController.value--;
@@ -321,6 +328,7 @@
                             this.flagErrorHome = true;
                         } else {
                             this.flagErrorHome = false;
+                            this.$router.push( { name: 'nuevodispositivo1', value: this.stepController.value+1} );
                             this.stepController.value++;
                         }
                     } else if (this.newdisp.home != null && this.newdisp.home !== 0) {
@@ -331,7 +339,7 @@
                     }
                 }
                 else if (this.stepController.value === 2){
-                    if(this.newdisp.room ===0){
+                    if(this.newdisp.room === 0){
                         if (this.rooms != null && this.rooms.some(elem => elem.name ===`${this.newdisp.home.name}_${this.newroomname}`)) {
                             this.flagErrorRoom = true;
                         } else {
@@ -354,8 +362,8 @@
                 }
             },
             saveDisp(){
-                if(this.newdisp.room !== 0 && this.disps!=null && this.disps.some(elem => elem.name ===`${this.newdisp.room.name}_${this.newdisp.dispname}`)){
-                    this.flagErrorDisp=true;
+                if(this.newdisp.room !== 0 && this.disps != null && this.disps.some( elem => elem.name ===`${this.newdisp.room.name}_${this.newdisp.dispname}`)){
+                    this.flagErrorDisp = true;
                 }
                 else if (this.newdisp.home === 0) {
                     createDeviceFromScratch(this.newhomename, this.newroomname, this.newdisp.dispname, this.newdisp.typeid)
