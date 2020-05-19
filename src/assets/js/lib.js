@@ -181,8 +181,12 @@ export function getIconInfo(deviceName) {
             bgColor: "#BEF3FF",
             color: "#0091B1",
             src:'mdi-robot-vacuum-variant'
+        },
+        door: {
+            bgColor: "#93716F",
+            color: "#4B130F",
+            src: 'mdi-door'
         }
-
     }
     return iconInfo[deviceName];
 }

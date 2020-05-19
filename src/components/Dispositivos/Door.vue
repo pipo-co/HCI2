@@ -4,8 +4,8 @@
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name='props.getName()'
-                            :state='state'
+                            :name="props.getName()"
+                            :state="state"
                             :room="location"
                             :icon="iconInfo"
                             :fav="props.isFav()"
@@ -16,11 +16,9 @@
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center"><!--class="my-0 py-0" -->
                             <v-col>
-                                <v-btn-toggle rounded dense>
-                                    <v-btn text @click="openDoor()">Abrir</v-btn>
-                                    <v-btn text @click="closeDoor()">Cerrar</v-btn>
-                                    <v-btn text @click="lockDoor()">Bloquear</v-btn>
-                                </v-btn-toggle>
+                                <v-btn :disabled="lock.value" class="mx-1" @click="openDoor()">Abrir</v-btn>
+                                <v-btn :disabled="lock.value" class="mx-1" @click="closeDoor()">Cerrar</v-btn>
+                                <v-btn class="mx-1" @click="lockDoor()">Bloquear</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -87,7 +85,7 @@
                 if (this.props.state.lock === "locked"){
                     return "Bloqueda";
                 }
-                else if (this.props.state.status === "closed"){
+                else if (this.props.state.status === "close"){
                     return "Cerrada";
                 }
                 else{
@@ -102,19 +100,28 @@
             handleDispInfoEvents(event){
                 this.eventHandlers[event.eventName](this);
             },
-
-            // PREGUNTAR
             openDoor(){
                 this.props.state.status = "open";
-                this.updateStateValue(this.open.action, [this.props.state.status]);
+                this.open.value = true;
+                this.updateStateValue(this.open.action);
             },
             closeDoor(){
                 this.props.state.status = "close";
-                this.updateStateValue(this.open.action, [this.props.state.status]);
+                this.close.value = true;
+                this.updateStateValue(this.close.action);
             },
             lockDoor(){
-              this.props.state.lock = "locked";
-              this.updateStateValue(this.lock.action, []);
+                if (this.props.state.lock === "locked"){
+                    this.lock.value = false;
+                    this.unlock.value = true;
+                    this.props.state.lock = "unlocked";
+                    this.updateStateValue(this.unlock.action);
+                }else {
+                    this.lock.value = true;
+                    this.unlock.value = false;
+                    this.props.state.lock = "locked";
+                    this.updateStateValue(this.lock.action);
+                }
             },
             updateStateValue(action, params = []){
                 this.props.execute(action, params)
@@ -122,12 +129,6 @@
                     .catch(errors => console.log(`${action} - Update Value ${errors}`))
             }
         },
-        // mounted() {
-        //     let actions = [
-        //         {action: this.open.action, handler: this.loadSupportedLevels}
-        //     ]
-        //     lib.loadAllSupportedValues(this.props.type.id, actions);
-        // },
     }
 
 </script>
