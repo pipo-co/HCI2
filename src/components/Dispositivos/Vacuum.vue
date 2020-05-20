@@ -15,49 +15,42 @@
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center"><!--class="my-0 py-0" -->
-                            <v-col md="10" class="py-0"> <!--class="pr-10" -->
+                            <v-col class="py-0"> <!--class="pr-10" -->
                                 <v-btn-toggle v-model="multivaluedState.selectedValue" @change="changeState" rounded dense :mandatory="true">
                                     <v-btn v-for="(val, i) in multivaluedState.values" text :key="i" :value="i" :loading="multivaluedState.awaitingResponse" :disabled="multivaluedState.awaitingResponse || (i === 0 && !enoughBattery)">
                                         {{val.text}}
                                     </v-btn>
                                 </v-btn-toggle>
                             </v-col>
-<!--                            <v-col >-->
-<!--                                <v-switch dense></v-switch>&lt;!&ndash;class="px-3 my-auto" &ndash;&gt;-->
-<!--                            </v-col>-->
-                            <v-col align="end">
-                                <v-btn text @click="controllerHandler">{{extraControllers.message}}</v-btn>
+                            <v-col>
+                                <v-btn-toggle v-model="mode.value" rounded dense
+                                              @change="mode.changeState()"
+                                              :mandatory="true">
+                                    <v-btn v-for="value in mode.supportedValues"
+                                           text :key="value" :value="value"
+                                           :loading="mode.awaitingResponse"
+                                           :disabled="mode.awaitingResponse">
+                                        {{value}}
+                                    </v-btn>
+                                </v-btn-toggle>
                             </v-col>
-                        </v-row>
-                    </v-container>
-                </v-col>
-            </v-row>
-            <v-row dense v-show="extraControllers.value">
-                <v-col>
-                    <v-btn-toggle v-model="mode.value" rounded dense
-                                  @change="mode.changeState()"
-                                  :mandatory="true">
-                        <v-btn v-for="value in mode.supportedValues"
-                               text :key="value" :value="value"
-                               :loading="mode.awaitingResponse"
-                               :disabled="mode.awaitingResponse">
-                            {{value}}
-                        </v-btn>
-                    </v-btn-toggle>
-                </v-col>
-                <v-col cols="12" class="px-5">
-                    <v-container fluid class="py-0">
-                        <v-row align="center" justify="start">
-                            <v-col class="py-0 px-0">
-                                <v-list-item class="px-0">
-                                    <v-list-item-content>
-                                        <v-list-item-title align="left" class="title">Ubicacion:</v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
+                            <v-col cols="12" class="px-5">
+                                <v-container fluid class="py-0">
+                                    <v-row align="center" justify="start">
+                                        <v-col class="py-0 px-0">
+                                            <v-list-item class="px-0">
+                                                <v-list-item-content>
+                                                    <v-list-item-title align="left" class="title">Ubicacion:</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-col>
+                                        <v-col md="8" class="py-0"> <!--class="pr-10" -->
+                                            <v-select :items="activeRoom.rooms" v-model="activeRoom.selectedRoom" @change="changeActiveRoom" :loading="activeRoom.awaitingResponse" :disabled="activeRoom.awaitingResponse || invalidRoomChange" dense></v-select>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-col>
-                            <v-col md="8" class="py-0"> <!--class="pr-10" -->
-                                <v-select :items="activeRoom.rooms" v-model="activeRoom.selectedRoom" @change="changeActiveRoom" :loading="activeRoom.awaitingResponse" :disabled="activeRoom.awaitingResponse || invalidRoomChange" dense></v-select>
-                            </v-col>
+
                         </v-row>
                     </v-container>
                 </v-col>
@@ -85,10 +78,6 @@
         data(){
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
-                extraControllers: {
-                    value: false,
-                    message: 'Mas'
-                },
                 eventHandlers: {
                     fav(target){
                         if (target.props.isFav())
@@ -161,13 +150,6 @@
                     })
                     .catch(console.log);
                 this.activeRoom.selectedRoom = this.props.state.location.id;
-            },
-            controllerHandler() {
-                this.extraControllers.value = !this.extraControllers.value;
-                if (this.extraControllers.value)
-                    this.extraControllers.message = 'Menos';
-                else
-                    this.extraControllers.message = 'Mas';
             },
             changeState(){
                 let i = this.multivaluedState.selectedValue;

@@ -194,10 +194,10 @@ export function getDeviceTypesInHome(homeID) {
              data => {
                  let ans = data.result
                      .filter(entry => entry.room.home.id === homeID)
-                     .map(entry => entry.type.name);
+                     .map(entry => entry.type);
                  ans = ans.filter((entry, index) => ans.indexOf(entry) === index);
-                 ans = ans.map(entry => {
-                     return {deviceTypeName: entry, iconInfo: getIconInfo(entry)}
+                 ans = ans.map(type => {
+                     return {deviceTypeID: type.id ,deviceTypeName: type.name, iconInfo: getIconInfo(type.name)}
                  });
                  resolve(ans);
              }).catch(error => reject(`Load all supported values: ${error}`));
@@ -322,5 +322,15 @@ export function getRoomDevices(roomID){
         .filter(elem => elem.room.id === roomID)
         .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
     ).catch( error => reject(`getRoomDevices: ${error}`));
+    });
+}
+
+export function getDevicesByHomeAndType(homeID, typeID){
+
+    return new Promise( (resolve, reject) => {
+        Api.device.getAll().then(data => resolve(data.result
+            .filter(elem => elem.room.home.id === homeID && elem.type.id === typeID)
+            .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
+        ).catch( error => reject(`getRoomDevices: ${error}`));
     });
 }
