@@ -227,6 +227,7 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
                 let aux = {};
                 aux['deviceTypeArray'] = data;
                 aux['roomName'] = room.name;
+                aux['id'] = room.id;
                 ans.push(aux);
             }).catch(console.log));
             resolve(ans);
@@ -312,4 +313,14 @@ export function hexToHSL(H) {
     l = +(l * 100).toFixed(1);
 
     return { hue: h, saturation: s, luminosity: l};
+}
+
+export function getRoomDevices(roomID){
+
+    return new Promise( (resolve, reject) => {
+        Api.device.getAll().then(data => resolve(data.result
+        .filter(elem => elem.room.id === roomID)
+        .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
+    ).catch( error => reject(`getRoomDevices: ${error}`));
+    });
 }

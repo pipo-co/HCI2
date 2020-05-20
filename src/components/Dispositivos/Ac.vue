@@ -218,10 +218,14 @@
                 required: true
             }
         },
+
         data() {
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
+                location: getLocation(this.props),
+                eventHandler: new DeviceEventHandler(this.props),
+
                 status: new BooleanStatus(this.props,'status','turnOn','turnOff','on','off'),
                 mode: new SelectionField(this.props,'mode','setMode'),
                 swing: {
@@ -230,10 +234,9 @@
                 },
                 fan: new SelectionField(this.props,'fanSpeed','setFanSpeed'),
                 temperature: new NumberFieldWithButtons(this.props,'temperature','setTemperature',1),
-                eventHandler: new DeviceEventHandler(this.props),
-                location: getLocation(this.props),
             }
         },
+
         computed: {
             state() {
                 if (this.props.state.status === 'off')
@@ -241,6 +244,7 @@
                 return `Prendido: ${this.props.state.mode} ${this.props.state.temperature}º`
             },
         },
+
         mounted() {
             let actions = [
                     this.mode.getActionLoaderObject(),
@@ -249,6 +253,7 @@
                     this.fan.getActionLoaderObject(),
                     this.temperature.getActionLoaderObject(),
             ];
+
             lib.loadAllSupportedValues(this.props.type.id, actions);
         },
     }

@@ -13,6 +13,7 @@ class SelectionField{
     }
 
     changeState(){
+        console.log("changeState");
         if(this.validInput){
             this.awaitingResponse = true;
             this.device.execute(this.action, [this.value])
@@ -49,6 +50,7 @@ class BooleanStatus{
     }
 
     changeState(){
+        console.log("changeState");
         if(this.value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
@@ -87,6 +89,7 @@ class NumberField{
     }
 
     changeState(){
+        console.log("changeState");
         if(this.validInput){
             this.value = parseInt(this.value);
             this.awaitingResponse = true;

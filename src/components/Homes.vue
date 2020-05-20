@@ -20,7 +20,7 @@
                             dark
                     >
                         <v-tabs-slider color="black"></v-tabs-slider>
-                        <v-tab v-for="home in homes" :key="home" >
+                        <v-tab v-for="home in homes" :key="home.id" >
                             {{home.name}}
                         </v-tab>
                     </v-tabs>
@@ -92,7 +92,7 @@
                                     </v-col>
                                     </span>
                                 <v-col cols="1">
-                                    <v-btn text fab right>
+                                    <v-btn text fab right :to="{ name: 'room', params: { 'roomID': room.id }}">
                                         <v-icon color="#65C2AD" large class="px-4">mdi-chevron-right</v-icon>
                                     </v-btn>
                                 </v-col>

@@ -36,7 +36,13 @@ const routes = [
         component: () => import("@/components/NuevoDispositivo/NuevoDispositivo1"),
         name: "nuevodispositivo1",
         path: "/dispositivo/nuevodispositivo1"
-    }
+    },
+    {
+        component: () => import("../components/ViewRoom"),
+        name: "room",
+        path: "/room/:roomID",
+    //   { name: 'room', params: { roomID: 123 }}
+    },
 ];
 
 export default new VueRouter({
