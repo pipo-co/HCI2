@@ -33,22 +33,6 @@
                 </v-col>
             </v-row>
             <v-row dense v-show="extraControllers.value">
-                <v-col cols="12" class="px-5">
-                    <v-container fluid class="py-0">
-                        <v-row align="center" justify="start">
-                            <v-col class="py-0 px-0">
-                                <v-list-item class="px-0">
-                                    <v-list-item-content>
-                                        <v-list-item-title align="left" class="title">Locacion:</v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-col>
-                            <v-col md="8" class="py-0"> <!--class="pr-10" -->
-                                <v-select :items="activeRoom.rooms" v-model="activeRoom.selectedRoom" @change="changeActiveRoom" :loading="activeRoom.awaitingResponse" :disabled="activeRoom.awaitingResponse || invalidRoomChange" dense></v-select>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-col>
                 <v-col>
                     <v-btn-toggle v-model="mode.value" rounded dense
                                   @change="mode.changeState()"
@@ -61,33 +45,22 @@
                         </v-btn>
                     </v-btn-toggle>
                 </v-col>
-                <v-btn-toggle rounded dense>
-
-                </v-btn-toggle>
-                <!--                            <v-col>-->
-                <!--                                <v-btn-toggle v-model="toggle_exclusive" rounded dense>-->
-                <!--                                    <v-btn text>pausar</v-btn>-->
-                <!--                                    <v-btn text>aspirar</v-btn>-->
-                <!--                                    <v-btn text>trapear</v-btn>-->
-                <!--                                    <v-btn text>cargar</v-btn>-->
-                <!--                                </v-btn-toggle>-->
-                <!--                            </v-col>-->
-<!--                <v-col cols="12" class="px-5">-->
-<!--                    <v-container fluid class="py-0">-->
-<!--                        <v-row align="center" justify="start">-->
-<!--                            <v-col class="py-0 px-0">-->
-<!--                                <v-list-item class="px-0">-->
-<!--                                    <v-list-item-content>-->
-<!--                                        <v-list-item-title align="left" class="title">Cargador:</v-list-item-title>-->
-<!--                                    </v-list-item-content>-->
-<!--                                </v-list-item>-->
-<!--                            </v-col>-->
-<!--                            <v-col md="8" class="py-0"> &lt;!&ndash;class="pr-10" &ndash;&gt;-->
-<!--                                <v-select :items="habitaciones" dense value="Living"></v-select>-->
-<!--                            </v-col>-->
-<!--                        </v-row>-->
-<!--                    </v-container>-->
-<!--                </v-col>-->
+                <v-col cols="12" class="px-5">
+                    <v-container fluid class="py-0">
+                        <v-row align="center" justify="start">
+                            <v-col class="py-0 px-0">
+                                <v-list-item class="px-0">
+                                    <v-list-item-content>
+                                        <v-list-item-title align="left" class="title">Ubicacion:</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-col>
+                            <v-col md="8" class="py-0"> <!--class="pr-10" -->
+                                <v-select :items="activeRoom.rooms" v-model="activeRoom.selectedRoom" @change="changeActiveRoom" :loading="activeRoom.awaitingResponse" :disabled="activeRoom.awaitingResponse || invalidRoomChange" dense></v-select>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-col>
             </v-row>
         </v-container>
     </v-card>
@@ -117,7 +90,7 @@
                     message: 'Mas'
                 },
                 eventHandlers: {
-                    fav(target){ //target == this
+                    fav(target){
                         if (target.props.isFav())
                             target.props.unFav();
                         else
@@ -148,7 +121,8 @@
                     selectedRoom: null,
                     action: 'setLocation',
                     awaitingResponse: false
-                }
+                },
+                interval: null
             }
         },
         computed:{
@@ -156,15 +130,15 @@
                 if(this.props.state.status === 'inactive')
                     return 'Apagado';
                 else if(this.props.state.status === 'docked')
-                    return `Cargando Bateria: ${this.props.state.batteryLevel}%`;
+                    return `Cargando - Bateria: ${this.props.state.batteryLevel}%`;
                 else
-                    return `Prendido Bateria: ${this.props.state.batteryLevel}%`;
+                    return `Prendido - Bateria: ${this.props.state.batteryLevel}%`;
             },
             location(){
                 return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;
             },
             enoughBattery(){
-                return this.props.state.batteryLevel >= 5;
+                return this.props.state.batteryLevel >= 6;
             },
             invalidRoomChange(){ // Verificar
                 return this.props.state.status !== 'active' || !this.enoughBattery;
@@ -230,6 +204,16 @@
 
             this.multivaluedState.selectedValue = this.multivaluedState.values.findIndex(elem => elem.state === this.props.state.status);
             this.loadRooms();
+
+            this.interval = setInterval(() =>{
+                this.props.getState()
+                    .then( data => this.props.state.batteryLevel = data.result.batteryLevel)
+                    .catch(console.log);
+            }, 100000);
+        },
+        beforeDestroy() {
+            if(this.interval)
+                clearInterval(this.interval);
         }
     }
 </script>

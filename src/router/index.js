@@ -6,6 +6,8 @@ Vue.use(VueRouter)
 
 import Homes from "@/components/Homes";
 
+import NewDisp from "@/components/NuevoDispositivo/NuevoDispositivo1";
+
 const routes = [
     {
         component: () => import("@/components/Favoritos"),
@@ -33,9 +35,13 @@ const routes = [
         path: "/rutinas/nuevarutina1"
     },
     {
-        component: () => import("@/components/NuevoDispositivo/NuevoDispositivo1"),
+        component: NewDisp,
         name: "nuevodispositivo1",
         path: "/dispositivo/nuevodispositivo1"
+    },
+    {
+        component: NewDisp,
+        path: "/dispositivo/nuevodispositivo1/:homeId/:roomId"
     },
     {
         component: () => import("../components/ViewRoom"),
