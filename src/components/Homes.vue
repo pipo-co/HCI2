@@ -26,6 +26,7 @@
                                                 ref="form"
                                                 v-model="auxHome[home.id].valid"
                                                 lazy-validation
+                                                @submit="saveChanges() && false"
                                         >
                                             <v-text-field
                                                     v-model="auxHome[home.id].name"
@@ -41,7 +42,7 @@
                                         <v-btn class="ma-auto"
                                                color="red"
                                                dark
-                                               @click="eliminateDisp(home.name)">
+                                               @click="eliminateHome(home.name, home.id)">
                                             Eliminar Hogar
                                         </v-btn>
                                     </v-col>
@@ -91,7 +92,7 @@
                                         <v-btn
                                                 color="red"
                                                 dark
-                                                @click=" dialog2 = false"
+                                                @click="deleteThisHome()"
                                         >
                                             Eliminar
                                         </v-btn>
@@ -175,7 +176,8 @@
                                             bottom>
                                         <template v-slot:activator="{ on }">
                                             <v-btn text top fab
-                                                   v-on="on">
+                                                   v-on="on"
+                                                   @click="auxRoomId = room.id">
                                                 <v-icon>mdi-dots-vertical</v-icon>
                                             </v-btn>
                                         </template>
@@ -189,6 +191,7 @@
                                                     <v-btn
                                                             text
                                                             v-on="on"
+
                                                     >
                                                         Editar
                                                     </v-btn>
@@ -203,9 +206,10 @@
                                                                         ref="form"
                                                                         v-model="roomNameValid"
                                                                         lazy-validation
+                                                                        @submit="saveRoomChanges() && false"
                                                                 >
                                                                     <v-text-field
-                                                                            v-model="auxHomeName"
+                                                                            v-model="roomName"
                                                                             :label="room.roomName.split('_').pop()"
                                                                             :rules="newRoomRules"
                                                                     >
@@ -268,7 +272,7 @@
                                                                     <v-btn
                                                                             color="red"
                                                                             dark
-                                                                            @click=" roomEliminateDialog = false"
+                                                                            @click="deleteCurrentRoom()"
                                                                     >
                                                                         Eliminar
                                                                     </v-btn>
@@ -311,11 +315,13 @@
 <script>
     import Api from "@/assets/js/Api.js";
     import {
+        deleteHome, deleteRoom,
         getDeviceTypesInHome,
         getRoomsAndDeviceTypesMapFromHome,
         // getRoomsFromHome
     } from "../assets/js/lib";
     import Home from "../assets/js/Home";
+    import Room from "../assets/js/Room";
     //import Home from "../../assets/js/Home";
     //import Room from "../../assets/js/Room";
     export default {
@@ -326,9 +332,13 @@
                 dialog2:false,
                 auxiliarName: false,
                 auxHomeName:null,
+                auxHomeId:null,
                 roomNameValid:false,
+                flagErrorRoom:false,
                 auxHome: {},
                 roomEditDialog:false,
+                auxRoomId:null,
+                roomName:null,
                 roomEliminateDialog:false,
                 homes: null,
                 currentHomeindex: null,
@@ -351,17 +361,7 @@
         computed : {
         },
         mounted() {
-            Api.home.getAll().then(data => {
-                this.homes = data.result;
-                if (this.homes != null)
-                    this.currentHome = this.homes[0];
-                this.homes.forEach(elem => {
-                    this.auxHome[elem.id] = {name:'', valid:'false', flagErrorHome:'false'};
-                } )
-                this.changeRoomMap();
-            }).catch(error => {
-                console.log(`Error ${error}`);
-            });
+            this.changeHomes();
         },
         watch: {
             'currentHomeindex'() {
@@ -379,6 +379,20 @@
             }*/
         },
         methods: {
+            changeHomes(){
+                Api.home.getAll().then(data => {
+                    this.homes = data.result;
+                    if (this.homes != null)
+                        this.currentHome = this.homes[0];
+                    this.homes.forEach(elem => {
+                        this.auxHome[elem.id] = {name:'', valid:false, flagErrorHome:false};
+                    } )
+                    this.changeHomeDevices();
+                    this.changeRoomMap();
+                }).catch(error => {
+                    console.log(`Error ${error}`);
+                });
+            },
             changeHomeFlag(){
                 this.flagErrorHome = false;
             },
@@ -387,13 +401,16 @@
                     return 'El nombre del hogar ya existe, por favor elija otro nombre';
                 }
                 else
-                    return null;
+                    return '';
             },
-            eliminateDisp(name){
+            eliminateHome(name, id){
                 this.dialog2 = true;
                 this.auxiliarName= name;
+                this.auxHomeId=id;
             },
             changeHomeDevices() {
+                //eslint-disable-next-line no-debugger
+                debugger;
                 getDeviceTypesInHome(this.currentHome.id).then(data => {
                     this.homedevs = data;
                 }).catch(error => {
@@ -412,37 +429,68 @@
                 this.homes.forEach(elem =>{
                     let nameaux=this.auxHome[elem.id].name.toUpperCase().trim();
                     if(this.auxHome[elem.id].valid && nameaux !=='') {
-                        //eslint-disable-next-line no-debugger
-                        debugger;
-                        console.log(this.auxHome[elem.id].valid);
-                        console.log(this.auxHome[elem.id].name);
+
                         if (this.homes.some(elem => elem.name.toUpperCase().trim() === nameaux ))
+
                         {  this.auxHome[elem.id].flagErrorHome = true;
-                            flag=true;
+                            flag = true;
+
                         } else {
                             Home.persistNewName(elem.id, nameaux, {});
-                            Api.home.getAll().then(data => {
-                                this.homes = data.result;
-                            }).catch(error => {
-                                console.log(`Error ${error}`);
-                            });
+                            this.homes.forEach(elem2 => {
+                                if(elem2.id === elem.id)
+                                    elem2.name = nameaux;
+                            } )
+                            this.auxHome[elem.id].name = '';
                         }
-                        this.auxHome[elem.id].name = '';
+
                     }
-                    if(!flag)
-                        this.dialog=false;
+                        this.dialog = flag;
                 })
             },
             saveRoomChanges(){
+                /*//eslint-disable-next-line no-debugger
+                debugger;
+                console.log(this.auxRoomId);*/
+                let flag = false;
                 if(this.roomNameValid){
-                    if(this.roomMap.some(elem => elem.name.toUpperCase().trim() === this.roomName )){
-                        console.log('hola');
+                    if(this.roomMap.some(elem => elem.roomName.split('_').pop().toUpperCase().trim() === this.roomName.toUpperCase().trim() )){
+                        this.flagErrorRoom = false;
+                        flag = true;
+                    }
+                    else{
+                        Room.persistNewName(this.auxRoomId,`${this.currentHome.id}_${this.roomName}`,{});
+                        this.roomMap.forEach(elem => {
+                            if(elem.id === this.auxRoomId)
+                                elem.roomName = this.roomName;
+                        } )
+                        this.roomName = '';
                     }
                 }
-                this.roomName='';
+                this.roomEditDialog = flag;
             },
-            deleteHome(id){
-                this.homes[id]=2
+            deleteThisHome(){
+                //eslint-disable-next-line no-debugger
+                debugger;
+                console.log(this.auxHomeId);
+                deleteHome(this.auxHomeId).then( () =>{
+                        this.changeHomes();
+                    }
+                ).catch(error => console.log(`Error ${error}`));
+                this.dialog2 = false;
+                this.dialog = false;
+            },
+            deleteCurrentRoom(){
+                /*//eslint-disable-next-line no-debugger
+                debugger;
+                console.log(this.auxRoomId);*/
+                deleteRoom(this.auxRoomId).then( () =>{
+                    this.changeRoomMap();
+                    this.changeHomeDevices();
+                    }
+                ).catch(error => console.log(`Error ${error}`));
+
+                this.roomEliminateDialog = false;
             }
         }
     }

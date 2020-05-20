@@ -126,14 +126,14 @@ export function getFavs() {
     });
 }
 
-export function suscribeToDeviceEvent(f, deviceId){
+export function suscribeToDeviceEvent(scope, f, deviceId){
     let source;
     if(deviceId)
         source = Api.device.getEventSource(deviceId);
     else
         source = Api.device.getAllEventSource();
 
-    source.addEventListener('message', event => f(JSON.parse(event.data)), false);
+    source.addEventListener('message', event => f(scope, JSON.parse(event.data)), false);
 }
 
 export function loadAllSupportedValues(deviceID, actions) {
@@ -180,6 +180,11 @@ const iconInfo = {
         bgColor: "#BEF3FF",
         color: "#0091B1",
         src:'mdi-robot-vacuum-variant'
+    },
+    door: {
+        bgColor: "#C8A776",
+        color: "#6D4201",
+        src: "mdi-door"
     }
 
 }
@@ -232,6 +237,38 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
             }).catch(console.log));
             resolve(ans);
         }).catch(error => reject(`Load all supported values: ${error}`));
+    });
+}
+
+export function deleteRoom(roomId){
+    return new Promise( (resolve, reject) => {
+        Api.room.getRoomDevices(roomId)
+            .then(data => {
+                data.result.forEach(device => {
+                    Api.room.removeDevice(device.id).catch(error => reject(`Remove device ${device.name} from Room ${error}`));
+                    Api.device.delete(device.id).catch(error => reject(`Delete device ${device.name} ${error}`));
+                });
+                Api.room.delete(roomId)
+                    .then(response => resolve(response.result))
+                    .catch(error => reject(`Delete room ${error}`));
+            })
+            .catch(error => reject(`Get room devices ${error}`));
+    });
+}
+
+export function deleteHome(homeId){
+    return new Promise( (resolve, reject) => {
+        Api.home.getHomeRooms(homeId)
+            .then(data => {
+                data.result.forEach(room => {
+                    Api.home.removeRoom(room.id).catch(error => reject(`Remove room ${room.name} from Home ${error}`));
+                    deleteRoom(room.id).then().catch(error => reject(`Delete room ${room.name} ${error}`));
+                });
+                Api.home.delete(homeId)
+                    .then(response => resolve(response.result))
+                    .catch(error => reject(`Delete home ${error}`));
+            })
+            .catch(error => reject(`Get home rooms ${error}`));
     });
 }
 
@@ -316,7 +353,6 @@ export function hexToHSL(H) {
 }
 
 export function getRoomDevices(roomID){
-
     return new Promise( (resolve, reject) => {
         Api.device.getAll().then(data => resolve(data.result
         .filter(elem => elem.room.id === roomID)

@@ -322,6 +322,7 @@
                 this.stepController.value--;
             },
             controllerNextPlus() {
+                if(!this.validation){
                 if (this.stepController.value === 1) {
                     if (this.newdisp.home === null || this.newdisp.home === 0) {
                         if (this.homes !== null && this.homes.some(elem => elem.name === this.newhomename)) {
@@ -358,6 +359,7 @@
                     }
                     else
                         this.stepController.value++;
+                }
                 }
             },
             saveDisp(){
