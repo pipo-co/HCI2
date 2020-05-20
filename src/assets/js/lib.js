@@ -180,6 +180,11 @@ const iconInfo = {
         bgColor: "#BEF3FF",
         color: "#0091B1",
         src:'mdi-robot-vacuum-variant'
+    },
+    door: {
+        bgColor: "#C8A776",
+        color: "#6D4201",
+        src: "mdi-door"
     }
 
 }

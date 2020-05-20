@@ -16,9 +16,10 @@
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center"><!--class="my-0 py-0" -->
                             <v-col>
-                                <v-btn :disabled="lock.value" class="mx-1" @click="openDoor()">Abrir</v-btn>
-                                <v-btn :disabled="lock.value" class="mx-1" @click="closeDoor()">Cerrar</v-btn>
-                                <v-btn class="mx-1" @click="lockDoor()">Bloquear</v-btn>
+                                <v-btn :disabled="lock.value" :loading="open.awaitingResponse"
+                                       class="mx-1" @click="open.changeState()">{{opened}}</v-btn>
+                                <v-btn :disabled="lock.awaitingResponse" :loading="lock.awaitingResponse"
+                                       class="mx-1" @click="lock.changeState()">{{locked}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -31,6 +32,7 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "@/assets/js/Device";
+    import {ButtonStatus} from "@/assets/js/DevicesLib";
     const lib = require("../../assets/js/lib");
 
     export default {
@@ -62,22 +64,8 @@
                         console.log(`Delete handler ${target}`);
                     },
                 },
-                open: {
-                    value: false,
-                    action: "open"
-                },
-                close: {
-                    value: false,
-                    action: "close"
-                },
-                lock: {
-                    value: false,
-                    action: "lock"
-                },
-                unlock: {
-                    value: false,
-                    action: "unlock"
-                }
+                open: new ButtonStatus(this.props, 'status', 'open', 'close', 'opened', 'closed'),
+                lock: new ButtonStatus(this.props, 'lock', 'lock', 'unlock', 'locked', 'unlocked')
             }
         },
         computed: {
@@ -85,12 +73,24 @@
                 if (this.props.state.lock === "locked"){
                     return "Bloqueda";
                 }
-                else if (this.props.state.status === "close"){
+                else if (this.props.state.status === "closed"){
                     return "Cerrada";
                 }
                 else{
                     return "Abierta";
                 }
+            },
+            opened(){
+                if (this.props.state.status === 'closed'){
+                    return "Abrir";
+                }else
+                    return "Cerrar";
+            },
+            locked(){
+                if (this.props.state.lock === 'locked'){
+                    return "Desbloquear";
+                }else
+                    return "Bloquear";
             },
             location() {
                 return `${this.props.room.home.name} - ${this.props.room.name}`
@@ -99,6 +99,9 @@
         methods: {
             handleDispInfoEvents(event){
                 this.eventHandlers[event.eventName](this);
+            },
+            isLocked(){
+                return this.lock.value === 'locked'
             },
             openDoor(){
                 this.props.state.status = "open";

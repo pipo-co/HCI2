@@ -1,4 +1,4 @@
-export {SelectionField, BooleanStatus, NumberFieldWithButtons, DeviceEventHandler, ExtraControls, getLocation}
+export {SelectionField, BooleanStatus, ButtonStatus, NumberFieldWithButtons, DeviceEventHandler, ExtraControls, getLocation}
 
 class SelectionField{
 
@@ -51,6 +51,41 @@ class BooleanStatus{
 
     changeState(){
         console.log("changeState");
+        if(this.value) {
+            this.awaitingResponse = true;
+            this.device.execute(this.actionTrue)
+                .then( response => response.result && (this.device.state[this.valueKey] = this.statusTrue))
+                .catch(console.log)
+                .finally( () => this.awaitingResponse = false);
+        }
+        else {
+            this.awaitingResponse = true;
+            this.device.execute(this.actionFalse)
+                .then( response => response.result && (this.device.state[this.valueKey] = this.statusFalse))
+                .catch(console.log)
+                .finally( () => this.awaitingResponse = false);
+        }
+    }
+
+}
+
+class ButtonStatus{
+
+    constructor(device, valueKey, actionTrue, actionFalse, statusTrue, statusFalse) {
+        this.device = device;
+        this.valueKey = valueKey;
+        this.value = this.device.state[this.valueKey] === statusTrue;
+        this.actionTrue = actionTrue;
+        this.actionFalse = actionFalse;
+        this.statusTrue = statusTrue;
+        this.statusFalse = statusFalse;
+        this.awaitingResponse = false;
+    }
+
+    changeState(){
+        console.log("changeState");
+        this.value = !this.value;
+        console.log(this.value);
         if(this.value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
