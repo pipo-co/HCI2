@@ -6,8 +6,9 @@
     import CardHolder from "./CardHolder";
     const lib = require("../assets/js/lib.js");
 
+
     export default {
-        name: "Favoritos",
+        name: "ViewRoom",
         components: {CardHolder},
         data(){
             return{
@@ -15,13 +16,10 @@
             }
         },
         mounted(){
-            lib.getFavs()
-                .then(this.loadCards)
-                .catch(error => console.log(`Favorites ${error}`))
+            lib.getRoomDevices(this.$route.params.roomID).then(this.loadCards).catch(error => console.log(`Favorites ${error}`));
         },
         methods:{
             loadCards(data){
-                console.log(data);
                 this.cards = data;
             }
         },

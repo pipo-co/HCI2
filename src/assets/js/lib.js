@@ -145,49 +145,46 @@ export function loadAllSupportedValues(deviceID, actions) {
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
 
-export function getIconInfo(deviceName) {
-    let iconInfo = {
-        ac : {
-            bgColor: '#FFF3C8',
-            color: '#FDC701',
-            src: 'mdi-fan'
-        },
-        blinds: {
-            bgColor: '#f2d6ff',
-            color: '#BF38FF',
-            src:'mdi-window-shutter'
-        },
-        speaker: {
-            bgColor: '#E1E0FE',
-            color: '#6563FF',
-            src:'mdi-speaker'
-        },
-        oven: {
-            bgColor: '#FFBBBB',
-            color: '#C01616',
-            src:'mdi-stove'
-        },
-        faucet: {
-            bgColor: '#B5FFB4',
-            color: '#08B106',
-            src:'mdi-sprinkler-variant'
-        },
-        lamp: {
-            bgColor: '#FFFBDB',
-            color: '#E9D94D',
-            src:'mdi-lamp'
-        },
-        vacuum: {
-            bgColor: "#BEF3FF",
-            color: "#0091B1",
-            src:'mdi-robot-vacuum-variant'
-        },
-        door: {
-            bgColor: "#93716F",
-            color: "#4B130F",
-            src: 'mdi-door'
-        }
+const iconInfo = {
+    ac : {
+        bgColor: '#FFF3C8',
+        color: '#FDC701',
+        src: 'mdi-fan'
+    },
+    blinds: {
+        bgColor: '#f2d6ff',
+        color: '#BF38FF',
+        src:'mdi-window-shutter'
+    },
+    speaker: {
+        bgColor: '#E1E0FE',
+        color: '#6563FF',
+        src:'mdi-speaker'
+    },
+    oven: {
+        bgColor: '#FFBBBB',
+        color: '#C01616',
+        src:'mdi-stove'
+    },
+    faucet: {
+        bgColor: '#B5FFB4',
+        color: '#08B106',
+        src:'mdi-sprinkler-variant'
+    },
+    lamp: {
+        bgColor: '#FFFBDB',
+        color: '#E9D94D',
+        src:'mdi-lamp'
+    },
+    vacuum: {
+        bgColor: "#BEF3FF",
+        color: "#0091B1",
+        src:'mdi-robot-vacuum-variant'
     }
+
+}
+
+export function getIconInfo(deviceName) {
     return iconInfo[deviceName];
 }
 
@@ -230,33 +227,12 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
                 let aux = {};
                 aux['deviceTypeArray'] = data;
                 aux['roomName'] = room.name;
+                aux['id'] = room.id;
                 ans.push(aux);
             }).catch(console.log));
             resolve(ans);
         }).catch(error => reject(`Load all supported values: ${error}`));
     });
-}
-
-const deviceEventHandlers = {
-    fav(target){ //target == this
-        if (target.props.isFav())
-            target.props.unFav();
-        else
-            target.props.fav();
-    },
-    edit(target){
-        console.log(`Edit handler ${target}`);
-    },
-    history(target){
-        console.log(`History handler ${target}`);
-    },
-    delete(target){
-        console.log(`Delete handler ${target}`);
-    },
-}
-
-export function handleDeviceEvents(event, device) {
-    deviceEventHandlers[event.eventName](device);
 }
 
 // https://css-tricks.com/converting-color-spaces-in-javascript/
@@ -337,4 +313,14 @@ export function hexToHSL(H) {
     l = +(l * 100).toFixed(1);
 
     return { hue: h, saturation: s, luminosity: l};
+}
+
+export function getRoomDevices(roomID){
+
+    return new Promise( (resolve, reject) => {
+        Api.device.getAll().then(data => resolve(data.result
+        .filter(elem => elem.room.id === roomID)
+        .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
+    ).catch( error => reject(`getRoomDevices: ${error}`));
+    });
 }

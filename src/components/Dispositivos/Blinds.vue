@@ -144,6 +144,7 @@
                 return `${this.props.room.home.name} - ${this.props.room.name}`
             },
         },
+
         methods: {
             loadSupportedLevels(params){
               this.level.minValue = params[0].minValue;
@@ -177,6 +178,7 @@
                     .catch(errors => console.log(`${action} - Update Value ${errors}`))
             }
         },
+
         mounted(){
             let actions = [
                 {action: this.level.action, handler: this.loadSupportedLevels}

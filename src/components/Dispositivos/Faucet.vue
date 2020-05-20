@@ -16,7 +16,7 @@
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center"> <!--class="my-0 py-0" -->
                             <v-col align="end">
-                                <v-btn text @click="invertState()" >{{invertedState}}</v-btn>
+                                <v-btn text @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
                             </v-col>
                             <v-col>
                                 <v-select
@@ -24,11 +24,6 @@
                                         :items="dispense.unitSupportedValues"
                                         label="Unidad"
                                 ></v-select>
-<!--                                <v-btn-toggle v-model="dispense.selectedUnit" rounded dense :mandatory="true">-->
-<!--                                    <v-btn v-for="unit in dispense.unitSupportedValues" text :key="unit" :value="unit">-->
-<!--                                        {{unit}}-->
-<!--                                    </v-btn>-->
-<!--                                </v-btn-toggle>-->
                             </v-col>
                         </v-row>
                     </v-container>
@@ -46,21 +41,18 @@
                                             :min="dispense.minValue"
                                             hide-details>
                                         <template v-slot:append>
-
                                             <v-text-field
                                                     v-model="dispense.selectedValue"
                                                     class="mt-0 pt-0"
                                                     type="number"
                                                     :rules="dispense.validate"
                                             ></v-text-field>
-
-
                                         </template>
                                     </v-slider>
                                 </v-form>
                             </v-col>
                             <v-col>
-                                <v-btn text @click="excecuteDispense()" :disabled="!validDispense">Dispensar</v-btn>
+                                <v-btn text @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -104,6 +96,14 @@
                         console.log(`Delete handler ${target}`);
                     }
                 },
+                booleanStatus: {
+                    value: this.props.state.status === 'closed',
+                    actionTrue: 'open',
+                    statusFalse: 'closed',
+                    statusTrue: 'opened',
+                    actionFalse: 'close',
+                    awaitingResponse: false
+                },
                 dispense: {
                     selectedUnit: null,
                     selectedValue:null,
@@ -112,6 +112,7 @@
                     maxValue: null,
                     action: 'dispense',
                     validInput: true,
+                    awaitingResponse: false,
                     validate:
                         [
                             v => /[0-9]+/.test(v) || "Debe ingresar un valor numerico",
@@ -155,19 +156,28 @@
                     .catch( errors => console.log(`${action} -  ${errors}`) );
             },
             invertState(){
-                if(this.props.state.status === 'closed') {
-                    this.props.state.status = 'opened';
-                    this.excecuteAction('open');
+                if(this.props.state.status === this.booleanStatus.statusFalse) {
+                    this.booleanStatus.awaitingResponse = true;
+                    this.props.execute(this.booleanStatus.actionTrue)
+                        .then( response => response.result && (this.props.state.status = this.booleanStatus.statusTrue))
+                        .catch(console.log)
+                        .finally( () => this.booleanStatus.awaitingResponse = false);
                 }
                 else {
-                    this.props.state.status = 'closed';
-                    this.excecuteAction('close');
+                    this.booleanStatus.awaitingResponse = true;
+                    this.props.execute(this.booleanStatus.actionFalse)
+                        .then( response => response.result && (this.props.state.status = this.booleanStatus.statusFalse))
+                        .catch(console.log)
+                        .finally( () => this.booleanStatus.awaitingResponse = false);
                 }
             },
             excecuteDispense(){
                 if(this.validDispense) {
-                    this.excecuteAction(this.dispense.action, [this.dispense.selectedValue, this.dispense.selectedUnit]);
-                    this.props.state.status = 'opened';
+                    this.dispense.awaitingResponse = true;
+                    this.props.execute(this.dispense.action, [this.dispense.selectedValue, this.dispense.selectedUnit])
+                        .then( response => response.result && (this.props.state.status = this.booleanStatus.statusTrue))
+                        .catch(console.log)
+                        .finally( () => this.dispense.awaitingResponse = false);
                 }
             }
         },

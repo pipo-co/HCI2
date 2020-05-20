@@ -9,7 +9,7 @@
                             :icon="iconInfo"
                             :room="location"
                             :fav="props.isFav()"
-                            @disp-event="handleDispInfoEvents($event)"
+                            @disp-event="eventHandler.handle($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12"  class="px-5">
@@ -25,26 +25,36 @@
                                 </v-switch><!--class="px-3 my-auto" -->
                             </v-col>
                             <v-col>
-                                <v-btn icon >
-                                    <v-icon @click="decreaseTemperature()">mdi-minus</v-icon>
+                                <v-btn icon
+                                       :disabled="temperature.awaitingResponse"
+                                       :loading="temperature.awaitingResponse"
+                                       @click="temperature.decrement()">
+                                    <v-icon>mdi-minus</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-text-field
-                                        class="inputNumber"
-                                        v-model="temperature.value"
-                                        solo rounded flat outlined dense
-                                        suffix="º"
-                                        hide-details="true"
-                                ></v-text-field>
+                                <v-form v-model="temperature.validInput">
+                                    <v-text-field
+                                            v-model="temperature.value"
+                                            solo rounded flat outlined dense
+                                            suffix="º"
+                                            :rules="temperature.rules"
+                                            :disabled="temperature.awaitingResponse"
+                                            :loading="temperature.awaitingResponse"
+                                            @change="temperature.changeState()"
+                                    ></v-text-field>
+                                </v-form>
                             </v-col>
                             <v-col>
-                                <v-btn icon >
-                                    <v-icon @click="increaseTemperature()">mdi-plus</v-icon>
+                                <v-btn icon
+                                       :disabled="temperature.awaitingResponse"
+                                       :loading="temperature.awaitingResponse"
+                                       @click="temperature.increment()">
+                                    <v-icon>mdi-plus</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col ><!--class="pr-10" -->
-                                <v-btn text @click="controllerHandler()">{{extraControllers.message}}</v-btn>
+                                <v-btn text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -126,7 +136,14 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
-    import {SelectionField, BooleanStatus } from "../../assets/js/DevicesLib";
+    import {
+        SelectionField,
+        BooleanStatus,
+        NumberFieldWithButtons,
+        ExtraControls,
+        DeviceEventHandler,
+        getLocation
+    } from "../../assets/js/DevicesLib";
     const lib = require("../../assets/js/lib")
 
     export default {
@@ -140,21 +157,15 @@
         },
         data(){
           return{
-              iconInfo:lib.getIconInfo(this.props.type.name),
-              extraControllers: {
-                  value: false,
-                  message: 'Mas',
-              },
+              iconInfo: lib.getIconInfo(this.props.type.name),
+              extraControllers: new ExtraControls(),
+              eventHandler: new DeviceEventHandler(this.props),
+              location: getLocation(this.props),
               status: new BooleanStatus(this.props, 'status', 'turnOn', 'turnOff','on','off'),
               grill: new SelectionField(this.props,'grill','setGrill'),
               heat: new SelectionField(this.props,'heat','setHeat',),
               convection: new SelectionField(this.props,'convection','setConvection'),
-              temperature:{
-                  value: 0,
-                  action: 'setTemperature',
-                  minValue: 0, //hardCoded
-                  maxValue: 0, //hardCoded
-                },
+              temperature: new NumberFieldWithButtons(this.props,'temperature','setTemperature',5),
           }
         },
         computed:{
@@ -163,56 +174,17 @@
                     return 'Off'
                 return `Prendido: ${this.props.state.heat} ${this.props.state.temperature}º`
             },
-            location() {
-                return `${this.props.getHomeName()} - ${this.props.getRoomName()}`
-            },
         },
         mounted() {
-
             let actions = [
                 this.convection.getActionLoaderObject(),
                 this.heat.getActionLoaderObject(),
                 this.grill.getActionLoaderObject(),
-                {action: this.temperature.action, handler: this.loadSupportedTemperature}
+                this.temperature.getActionLoaderObject(),
             ];
+
             lib.loadAllSupportedValues(this.props.type.id, actions);
-            console.log(this.convection);
-
         },
-        methods: {
-
-            loadSupportedTemperature(params){
-                this.temperature.minValue = params[0].minValue;
-                this.temperature.maxValue = params[0].maxValue;
-                this.temperature.value = this.props.state.temperature;
-                // console.log(this.temperature.minValue);
-                // console.log(this.temperature.maxValue);
-            },
-
-
-            updateState() {
-                this.dev.getState().then(data => {
-                    this.disp.state = data.result;
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
-            },
-            increaseTemperature(){
-                if(this.temperature.value < this.temperature.maxValue)
-                    this.temperature.value += 5;
-            },
-            decreaseTemperature(){
-                if(this.temperature.minValue < this.temperature.value)
-                    this.temperature.value -= 5;
-            },
-            controllerHandler(){
-                this.extraControllers.value = ! this.extraControllers.value;
-                if(this.extraControllers.value)
-                    this.extraControllers.message = 'Menos';
-                else
-                    this.extraControllers.message = 'Mas';
-            },
-        }
     }
 </script>
 
