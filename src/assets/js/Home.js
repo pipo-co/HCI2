@@ -28,5 +28,8 @@ class Home {
     removeRoom(roomId){
         return Api.home.removeRoom(roomId);
     }
+    static persistNewName(id, newName, meta){
+        return Api.home.modify({id: id, name: newName, meta: meta});
+    }
 }
 export default Home;

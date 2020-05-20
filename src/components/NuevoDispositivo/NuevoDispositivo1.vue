@@ -271,14 +271,12 @@
                 if(this.stepController.value === 1)
                     return (
                         (this.newdisp.home === null && this.newhomename === null) ||
-                        (this.newdisp.home !== 0 && this.newhomename !== null && this.newhomename !== '') ||
                         this.newdisp.home === 0 && ( this.newhomename === '' || this.newhomename === null || !this.validHome)
                     );
 
                 else if (this.stepController.value === 2)
                     return (
                         (this.newdisp.room === null && this.newroomname === null) ||
-                        (this.newdisp.room !== 0 && this.newroomname !== null && this.newroomname !== '') ||
                         (this.newdisp.room === 0 && ( this.newroomname === '' || this.newroomname === null || !this.validRoom))
                     );
 
@@ -330,7 +328,6 @@
                             this.flagErrorHome = true;
                         } else {
                             this.flagErrorHome = false;
-                            this.$router.push( { name: 'nuevodispositivo1', value: this.stepController.value + 1} );
                             this.stepController.value++;
                         }
                     } else if (this.newdisp.home != null && this.newdisp.home !== 0) {
