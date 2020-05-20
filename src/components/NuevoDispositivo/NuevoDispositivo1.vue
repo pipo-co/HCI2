@@ -265,6 +265,10 @@
             Api.deviceType.getAll()
                 .then(data => this.disptypes = data.result)
                 .catch(error => console.log(`Error ${error}`));
+
+            // if(this.$route.params.homeId){
+            //
+            // }
         },
         computed : {
             validation() {

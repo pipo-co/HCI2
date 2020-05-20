@@ -80,6 +80,7 @@
         data() {
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
+                statePolling: null,
                 extraControllers: {
                     value: false,
                     message: 'Mas'
@@ -195,9 +196,22 @@
                         .catch(console.log)
                         .finally( () => this.booleanStatus.awaitingResponse = false);
                 }
+            },
+            stateChangeHandler(newState){
+                this.booleanStatus.value = newState.status === 'on';
+
+                this.color.hue = lib.hexToHSL(newState.color).hue;
+
+                this.brightness.selectedValue = newState.brightness;
             }
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        },
         mounted(){
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
             let actions = [
                 {action: this.brightness.action, handler: this.loadSupportedBrightness}
             ];

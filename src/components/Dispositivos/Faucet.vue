@@ -65,6 +65,8 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
+    //let moment = require('moment');
+    //import Api from "../../assets/js/Api";
     const lib = require("../../assets/js/lib");
 
     export default {
@@ -79,6 +81,7 @@
         data(){
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
+                statePolling: null,
                 eventHandlers:{
                     fav(target){ //target == this
                         if (target.props.isFav())
@@ -103,6 +106,16 @@
                     statusTrue: 'opened',
                     actionFalse: 'close',
                     awaitingResponse: false
+                    // lastStatusEvent: moment(),
+                    // eventHandle: function(event){
+                    //     console.log(event);
+                    //     let timestamp = moment(event.timestamp);
+                    //     if(event.event === 'statusChanged' && this.booleanStatus.lastStatusEvent.isBefore(timestamp) && event.args.newStatus !== this.props.state.status){
+                    //         this.booleanStatus.lastStatusEvent = timestamp;
+                    //         this.props.state.status = event.args.newStatus;
+                    //         this.booleanStatus.value = (event.args.newStatus === this.booleanStatus.statusTrue);
+                    //     }
+                    // }
                 },
                 dispense: {
                     selectedUnit: null,
@@ -179,9 +192,20 @@
                         .catch(console.log)
                         .finally( () => this.dispense.awaitingResponse = false);
                 }
+            },
+            stateChangeHandler(newState){
+                this.booleanStatus.value = newState.status === 'closed';
             }
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        },
         mounted(){
+            //lib.suscribeToDeviceEvent(this.booleanStatus.eventHandle.bind(this), this.props.id);
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
             let actions = [
                 {action: this.dispense.action, handler: this.loadSupportedDispense}
             ];
