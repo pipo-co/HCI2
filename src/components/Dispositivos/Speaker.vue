@@ -19,7 +19,7 @@
                                 <v-switch
                                         hide-details="true"
                                         v-model="status.value"
-                                        @change="status.changeState()"
+                                        @change="changeStatus"
                                         :loading="status.awaitingResponse"
                                         :disabled="status.awaitingResponse">
                                 </v-switch><!--class="px-3 my-auto" -->
@@ -211,6 +211,10 @@
                     })
                     .catch(console.log)
                     .finally(() => this.awaitingSongChange = false)
+            },
+            changeStatus(){
+                    this.mode.value = this.status.value;
+                    this.status.changeState();
             }
         },
         mounted(){
