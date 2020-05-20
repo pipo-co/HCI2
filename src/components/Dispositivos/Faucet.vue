@@ -109,7 +109,7 @@
                     // lastStatusEvent: moment(),
                     // eventHandle: function(event){
                     //     console.log(event);
-                    //     let timestamp = moment(event.timestamp);
+                    //     let timestamp = moment(evhandleDispInfoEventsent.timestamp);
                     //     if(event.event === 'statusChanged' && this.booleanStatus.lastStatusEvent.isBefore(timestamp) && event.args.newStatus !== this.props.state.status){
                     //         this.booleanStatus.lastStatusEvent = timestamp;
                     //         this.props.state.status = event.args.newStatus;

@@ -81,9 +81,7 @@ class ButtonStatus{
     }
 
     changeState(){
-        console.log("changeState");
         this.value = !this.value;
-        console.log(this.value);
         if(this.value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
@@ -168,7 +166,6 @@ class NumberFieldWithButtons extends NumberField{
             this.value = this.minValue;
         this.changeState();
     }
-
 }
 
 const deviceEventHandlers = {
