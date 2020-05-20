@@ -13,7 +13,7 @@
                     ></disp-info>
                 </v-col>
                 <v-col cols="12"  class="px-5">
-                    <v-container class="py-0"> <!--class="px-3 py-0" -->
+                    <v-container class="py-0">
                         <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-switch
@@ -22,7 +22,7 @@
                                           @change="status.changeState()"
                                           :loading="status.awaitingResponse"
                                           :disabled="status.awaitingResponse">
-                                </v-switch><!--class="px-3 my-auto" -->
+                                </v-switch>
                             </v-col>
                             <v-col>
                                 <v-btn icon

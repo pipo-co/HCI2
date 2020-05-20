@@ -21,7 +21,6 @@
         },
         methods:{
             loadCards(data){
-                console.log(data);
                 this.cards = data;
             }
         },

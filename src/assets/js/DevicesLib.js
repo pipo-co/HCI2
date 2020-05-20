@@ -2,7 +2,7 @@ export {SelectionField, BooleanStatus, NumberFieldWithButtons, DeviceEventHandle
 
 class SelectionField{
 
-    constructor(device, valueKey, action) {
+        constructor(device, valueKey, action) {
         this.device = device;
         this.valueKey = valueKey;
         this.value = this.device.state[this.valueKey];
@@ -13,7 +13,6 @@ class SelectionField{
     }
 
     changeState(){
-        console.log("changeState");
         if(this.validInput){
             this.awaitingResponse = true;
             this.device.execute(this.action, [this.value])
@@ -41,7 +40,7 @@ class BooleanStatus{
     constructor(device, valueKey, actionTrue, actionFalse, statusTrue, statusFalse) {
         this.device = device;
         this.valueKey = valueKey;
-        this.value = this.device.state[this.valueKey];
+        this.value = this.device.state[this.valueKey] === statusTrue;
         this.actionTrue = actionTrue;
         this.actionFalse = actionFalse;
         this.statusTrue = statusTrue;
@@ -50,7 +49,6 @@ class BooleanStatus{
     }
 
     changeState(){
-        console.log("changeState");
         if(this.value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
@@ -89,7 +87,6 @@ class NumberField{
     }
 
     changeState(){
-        console.log("changeState");
         if(this.validInput){
             this.value = parseInt(this.value);
             this.awaitingResponse = true;
