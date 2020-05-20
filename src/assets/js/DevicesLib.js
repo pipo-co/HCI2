@@ -1,4 +1,4 @@
-export {SelectionField, BooleanStatus, ButtonStatus, NumberFieldWithButtons, DeviceEventHandler, ExtraControls, getLocation}
+export {SelectionField, BooleanStatus, ButtonStatus, NumberField, NumberFieldWithButtons, DeviceEventHandler, ExtraControls, getLocation}
 
 class SelectionField{
 
@@ -129,7 +129,7 @@ class NumberField{
             this.value = parseInt(this.value);
             this.awaitingResponse = true;
             this.device.execute(this.action, [this.value])
-                .then( response => response.result && (this.device.state[this.valueKey] = this.value))
+                .then( () => (this.device.state[this.valueKey] = this.value))
                 .catch(console.log)
                 .finally( () => this.awaitingResponse = false);
         }

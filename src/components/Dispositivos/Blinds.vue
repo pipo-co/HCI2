@@ -4,25 +4,29 @@
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.name"
+                            :name="props.getName()"
                             :state="state"
                             :room="location"
                             :icon="iconInfo"
                             :fav="props.isFav()"
-                            @disp-event="handleDispInfoEvents($event)"
+                            @disp-event="eventHandler.handle($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center" ><!--class="my-0 py-0" -->
                             <v-col>
-                                <v-btn-toggle color="white" rounded dense>
-                                    <v-btn text @click="closeBlinds()">Bajar</v-btn>
-                                    <v-btn text @click="openBlinds()">Subir</v-btn>
-                                </v-btn-toggle>
+                                <v-btn :disabled="level.awaitingResponse" :loading="level.awaitingResponse"
+                                       rounded class="mx-2" @click="closeBlinds()">
+                                    Bajar
+                                </v-btn>
+                                <v-btn :disabled="level.awaitingResponse" :loading="level.awaitingResponse"
+                                       rounded @click="openBlinds()">
+                                    Subir
+                                </v-btn>
                             </v-col>
                             <v-col align="end">
-                                <v-btn text @click="controllerHandler()">{{extraControllers.message}}</v-btn>
+                                <v-btn text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -42,21 +46,29 @@
                         </v-row>
                         <v-row>
                             <v-col class="pr-4">
-                                <v-slider
-                                        v-model="level.sliderValue"
-                                        class="align-center"
-                                        :max='level.maxValue'
-                                        :min='level.minValue'
-                                        hide-details>
-                                    <template v-slot:append>
-                                        <v-text-field
-                                                class="inputNumber"
-                                                v-model="level.textFieldValue"
-                                                solo rounded flat outlined dense
-                                                :rules="level.validate"
-                                        ></v-text-field>
-                                    </template>
-                                </v-slider>
+                                <v-form v-model="level.validInput">
+                                    <v-slider
+                                            :disabled="level.awaitingResponse"
+                                            :loading="level.awaitingResponse"
+                                            v-model="level.value"
+                                            @change="level.changeState()"
+                                            class="align-center"
+                                            :max='level.maxValue'
+                                            :min='level.minValue'
+                                            hide-details>
+                                        <template v-slot:append>
+                                            <v-text-field
+                                                    :disabled="level.awaitingResponse"
+                                                    :loading="level.awaitingResponse"
+                                                    class="inputNumber"
+                                                    v-model="level.value"
+                                                    @change="level.changeState()"
+                                                    solo rounded flat outlined dense
+                                                    :rules="level.rules"
+                                            ></v-text-field>
+                                        </template>
+                                    </v-slider>
+                                </v-form>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -69,6 +81,7 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "@/assets/js/Device";
+    import {DeviceEventHandler, ExtraControls, getLocation, NumberField} from "@/assets/js/DevicesLib";
     const lib = require("../../assets/js/lib");
 
     export default {
@@ -83,105 +96,36 @@
         data(){
             return{
                 iconInfo: lib.getIconInfo(this.props.type.name),
-                extraControllers: {
-                    value: false,
-                    message: 'Mas',
-                },
-                eventHandlers:{
-                    fav(target){ //target == this
-                        if (target.props.isFav())
-                            target.props.unFav();
-                        else
-                            target.props.fav();
-                    },
-                    edit(target){
-                        console.log(`Edit handler ${target}`);
-                    },
-                    history(target){
-                        console.log(`History handler ${target}`);
-                    },
-                    delete(target){
-                        console.log(`Delete handler ${target}`);
-                    },
-                },
-                level:{
-                    textFieldValue: 0,
-                    sliderValue: 0,
-                    minValue: 0,
-                    maxValue: 0,
-                    action: 'setLevel',
-                    validate:
-                        [
-                            level => /[0-9]+/.test(level) || "La temperatura debe ser un numero",
-                            level => level >= this.level.minValue || "Valor por debajo del minimo",
-                            level => level <= this.level.maxValue || "Valor por arriba del maximo",
-                        ]
-                },
-            }
-        },
-        watch: {
-          'level.sliderValue'(){
-              this.level.textFieldValue = this.level.sliderValue;
-              this.props.state.level = this.level.sliderValue;
-              this.updateStateValue(this.level.action, [this.props.state.level]);
-          },
-            'level.textFieldValue'(){
-              this.level.sliderValue = this.level.textFieldValue;
-              this.props.state.level = this.level.textFieldValue;
-              this.updateStateValue(this.level.action, [this.props.state.level]);
+                extraControllers: new ExtraControls(),
+                location: getLocation(this.props),
+                eventHandler: new DeviceEventHandler(this.props),
+                level: new NumberField(this.props, 'level', 'setLevel'),
             }
         },
         computed: {
             state() {
-                if (this.props.state.level >= 75)
+                // console.log(this.props.state.level);
+                if (this.props.state.level >= 75) {
                     return 'Abierta';
-                else if (this.props.state.level >=25)
+                } else if (this.props.state.level >=25)
                     return 'Entreabierta';
                 else
                     return 'Cerrada';
             },
-            location() {
-                return `${this.props.room.home.name} - ${this.props.room.name}`
-            },
         },
-
         methods: {
-            loadSupportedLevels(params){
-              this.level.minValue = params[0].minValue;
-              this.level.maxValue = params[0].maxValue;
-              this.level.sliderValue = this.props.state.level;
-              this.level.textFieldValue = this.props.state.level;
-            },
-            controllerHandler() {
-                this.extraControllers.value = !this.extraControllers.value;
-                if (this.extraControllers.value)
-                    this.extraControllers.message = 'Menos';
-                else
-                    this.extraControllers.message = 'Mas';
-            },
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
+            closeBlinds(){
+                this.level.value = this.level.minValue;
+                this.level.changeState();
             },
             openBlinds(){
-                this.props.state.level = this.level.maxValue;
-                this.level.sliderValue = this.props.state.level;
-                this.level.textFieldValue = this.props.state.level;
-            },
-            closeBlinds(){
-                this.props.state.level = this.level.minValue;
-                this.level.sliderValue = this.props.state.level;
-                this.level.textFieldValue = this.props.state.level;
-            },
-            updateStateValue(action, params = []){
-                this.props.execute(action, params)
-                    .then(console.log)
-                    .catch(errors => console.log(`${action} - Update Value ${errors}`))
+                this.level.value = this.level.maxValue;
+                this.level.changeState();
             }
         },
-
         mounted(){
             let actions = [
-                {action: this.level.action, handler: this.loadSupportedLevels}
+                this.level.getActionLoaderObject()
             ]
             lib.loadAllSupportedValues(this.props.type.id, actions);
 
