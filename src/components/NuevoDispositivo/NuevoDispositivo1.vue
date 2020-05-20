@@ -1,5 +1,22 @@
 <template>
     <div>
+        <v-app-bar fixed color="#72E1C7">
+            <v-container fluid>
+                <v-row no-gutters>
+                    <v-col cols="5">
+                        <v-list-item dense>
+                            <v-toolbar-title class="headline">SMARTIFY</v-toolbar-title>
+                            <v-btn class="ml-5 rounded" color="red" light outlined text @click="cancelProcess()"> Cancelar</v-btn>
+                        </v-list-item>
+                    </v-col>
+                    <v-col cols="4" >
+                        <v-list-item dense>
+                            <v-toolbar-title class="ml-9">NUEVO DISPOSITIVO</v-toolbar-title>
+                        </v-list-item>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-app-bar>
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
                 <v-col cols="3" md="3" class=" ma-1 pa-0" >
@@ -210,7 +227,6 @@
         createDevice,
         createDeviceFromNotExistingRoom,
         createDeviceFromScratch,
-       // getRoomsFromHome
     } from "../../assets/js/lib";
     import Home from "../../assets/js/Home";
     import Room from "../../assets/js/Room";
@@ -219,6 +235,8 @@
         name: "NuevoDispositivo1",
         data() {
             return {
+                routeHomeID:null,
+                routeRoomID:null,
                 validHome: false,
                 validRoom: false,
                 validDisp: false,
@@ -229,19 +247,19 @@
                 stepController: {
                     value: 1,
                 },
-                newHomeRules:[
-                    v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
+                newHomeRules: [
+                    v => !!v || 'Es necesario un nombre',
+                    v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
-                newRoomRules:[
-                    v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 43) || 'El nombre debe tener entre 3 y 43 caracteres',
+                newRoomRules: [
+                    v => !!v || 'Es necesario un nombre',
+                    v => (v && v.length >= 3 && v.length <= 43) || 'El nombre debe tener entre 3 y 43 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
-                newDispRules:[
-                    v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 26) || 'El nombre debe tener entre 3 y 26 caracteres',
+                newDispRules: [
+                    v => !!v || 'Es necesario un nombre',
+                    v => (v && v.length >= 3 && v.length <= 26) || 'El nombre debe tener entre 3 y 26 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
                 newdisp: {
@@ -258,26 +276,40 @@
             }
         },
         mounted() {
+            this.routeHomeID = this.$route.params.homeID ;
+            this.routeRoomID = this.$route.params.roomID;
             Api.home.getAll()
-                .then(data => this.homes = data.result)
+                .then(data => {
+                    this.homes = data.result
+                    if (this.routeHomeID !== undefined)
+                        this.homes.forEach(elem => {
+                            if (elem.id === this.routeHomeID)
+                                this.newdisp.home = elem;
+                        });
+                })
                 .catch(error => console.log(`Error ${error}`));
 
             Api.deviceType.getAll()
                 .then(data => this.disptypes = data.result)
                 .catch(error => console.log(`Error ${error}`));
+
+            if (this.routeHomeID !== undefined && this.routeRoomID !== undefined) {
+                this.stepController.value = 3;
+                this.getRooms(this.routeHomeID);
+            }
         },
-        computed : {
+        computed: {
             validation() {
-                if(this.stepController.value === 1)
+                if (this.stepController.value === 1)
                     return (
                         (this.newdisp.home === null && this.newhomename === null) ||
-                        this.newdisp.home === 0 && ( this.newhomename === '' || this.newhomename === null || !this.validHome)
+                        this.newdisp.home === 0 && (this.newhomename === '' || this.newhomename === null || !this.validHome)
                     );
 
                 else if (this.stepController.value === 2)
                     return (
                         (this.newdisp.room === null && this.newroomname === null) ||
-                        (this.newdisp.room === 0 && ( this.newroomname === '' || this.newroomname === null || !this.validRoom))
+                        (this.newdisp.room === 0 && (this.newroomname === '' || this.newroomname === null || !this.validRoom))
                     );
 
                 else if (this.stepController.value === 3)
@@ -286,101 +318,121 @@
                 else
                     return true;
             },
+            route() {
+                /*//eslint-disable-next-line no-debugger
+                debugger;*/
+                console.log(this.$route.params.previousRoute);
+                if (this.$route.params.previousRoute === 'room') {
+                    return {
+                        name: this.$route.params.previousRoute,
+                        params: {'homeID': this.routeHomeID, 'roomID': this.routeRoomID}
+                    };
+                } else
+                    return {name: 'homes'};
+
+            },
             homeerrormessage() {
-                if(this.flagErrorHome){
+                if (this.flagErrorHome) {
                     return 'El nombre del hogar ya existe, por favor elija otro nombre';
-                }
-                else
+                } else
                     return null;
             },
             roomerrormessage() {
-                if(this.flagErrorRoom){
+                if (this.flagErrorRoom) {
                     return 'El nombre de la habitacion ya existe, por favor elija otro nombre';
-                }
-                else
+                } else
                     return null;
             },
-            disperrormessage(){
-                if(this.flagErrorDisp){
+            disperrormessage() {
+                if (this.flagErrorDisp) {
                     return 'El nombre del dispositivo ya existe, por favor elija otro nombre';
-                }
-                else
+                } else
                     return null;
             }
         },
         methods: {
-            changeHomeFlag(){
+            changeHomeFlag() {
                 this.flagErrorHome = false;
             },
-            changeRoomFlag(){
+            changeRoomFlag() {
                 this.flagErrorRoom = false;
             },
-            changeDispFlag(){
+            changeDispFlag() {
                 this.flagErrorDisp = false;
             },
             controllerBack() {
                 this.stepController.value--;
             },
+            getRooms(id) {
+
+                Api.home.getHomeRooms(id)
+                    .then(data => {
+                        this.rooms = data.result
+                        if (id !== undefined) {
+                            this.rooms.forEach(elem => {
+                                console.log(id);
+                                if (elem.id === this.routeRoomID)
+                                    this.newdisp.room = elem;
+                            })
+                        }
+                    }).catch(error => console.log(`Error ${error}`));
+            },
             controllerNextPlus() {
-                if(!this.validation){
-                if (this.stepController.value === 1) {
-                    if (this.newdisp.home === null || this.newdisp.home === 0) {
-                        if (this.homes !== null && this.homes.some(elem => elem.name === this.newhomename)) {
-                            this.flagErrorHome = true;
-                        } else {
-                            this.flagErrorHome = false;
+                if (!this.validation) {
+                    if (this.stepController.value === 1) {
+                        if (this.newdisp.home === null || this.newdisp.home === 0) {
+                            if (this.homes !== null && this.homes.some(elem => elem.name === this.newhomename)) {
+                                this.flagErrorHome = true;
+                            } else {
+                                this.flagErrorHome = false;
+                                this.stepController.value++;
+                            }
+                        } else if (this.newdisp.home != null && this.newdisp.home !== 0) {
+                            this.getRooms(this.newdisp.home.id)
                             this.stepController.value++;
                         }
-                    } else if (this.newdisp.home != null && this.newdisp.home !== 0) {
-                        Api.home.getHomeRooms(this.newdisp.home.id)
-                            .then(data => this.rooms = data.result)
-                            .catch(error => console.log(`Error ${error}`));
-                        this.stepController.value++;
-                    }
-                }
-                else if (this.stepController.value === 2){
-                    if(this.newdisp.room === 0){
-                        if (this.rooms != null && this.rooms.some(elem => elem.name ===`${this.newdisp.home.id}_${this.newroomname}`)) {
-                            this.flagErrorRoom = true;
-                        } else {
-                            this.flagErrorHome = false;
+                    } else if (this.stepController.value === 2) {
+                        if (this.newdisp.room === 0) {
+                            if (this.rooms != null && this.rooms.some(elem => elem.name === `${this.newdisp.home.id}_${this.newroomname}`)) {
+                                this.flagErrorRoom = true;
+                            } else {
+                                this.flagErrorHome = false;
+                                this.stepController.value++;
+                            }
+                        } else
                             this.stepController.value++;
-                        }
+                    } else {
+                        if (this.newdisp.room !== null && this.newdisp.room !== 0) {
+                            Api.room.getRoomDevices(this.newdisp.room.id)
+                                .then(data => this.disps = data.result)
+                                .catch(error => console.log(`Error ${error}`));
+                            this.stepController.value++;
+                        } else
+                            this.stepController.value++;
                     }
-                    else
-                        this.stepController.value++;
-                }
-                else{
-                    if(this.newdisp.room !== null && this.newdisp.room !== 0) {
-                        Api.room.getRoomDevices(this.newdisp.room.id)
-                            .then(data => this.disps = data.result)
-                            .catch(error => console.log(`Error ${error}`));
-                        this.stepController.value++;
-                    }
-                    else
-                        this.stepController.value++;
-                }
                 }
             },
-            saveDisp(){
-                if(this.newdisp.room !== 0 && this.disps != null && this.disps.some( elem => elem.name ===`${this.newdisp.home.id}_${this.newdisp.room.id}_${this.newdisp.dispname}`)){
+            saveDisp() {
+                //eslint-disable-next-line no-debugger
+                debugger;
+                if (this.newdisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.newdisp.home.id}_${this.newdisp.room.id}_${this.newdisp.dispname}`)) {
                     this.flagErrorDisp = true;
-                }
-                else if (this.newdisp.home === 0) {
+                } else if (this.newdisp.home === 0) {
                     createDeviceFromScratch(this.newhomename, this.newroomname, this.newdisp.dispname, this.newdisp.typeid)
-                        .then(() => this.$router.push({name: 'homes'}))
+                        .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
-                }
-                else if (this.newdisp.room === 0){
+                } else if (this.newdisp.room === 0) {
                     createDeviceFromNotExistingRoom(new Home(this.newdisp.home.id, this.newdisp.home.name, this.newdisp.home.meta), this.newroomname, this.newdisp.dispname, this.newdisp.typeid)
-                        .then(() => this.$router.push( { name:'homes'} ))
+                        .then(() => this.$router.push(this.route))
+                        .catch(error => console.log(`Error ${error}`));
+                } else {
+                    createDevice(this.newdisp.dispname, this.newdisp.typeid, new Room(this.newdisp.room.id, this.newdisp.room.name, this.newdisp.room.meta, this.newdisp.home))
+                        .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
                 }
-                else{
-                    createDevice(this.newdisp.dispname ,this.newdisp.typeid, new Room(this.newdisp.room.id, this.newdisp.room.name, this.newdisp.room.meta, this.newdisp.home))
-                        .then(() => this.$router.push( { name:'homes'} ))
-                        .catch(error => console.log(`Error ${error}`));
-                }
+            },
+            cancelProcess() {
+                this.$router.push(this.route);
             }
         }
     }

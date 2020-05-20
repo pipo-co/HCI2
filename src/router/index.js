@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 import Homes from "@/components/Homes";
 
-import NewDisp from "@/components/NuevoDispositivo/NuevoDispositivo1";
+
 
 const routes = [
     {
@@ -35,18 +35,19 @@ const routes = [
         path: "/rutinas/nuevarutina1"
     },
     {
-        component: NewDisp,
+        component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
+        name: "nuevodispositivo",
+        path: "/dispositivo/nuevodispositivo1/:previousRoute/:homeID/:roomID"
+    },
+    {
+        component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
         name: "nuevodispositivo1",
         path: "/dispositivo/nuevodispositivo1"
     },
     {
-        component: NewDisp,
-        path: "/dispositivo/nuevodispositivo1/:homeId/:roomId"
-    },
-    {
         component: () => import("../components/ViewRoom"),
         name: "room",
-        path: "/room/:roomID",
+        path: "/room/:homeID/:roomID",
     },
     {
         component: () => import("../components/ViewDeviceType"),

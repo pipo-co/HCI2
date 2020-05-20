@@ -1,5 +1,23 @@
 <template>
     <div>
+        <v-app-bar fixed color="#72E1C7">
+            <v-row align="center" justify="center">
+                <v-col cols="3">
+                    <v-toolbar-title color="3C3F58">SMARTIFY</v-toolbar-title>
+                </v-col>
+                <v-spacer></v-spacer>
+                <v-col cols="6" class="px-0">
+                    <v-tabs right color="#3C3F58" background-color="#72E1C7">
+                        <v-tabs-slider color="#87FFE3"></v-tabs-slider>
+                        <v-tab><v-icon right>mdi-magnify</v-icon></v-tab>
+                        <v-tab to="/favoritos">Favoritos</v-tab>
+                        <v-tab to="/">Hogares</v-tab>
+                        <v-tab to="/rutinas">Rutinas</v-tab>
+                        <v-tab to="/dispositivo/nuevodispositivo1">Consumos</v-tab>
+                    </v-tabs>
+                </v-col>
+            </v-row>
+        </v-app-bar>
         <v-container class="pa-2">
             <v-row no-gutters class=" ma-1 pa-0">
                 <v-col cols="12" md="12">
@@ -191,7 +209,7 @@
                                                     <v-btn
                                                             text
                                                             v-on="on"
-
+                                                            @click="roomName = ''"
                                                     >
                                                         Editar
                                                     </v-btn>
@@ -299,7 +317,7 @@
                                     </v-col>
                                     </span>
                                 <v-col cols="1">
-                                    <v-btn text fab right :to="{ name: 'room', params: { 'roomID': room.id }}">
+                                    <v-btn text fab right :to="{ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }}">
                                         <v-icon color="#65C2AD" large class="px-4">mdi-chevron-right</v-icon>
                                     </v-btn>
                                 </v-col>
@@ -393,9 +411,6 @@
                     console.log(`Error ${error}`);
                 });
             },
-            changeHomeFlag(){
-                this.flagErrorHome = false;
-            },
             homeerrormessage(flag) {
                 if(flag){
                     return 'El nombre del hogar ya existe, por favor elija otro nombre';
@@ -409,8 +424,8 @@
                 this.auxHomeId=id;
             },
             changeHomeDevices() {
-                //eslint-disable-next-line no-debugger
-                debugger;
+                /*//eslint-disable-next-line no-debugger
+                debugger;*/
                 getDeviceTypesInHome(this.currentHome.id).then(data => {
                     this.homedevs = data;
                 }).catch(error => {
@@ -427,10 +442,10 @@
             saveChanges(){
                 let flag= false;
                 this.homes.forEach(elem =>{
-                    let nameaux=this.auxHome[elem.id].name.toUpperCase().trim();
+                    let nameaux=this.auxHome[elem.id].name.trim();
                     if(this.auxHome[elem.id].valid && nameaux !=='') {
 
-                        if (this.homes.some(elem => elem.name.toUpperCase().trim() === nameaux ))
+                        if (this.homes.some(elem => elem.name.toUpperCase().trim() === nameaux.toUpperCase() ))
 
                         {  this.auxHome[elem.id].flagErrorHome = true;
                             flag = true;
@@ -449,9 +464,9 @@
                 })
             },
             saveRoomChanges(){
-                /*//eslint-disable-next-line no-debugger
+                //eslint-disable-next-line no-debugger
                 debugger;
-                console.log(this.auxRoomId);*/
+                console.log(this.auxRoomId);
                 let flag = false;
                 if(this.roomNameValid){
                     if(this.roomMap.some(elem => elem.roomName.split('_').pop().toUpperCase().trim() === this.roomName.toUpperCase().trim() )){

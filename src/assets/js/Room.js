@@ -37,5 +37,9 @@ class Room {
   removeDevice(deviceId){
     return Api.room.delete(deviceId);
   }
+
+  static persistNewName(id, newName, meta){
+    return Api.room.modify({id: id, name: newName, meta: meta});
+  }
 }
 export default Room;
