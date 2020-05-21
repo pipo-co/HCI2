@@ -17,9 +17,9 @@
                         <v-row align="center" dense justify="center"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-btn :disabled="lock.value" :loading="open.awaitingResponse"
-                                       rounded class="mx-1" @click="open.changeState()">{{opened}}</v-btn>
+                                       color="#72E1C7" rounded class="black--text mx-1" @click="open.changeState()">{{opened}}</v-btn>
                                 <v-btn :disabled="lock.awaitingResponse" :loading="lock.awaitingResponse"
-                                       rounded class="mx-1" @click="lock.changeState()">{{locked}}</v-btn>
+                                       color="#72E1C7" rounded class="black--text mx-1" @click="lock.changeState()">{{locked}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>

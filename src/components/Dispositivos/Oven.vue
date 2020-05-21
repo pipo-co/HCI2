@@ -17,11 +17,12 @@
                         <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-switch
-                                          hide-details="true"
-                                          v-model="status.value"
-                                          @change="status.changeState()"
-                                          :loading="status.awaitingResponse"
-                                          :disabled="status.awaitingResponse">
+                                        color="#72E1C7"
+                                        hide-details="true"
+                                        v-model="status.value"
+                                        @change="status.changeState()"
+                                        :loading="status.awaitingResponse"
+                                        :disabled="status.awaitingResponse">
                                 </v-switch>
                             </v-col>
                             <v-col>
@@ -29,7 +30,7 @@
                                        :disabled="temperature.awaitingResponse"
                                        :loading="temperature.awaitingResponse"
                                        @click="temperature.decrement()">
-                                    <v-icon>mdi-minus</v-icon>
+                                    <v-icon color="#6563FF">mdi-minus</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -50,11 +51,11 @@
                                        :disabled="temperature.awaitingResponse"
                                        :loading="temperature.awaitingResponse"
                                        @click="temperature.increment()">
-                                    <v-icon>mdi-plus</v-icon>
+                                    <v-icon color="#6563FF">mdi-plus</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col ><!--class="pr-10" -->
-                                <v-btn text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
+                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
