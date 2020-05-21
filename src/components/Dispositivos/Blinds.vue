@@ -38,11 +38,6 @@
                         <v-row>
                             <v-col class="py-0 my-0">
                                 <p class="font-weight-medium subtitle-1 my-0">Seleccione nivel:</p>
-<!--                                <v-list-item class="px-0">-->
-<!--                                    <v-list-item-content class="ma-1 pa-1">-->
-<!--                                        <v-list-item-subtitle class="title">Seleccione Posicion:</v-list-item-subtitle>-->
-<!--                                    </v-list-item-content>-->
-<!--                                </v-list-item>-->
                             </v-col>
                         </v-row>
                         <v-row>
