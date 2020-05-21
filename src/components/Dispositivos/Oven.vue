@@ -162,6 +162,8 @@
               extraControllers: new ExtraControls(),
               eventHandler: new DeviceEventHandler(this.props),
               location: getLocation(this.props),
+              statePolling: null,
+
               status: new BooleanStatus(this.props, 'status', 'turnOn', 'turnOff','on','off'),
               grill: new SelectionField(this.props,'grill','setGrill'),
               heat: new SelectionField(this.props,'heat','setHeat',),
@@ -174,7 +176,20 @@
                 if(!this.status.value)
                     return 'Off'
                 return `Prendido: ${this.props.state.heat} ${this.props.state.temperature}º`
-            },
+            }
+        },
+        methods: {
+            stateChangeHandler(newState) {
+                this.status.value = newState.status === this.status.statusTrue;
+
+                this.grill.value = newState.grill;
+
+                this.heat.value = newState.heat;
+
+                this.convection.value = newState.convection;
+
+                this.temperature.value = newState.temperature;
+            }
         },
         mounted() {
             let actions = [
@@ -185,7 +200,13 @@
             ];
 
             lib.loadAllSupportedValues(this.props.type.id, actions);
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        }
     }
 </script>
 

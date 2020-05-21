@@ -52,6 +52,7 @@
                                 </v-form>
                             </v-col>
                             <v-col>
+                                <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
                                 <v-btn text @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                             </v-col>
                         </v-row>
@@ -140,6 +141,15 @@
             },
             validDispense(){
                 return this.props.state.status === 'closed' && this.dispense.validInput;
+            },
+            isDispensing(){
+                return !!(this.props.state.dispensedQuantity);
+            },
+            percentDispense(){
+                if(this.isDispensing)
+                    return Math.floor((this.props.state.dispensedQuantity / this.props.state.quantity) * 100);
+                else
+                    return 0;
             }
         },
         methods: {
