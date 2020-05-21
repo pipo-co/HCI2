@@ -136,7 +136,7 @@ export function suscribeToDeviceEvent(f, deviceId){
     source.addEventListener('message', event => f(JSON.parse(event.data)), false);
 }
 
-export function setStatePolling(stateChangeHandler){
+export function setStatePolling(stateChangeHandler, timeout = 5000){
     return setInterval(() => {
         this.props.getState()
             .then( data => {
@@ -144,7 +144,7 @@ export function setStatePolling(stateChangeHandler){
                 stateChangeHandler(data.result);
             })
             .catch(console.log);
-    }, 5000);
+    }, timeout);
 }
 
 export function loadAllSupportedValues(deviceID, actions) {

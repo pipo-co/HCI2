@@ -100,6 +100,7 @@
                 location: getLocation(this.props),
                 eventHandler: new DeviceEventHandler(this.props),
                 level: new NumberField(this.props, 'level', 'setLevel'),
+                statePolling: null
             }
         },
         computed: {
@@ -121,6 +122,9 @@
             openBlinds(){
                 this.level.value = this.level.maxValue;
                 this.level.changeState();
+            },
+            stateChangeHandler(newState) {
+                this.level.value = newState.level;
             }
         },
         mounted(){
@@ -129,9 +133,11 @@
             ]
             lib.loadAllSupportedValues(this.props.type.id, actions);
 
-            // lib.deviceTypeActionParams(this.props.type.id, this.level.action)
-            //     .then(this.loadSupportedLevels)
-            //     .catch(errors => console.log(`Level - Supported Values ${errors}`));
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
+        },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
         }
     }
 </script>

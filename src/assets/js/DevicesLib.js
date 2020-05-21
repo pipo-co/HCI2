@@ -49,17 +49,28 @@ class BooleanStatus{
     }
 
     changeState(){
-        if(this.value) {
+        let value = this.value;
+        if(value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
-                .then( response => response.result && (this.device.state[this.valueKey] = this.statusTrue))
+                .then( response => {
+                    if(response.result){
+                        this.device.state[this.valueKey] = this.statusTrue;
+                        this.value = value;
+                    }
+                })
                 .catch(console.log)
                 .finally( () => this.awaitingResponse = false);
         }
         else {
             this.awaitingResponse = true;
             this.device.execute(this.actionFalse)
-                .then( response => response.result && (this.device.state[this.valueKey] = this.statusFalse))
+                .then( response => {
+                    if(response.result) {
+                        this.device.state[this.valueKey] = this.statusFalse;
+                        this.value = value;
+                    }
+                })
                 .catch(console.log)
                 .finally( () => this.awaitingResponse = false);
         }

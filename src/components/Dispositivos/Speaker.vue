@@ -135,6 +135,7 @@
                 iconInfo:lib.getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
                 eventHandler: new DeviceEventHandler(this.props),
+                statePolling: null,
 
                 status: new BooleanStatus(this.props,'status','play','stop','playing','stopped'),
                 mode: new ButtonStatus(this.props, 'status', 'resume', 'pause', 'playing', 'paused'),
@@ -147,11 +148,12 @@
         },
         computed:{
             state(){
-                if(this.stopped)
-                    return 'Apagado';
+                let song = this.props.state.song;
+                if(this.stopped || !song)
+                    return 'Off';
                 else if(this.paused)
-                    return 'Pausa'
-                return 'Escuchando';
+                    return `Pausa - ${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
+                return `On - ${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
             },
             location(){
                 return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;
@@ -185,15 +187,17 @@
                 this.props.execute(this.genre.action, [this.genre.value])
                     .then( response => {
                         response.result && (this.props.state.genre = this.value);
-                        this.refreshPlaylist();
+                        this.refreshPlaylist(false);
                     })
                     .catch(console.log)
                     .finally( () => this.genre.awaitingResponse = false);
             },
-            refreshPlaylist(){
+            refreshPlaylist(reorder = true){
                 this.props.execute('getPlaylist')
                     .then( data => {
                             this.playlist = data.result;
+                            if(reorder)
+                                this.updatePlaylistBeginning();
                     })
                     .catch(console.log);
             },
@@ -213,8 +217,31 @@
                     .finally(() => this.awaitingSongChange = false)
             },
             changeStatus(){
-                    this.mode.value = this.status.value;
-                    this.status.changeState();
+                this.mode.value = this.status.value;
+                this.status.changeState();
+            },
+            updatePlaylistBeginning(){
+                if(this.props.state.song){
+                    let song = this.props.state.song.title;
+                    let i = this.playlist.length;
+                    while (i > 0 && this.playlist[0].title !== song) {
+                        this.playlist.push(this.playlist.shift());
+                        i--;
+                    }
+                }
+            },
+            stateChangeHandler(newState){
+                this.status.value = (this.playing || this.paused);
+
+                this.mode.value = this.playing;
+
+                this.volume.value = newState.volume;
+
+                if(this.genre.value !== newState.genre){
+                    this.genre.value = newState.genre;
+                    this.refreshPlaylist();
+                } else
+                    this.updatePlaylistBeginning();
             }
         },
         mounted(){
@@ -229,6 +256,12 @@
                 this.genre.getActionLoaderObject()
             ];
             lib.loadAllSupportedValues(this.props.type.id, actions);
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 1000);
+        },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
         }
     }
 </script>

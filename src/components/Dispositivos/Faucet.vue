@@ -106,16 +106,6 @@
                     statusTrue: 'opened',
                     actionFalse: 'close',
                     awaitingResponse: false
-                    // lastStatusEvent: moment(),
-                    // eventHandle: function(event){
-                    //     console.log(event);
-                    //     let timestamp = moment(evhandleDispInfoEventsent.timestamp);
-                    //     if(event.event === 'statusChanged' && this.booleanStatus.lastStatusEvent.isBefore(timestamp) && event.args.newStatus !== this.props.state.status){
-                    //         this.booleanStatus.lastStatusEvent = timestamp;
-                    //         this.props.state.status = event.args.newStatus;
-                    //         this.booleanStatus.value = (event.args.newStatus === this.booleanStatus.statusTrue);
-                    //     }
-                    // }
                 },
                 dispense: {
                     selectedUnit: null,
@@ -202,7 +192,6 @@
                 clearInterval(this.statePolling);
         },
         mounted(){
-            //lib.suscribeToDeviceEvent(this.booleanStatus.eventHandle.bind(this), this.props.id);
 
             this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
 

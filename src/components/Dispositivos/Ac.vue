@@ -225,6 +225,7 @@
                 extraControllers: new ExtraControls(),
                 location: getLocation(this.props),
                 eventHandler: new DeviceEventHandler(this.props),
+                statePolling: null,
 
                 status: new BooleanStatus(this.props,'status','turnOn','turnOff','on','off'),
                 mode: new SelectionField(this.props,'mode','setMode'),
@@ -245,6 +246,22 @@
             },
         },
 
+        methods: {
+            stateChangeHandler(newState) {
+                this.status.value = newState.status === this.status.statusTrue;
+
+                this.mode.value = newState.mode;
+
+                this.swing.vertical.value = newState.verticalSwing;
+
+                this.swing.horizontal.value = newState.horizontalSwing;
+
+                this.fan.value = newState.fanSpeed;
+
+                this.temperature.value = newState.temperature;
+            }
+        },
+
         mounted() {
             let actions = [
                     this.mode.getActionLoaderObject(),
@@ -255,7 +272,13 @@
             ];
 
             lib.loadAllSupportedValues(this.props.type.id, actions);
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        }
     }
 </script>
 
