@@ -1,5 +1,8 @@
 <template>
-    <p>404 oh nooooooo</p>
+    <div>
+        <nav-bar/>
+        <p>404 oh nooooooo</p>
+    </div>
 </template>
 
 <script>

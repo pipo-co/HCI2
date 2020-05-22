@@ -1,18 +1,23 @@
 <template>
-    <card-holder v-if="successfulSearch" :card-array="cards"/>
-    <div v-else-if="!loading">
-        <p>Tu busqueda no fue exitosa. Intenta de nuevo</p>
+    <div>
+        <nav-bar></nav-bar>
+        <h1>Dispositivos encontrados al buscar: {{$route.params.name}}</h1>
+        <card-holder v-if="successfulSearch" :card-array="cards"/>
+        <div v-else-if="!loading">
+            <p>Tu busqueda no fue exitosa. Intenta de nuevo</p>
+        </div>
+        <p v-else>Loading...</p>
     </div>
-    <p v-else>Loading...</p>
 </template>
 
 <script>
     import CardHolder from "./CardHolder";
+    import NavBar from "./NavBar";
     const lib = require("../assets/js/lib.js");
 
     export default {
         name: "Search",
-        components: {CardHolder},
+        components: {NavBar, CardHolder},
         data(){
             return{
                 cards: null,
