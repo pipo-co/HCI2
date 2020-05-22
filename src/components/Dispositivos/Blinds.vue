@@ -14,8 +14,8 @@
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
-                        <v-row align="center" dense justify="center" ><!--class="my-0 py-0" -->
-                            <v-col cols="8">
+                        <v-row dense justify="space-around"><!--class="my-0 py-0" -->
+                            <v-col cols="8" align-self="start">
                                 <v-btn :disabled="level.awaitingResponse" :loading="level.awaitingResponse"
                                        color="#72E1C7" class="black--text mx-2" rounded @click="closeBlinds()">
                                     Bajar
@@ -25,7 +25,7 @@
                                     Subir
                                 </v-btn>
                             </v-col>
-                            <v-col cols="4" align="end">
+                            <v-col cols="4">
                                 <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
@@ -45,7 +45,7 @@
                                 <v-form v-model="level.validInput">
                                     <v-slider
                                             color="#65C0AB"
-                                            thumb-color="#87FFE3"
+                                            thumb-color="#65C0AB"
                                             track-color="#A8DED1"
                                             :disabled="level.awaitingResponse"
                                             :loading="level.awaitingResponse"

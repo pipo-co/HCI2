@@ -14,36 +14,44 @@
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
-                        <v-row align="center" dense justify="center"> <!--class="my-0 py-0" -->
-                            <v-col align="end">
-                                <v-btn text @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
-                            </v-col>
+                        <v-row align="baseline" dense justify="center"> <!--class="my-0 py-0" -->
                             <v-col>
                                 <v-select
+                                        dense rounded outlined
                                         v-model="dispense.selectedUnit"
                                         :items="dispense.unitSupportedValues"
                                         label="Unidad"
                                 ></v-select>
+                            </v-col>
+                            <v-col align="end">
+                                <v-btn text color="#6563FF" @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-card-text>
-                        <v-row>
-                            <v-col class="pr-4">
+                        <v-row align="baseline">
+                            <v-col>
                                 <v-form v-model="dispense.validInput">
                                     <v-slider
+                                            color="#65C0AB"
+                                            thumb-color="#65C0AB"
+                                            track-color="#A8DED1"
                                             v-model="dispense.selectedValue"
                                             class="align-center"
-                                            prepend-icon="mdi-water"
                                             :max="dispense.maxValue"
                                             :min="dispense.minValue"
                                             hide-details>
+                                        <template v-slot:prepend>
+                                            <v-icon color="#6563FF">
+                                                mdi-water
+                                            </v-icon>
+                                        </template>
                                         <template v-slot:append>
                                             <v-text-field
                                                     v-model="dispense.selectedValue"
-                                                    class="mt-0 pt-0"
+                                                    solo rounded flat outlined dense
                                                     type="number"
                                                     :rules="dispense.validate"
                                             ></v-text-field>
@@ -51,9 +59,11 @@
                                     </v-slider>
                                 </v-form>
                             </v-col>
+                        </v-row>
+                        <v-row>
                             <v-col>
                                 <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
-                                <v-btn text @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
+                                <v-btn text color="#6563FF" @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                             </v-col>
                         </v-row>
                     </v-card-text>

@@ -22,7 +22,7 @@
                                 <v-form v-model="brightness.validInput">
                                     <v-slider
                                             color="#65C0AB"
-                                            thumb-color="#87FFE3"
+                                            thumb-color="#65C0AB"
                                             track-color="#A8DED1"
                                             v-model="brightness.selectedValue"
                                             class="align-center"

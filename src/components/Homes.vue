@@ -9,9 +9,10 @@
                     >
                         <template v-slot:activator="{ on }">
                             <v-btn
-                                    color="#65C2AD"
+                                    color="#72E1C7"
                                     dark
                                     v-on="on"
+                                    class="font-weight-bold"
                             >
                                 Editar Hogares
                             </v-btn>
@@ -113,11 +114,11 @@
                     <v-tabs class="top-rounded"
                             fixed-tabs
                             v-model="currentHomeindex"
-                            background-color="#65C2AD"
+                            background-color="#72E1C7"
                             dark
                     >
-                        <v-tabs-slider color="black"></v-tabs-slider>
-                        <v-tab v-for="home in homes" :key="home.id" >
+                        <v-tabs-slider color="teal"></v-tabs-slider>
+                        <v-tab class="font-weight-bold" v-for="home in homes" :key="home.id" >
                             {{home.name}}
                         </v-tab>
                     </v-tabs>

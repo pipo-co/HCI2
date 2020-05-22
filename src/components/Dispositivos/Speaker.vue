@@ -17,6 +17,7 @@
                         <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-switch
+                                        color="#72E1C7"
                                         hide-details="true"
                                         v-model="status.value"
                                         @change="changeStatus"
@@ -26,22 +27,22 @@
                             </v-col>
                             <v-col>
                                 <v-btn icon @click="skipSong(false)" :loading="awaitingSongChange" :disabled="stopped || paused || awaitingSongChange">
-                                    <v-icon>mdi-skip-previous</v-icon>
+                                    <v-icon color="#6563FF">mdi-skip-previous</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col>
                                 <v-btn icon :disabled="stopped || mode.awaitingResponse" :loading="mode.awaitingResponse"
                                        rounded class="mx-1" @click="mode.changeState()">
-                                    <v-icon>{{playPauseIcon}}</v-icon>
+                                    <v-icon color="#6563FF">{{playPauseIcon}}</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col>
                                 <v-btn icon @click="skipSong(true)" :loading="awaitingSongChange" :disabled="!playing || awaitingSongChange">
-                                    <v-icon>mdi-skip-next</v-icon>
+                                    <v-icon color="#6563FF">mdi-skip-next</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col ><!--class="pr-10" -->
-                                <v-btn text @click="controllerHandler()">{{extraControllers.message}}</v-btn>
+                                <v-btn color="#6563FF" text @click="controllerHandler()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -49,6 +50,9 @@
                 <v-col cols="12" class="px-5">
                     <v-form v-model="volume.validInput">
                         <v-slider
+                                color="#65C0AB"
+                                thumb-color="#65C0AB"
+                                track-color="#A8DED1"
                                 prepend-icon="mdi-volume-medium"
                                 :disabled="volume.awaitingResponse"
                                 :loading="volume.awaitingResponse"
@@ -152,8 +156,8 @@
                 if(this.stopped || !song)
                     return 'Off';
                 else if(this.paused)
-                    return `Pausa - ${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
-                return `On - ${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
+                    return `${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
+                return `${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
             },
             location(){
                 return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;

@@ -56,7 +56,7 @@
                             </v-col>
 
                             <v-col ><!--class="pr-10" -->
-                                <v-btn text color="#6563FF" small class="v-size--x-large" @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
+                                <v-btn text color="#6563FF" @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
