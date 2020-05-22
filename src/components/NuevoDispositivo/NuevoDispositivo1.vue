@@ -6,7 +6,7 @@
                     <v-col cols="5">
                         <v-list-item dense>
                             <v-toolbar-title class="headline">SMARTIFY</v-toolbar-title>
-                            <v-btn class="ml-5 rounded" color="red" light outlined text @click="cancelProcess()"> Cancelar</v-btn>
+
                         </v-list-item>
                     </v-col>
                     <v-col cols="4" >
@@ -20,9 +20,7 @@
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
                 <v-col cols="3" md="3" class=" ma-1 pa-0" >
-                    <v-btn rounded outlined color="#A5A5A5" @click='controllerBack()' v-show="stepController.value > 1">
-                        Volver
-                    </v-btn>
+                    <v-btn class="ml-5 rounded"  light outlined text @click="cancelProcess()"> Cancelar</v-btn>
                 </v-col>
                 <v-col cols="6" md="6">
                     <v-stepper class="rounded my-4" v-model="stepController.value">
@@ -38,9 +36,6 @@
                     </v-stepper>
                 </v-col>
                 <v-col>
-                    <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()' v-show="stepController.value < 4" :disabled="validation">
-                        Siguiente
-                    </v-btn>
                     <v-btn rounded outlined color="#A5A5A5"  @click='saveDisp()' v-show="stepController.value === 4" :disabled="newdisp.dispname === null || validDisp === false">
                         Guardar
                     </v-btn>
@@ -93,6 +88,16 @@
                                 </v-form>
                             </v-col>
                         </v-row>
+                        <v-row>
+                            <v-col>
+                            </v-col>
+                            <v-col cols="6"></v-col>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
+                                    Siguiente
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                     </v-container>
                     <v-container fluid v-show="stepController.value === 2">
                         <v-row>
@@ -139,6 +144,19 @@
                                 </v-form>
                             </v-col>
                         </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerBack()'>
+                                    Volver
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="6"></v-col>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
+                                    Siguiente
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                     </v-container>
                     <v-container fluid v-show="stepController.value === 3">
                         <v-row>
@@ -163,6 +181,19 @@
                                             :value="disps.id"
                                     ></v-radio>
                                 </v-radio-group>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerBack()'>
+                                    Volver
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="6"></v-col>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
+                                    Siguiente
+                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -213,6 +244,13 @@
                                     </v-col>
                                 </v-row>
                             </v-container>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerBack()'>
+                                    Volver
+                                </v-btn>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card>
