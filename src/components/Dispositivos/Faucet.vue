@@ -14,48 +14,58 @@
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
-                        <v-row align="center" dense justify="center"> <!--class="my-0 py-0" -->
-                            <v-col align="end">
-                                <v-btn text @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
-                            </v-col>
-                            <v-col>
+                        <v-row align="baseline" dense justify="center"> <!--class="my-0 py-0" -->
+                            <v-col cols="4">
                                 <v-select
+                                        dense rounded outlined
                                         v-model="dispense.selectedUnit"
                                         :items="dispense.unitSupportedValues"
                                         label="Unidad"
                                 ></v-select>
                             </v-col>
+                            <v-spacer></v-spacer>
+                            <v-col cols="4" class="justify-end">
+                                <v-btn text color="#6563FF" @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-col>
-                <v-col cols="12" class="px-5">
-                    <v-card-text>
-                        <v-row>
-                            <v-col class="pr-4">
-                                <v-form v-model="dispense.validInput">
-                                    <v-slider
-                                            v-model="dispense.selectedValue"
-                                            class="align-center"
-                                            prepend-icon="mdi-water"
-                                            :max="dispense.maxValue"
-                                            :min="dispense.minValue"
-                                            hide-details>
-                                        <template v-slot:append>
-                                            <v-text-field
-                                                    v-model="dispense.selectedValue"
-                                                    class="mt-0 pt-0"
-                                                    type="number"
-                                                    :rules="dispense.validate"
-                                            ></v-text-field>
-                                        </template>
-                                    </v-slider>
-                                </v-form>
-                            </v-col>
-                            <v-col>
-                                <v-btn text @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
+                <v-col cols="12" class="px-5 py-0">
+                    <v-row align="baseline">
+                        <v-col class="py-0">
+                            <v-form v-model="dispense.validInput">
+                                <v-slider
+                                        color="#65C0AB"
+                                        thumb-color="#65C0AB"
+                                        track-color="#A8DED1"
+                                        v-model="dispense.selectedValue"
+                                        class="align-center"
+                                        :max="dispense.maxValue"
+                                        :min="dispense.minValue"
+                                        hide-details>
+                                    <template v-slot:prepend>
+                                        <v-icon color="#6563FF">
+                                            mdi-water
+                                        </v-icon>
+                                    </template>
+                                    <template v-slot:append>
+                                        <v-text-field
+                                                v-model="dispense.selectedValue"
+                                                solo rounded flat outlined dense
+                                                type="number"
+                                                :rules="dispense.validate"
+                                        ></v-text-field>
+                                    </template>
+                                </v-slider>
+                            </v-form>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="py-0">
+                            <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
+                            <v-btn text color="#6563FF" @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-container>
@@ -65,6 +75,8 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
+    //let moment = require('moment');
+    //import Api from "../../assets/js/Api";
     const lib = require("../../assets/js/lib");
 
     export default {
@@ -79,6 +91,7 @@
         data(){
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
+                statePolling: null,
                 eventHandlers:{
                     fav(target){ //target == this
                         if (target.props.isFav())
@@ -137,6 +150,15 @@
             },
             validDispense(){
                 return this.props.state.status === 'closed' && this.dispense.validInput;
+            },
+            isDispensing(){
+                return !!(this.props.state.dispensedQuantity);
+            },
+            percentDispense(){
+                if(this.isDispensing)
+                    return Math.floor((this.props.state.dispensedQuantity / this.props.state.quantity) * 100);
+                else
+                    return 0;
             }
         },
         methods: {
@@ -179,9 +201,19 @@
                         .catch(console.log)
                         .finally( () => this.dispense.awaitingResponse = false);
                 }
+            },
+            stateChangeHandler(newState){
+                this.booleanStatus.value = newState.status === 'closed';
             }
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        },
         mounted(){
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
             let actions = [
                 {action: this.dispense.action, handler: this.loadSupportedDispense}
             ];

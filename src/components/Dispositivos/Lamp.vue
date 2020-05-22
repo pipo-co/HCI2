@@ -16,11 +16,14 @@
                     <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col cols="1" class="ma-0 pa-0">
-                                <v-switch v-model="booleanStatus.value" @change="invertBooleanState" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" ></v-switch><!--class="px-3 my-auto" -->
+                                <v-switch color="#72E1C7" v-model="booleanStatus.value" @change="invertBooleanState" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" ></v-switch><!--class="px-3 my-auto" -->
                             </v-col>
                             <v-col cols="7" class="ma-0 pa-0">
                                 <v-form v-model="brightness.validInput">
                                     <v-slider
+                                            color="#65C0AB"
+                                            thumb-color="#65C0AB"
+                                            track-color="#A8DED1"
                                             v-model="brightness.selectedValue"
                                             class="align-center"
                                             prepend-icon="mdi-weather-sunny"
@@ -35,7 +38,7 @@
                                 </v-form>
                             </v-col>
                             <v-col cols="2" class="ma-0 pa-0"><!--class="pr-10" -->
-                                <v-btn text @click="controllerHandler">{{extraControllers.message}}</v-btn>
+                                <v-btn color="#6563FF" text @click="controllerHandler">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -48,7 +51,7 @@
                             <v-col cols="12">
                                 <v-list-item class="px-0">
                                     <v-list-item-content class="ma-1 pa-1">
-                                        <v-list-item-title align="left" class="title">Seleccione Nuevo Color</v-list-item-title>
+                                        <v-list-item-title align="center" class="title">Seleccione Nuevo Color</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -80,6 +83,7 @@
         data() {
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
+                statePolling: null,
                 extraControllers: {
                     value: false,
                     message: 'Mas'
@@ -195,9 +199,22 @@
                         .catch(console.log)
                         .finally( () => this.booleanStatus.awaitingResponse = false);
                 }
+            },
+            stateChangeHandler(newState){
+                this.booleanStatus.value = newState.status === 'on';
+
+                this.color.hue = lib.hexToHSL(newState.color).hue;
+
+                this.brightness.selectedValue = newState.brightness;
             }
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        },
         mounted(){
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
             let actions = [
                 {action: this.brightness.action, handler: this.loadSupportedBrightness}
             ];

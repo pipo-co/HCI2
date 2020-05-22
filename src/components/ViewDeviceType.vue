@@ -6,6 +6,7 @@
     import CardHolder from "./CardHolder";
     const lib = require("../assets/js/lib.js");
 
+
     export default {
         name: "ViewDeviceType",
         components: {CardHolder},
@@ -15,13 +16,18 @@
             }
         },
         mounted(){
-            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeName)
+            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeID)
                 .then(this.loadCards)
-                .catch(error => console.log(`Favorites ${error}`));
+                .catch(error => {
+                    console.log(`View Device Types ${error}`)
+                });
         },
         methods:{
             loadCards(data){
-                this.cards = data;
+                if(data.length === 0)
+                        this.$router.push({name: "pageNotFound"});
+                else
+                    this.cards = data;
             }
         },
     }

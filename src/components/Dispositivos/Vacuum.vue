@@ -149,7 +149,7 @@
                         this.activeRoom.selectedRoom = this.activeRoom.rooms.findIndex( elem => elem.id === this.props.state.location.id);
                     })
                     .catch(console.log);
-                this.activeRoom.selectedRoom = this.props.state.location.id;
+                //this.activeRoom.selectedRoom = this.props.state.location.id;
             },
             changeState(){
                 let i = this.multivaluedState.selectedValue;
@@ -176,9 +176,25 @@
                         .catch(console.log)
                         .finally(() => this.activeRoom.awaitingResponse = false);
                 }
+            },
+            stateChangeHandler(newState){
+                this.multivaluedState.selectedValue = this.multivaluedState.values.findIndex(elem => elem.state === newState.status);
+
+                this.activeRoom.selectedRoom = this.activeRoom.rooms.findIndex( elem => elem.id === newState.location.id);
+
+                this.mode.value = newState.mode;
             }
         },
         mounted(){
+            // Vacuum empieza sin una setLocation, hay que configurarselo la primera vez.
+            if(!this.props.state.location) {
+                this.props.execute('setLocation', [this.props.room.id])
+                    .then( this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this)) )
+                    .catch(error => console.log(`Critical Error ${error}`));
+                this.props.state.location = {id: this.props.room.id, name: this.props.room.name};
+            } else
+                this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
             let actions = [
                 this.mode.getActionLoaderObject()
             ];
@@ -186,17 +202,11 @@
 
             this.multivaluedState.selectedValue = this.multivaluedState.values.findIndex(elem => elem.state === this.props.state.status);
             this.loadRooms();
-
-            this.interval = setInterval(() =>{
-                this.props.getState()
-                    .then( data => this.props.state.batteryLevel = data.result.batteryLevel)
-                    .catch(console.log);
-            }, 100000);
         },
         beforeDestroy() {
-            if(this.interval)
-                clearInterval(this.interval);
-        }
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        },
     }
 </script>
 
