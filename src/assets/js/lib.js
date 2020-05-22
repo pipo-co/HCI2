@@ -335,9 +335,7 @@ export function hexToHSL(H) {
     let cmin = Math.min(r,g,b),
         cmax = Math.max(r,g,b),
         delta = cmax - cmin,
-        h = 0,
-        s = 0,
-        l = 0;
+        h, s, l;
 
     if (delta === 0)
         h = 0;
@@ -407,7 +405,7 @@ export function getDeviceItemsArray(roomID) {
 export function getActionsItemsArray(deviceTypeID) {
     return new Promise((resolve, reject) => {
         Api.deviceType.get(deviceTypeID)
-            .then(data => resolve(data.result.actions.map(action => {return {text: action.name , value: action.name }})))
+            .then(data => resolve(data.result.actions.map(action => {return {text: action.name , value: action }})))
             .catch( error => reject(`getRoomItemsArray: ${error}`));
     })
 }

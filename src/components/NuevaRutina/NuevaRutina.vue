@@ -46,7 +46,7 @@
                                     <v-row no-gutters  align="top">
                                         <v-col cols="2">
                                             <v-list class="ml-3 ">
-                                                <v-list-item-subtitle class="headline " align="left">Titulo:</v-list-item-subtitle>
+                                                <v-list-item-subtitle class="headline ">Titulo:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
@@ -67,7 +67,7 @@
                                     <v-row no-gutters class="ma-0 pa-0" align="top">
                                         <v-col cols="2">
                                             <v-list class="ml-3 pa-0" >
-                                                <v-list-item-subtitle  align="left">Descripcion:</v-list-item-subtitle>
+                                                <v-list-item-subtitle >Descripcion:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
@@ -200,7 +200,7 @@
                                                                         <v-col>
                                                                             <v-select
                                                                                     class = "mt-3 mr-3"
-                                                                                    v-model = "actionID"
+                                                                                    v-model = "action"
                                                                                     :items = "actItems"
                                                                                     placeholder = "Acciones"
                                                                                     solo
@@ -211,6 +211,14 @@
                                                                 </v-container>
                                                             </v-card>
                                                         </v-row>
+                                                        <v-row>
+                                                            <v-card class="rounded mx-auto my-3"
+                                                                    elevation="4"
+                                                                    width="800">
+                                                                <action-router v-if="action" :action-name="action.name" :params="action.params[0]" @change="actionValue($event)"/>
+                                                            </v-card>
+                                                        </v-row>
+
                                                         <v-row justify="left">
                                                             <v-col>
                                                                 <v-btn
@@ -245,6 +253,7 @@
 <script>
     //import Api from "@/assets/js/Api.js";
     //import {createDeviceFromScratch, getRoomsFromHome} from "../../assets/js/lib";
+    import ActionRouter from "./ActionRouter";
     // const lib = require('../../assets/js/lib.js')
     //import {getRoomsFromHome} from "../../assets/js/lib";
 
@@ -258,6 +267,7 @@
 
     export default {
         name: "NuevaRutina",
+        components: {ActionRouter},
         data() {
             return {
                 homeItems:null,
@@ -266,7 +276,7 @@
                 roomID:null,
                 dispItems:'',
                 dispositive:null,
-                actionID:null,
+                action:null,
                 actItems:'',
                 addHomeFlag:false,
                 addRoomFlag:true,
@@ -299,6 +309,12 @@
         computed:{
         },
         methods: {
+            //Esta funcion muestar el resultado del action
+            actionValue(event){
+                console.log(event)
+            },
+
+
             saveNewRoutine() {
                 this.stepController.value--;
             },

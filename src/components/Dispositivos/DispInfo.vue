@@ -1,7 +1,7 @@
 <template>
     <v-container fluid class="py-0 px-0">
         <v-row align="center">
-            <v-col cols="9" class="py-0 px-0" align="start">
+            <v-col cols="9" class="py-0 px-0">
                 <v-list-item class="pr-0">
                     <v-list-item-avatar :color="iconInfo.bgColor" >
                         <v-icon large :color="iconInfo.color">{{iconInfo.src}}</v-icon>
@@ -14,7 +14,7 @@
                 </v-list-item>
             </v-col>
 
-            <v-col align="end" class="pl-0">
+            <v-col class="pl-0">
                 <v-btn icon>
                     <v-icon :color="color" @click="this.handleFav">mdi-heart</v-icon>
                 </v-btn>
@@ -132,42 +132,6 @@
 
     }
 </script>
-
-<!--<script>-->
-<!--    const deviceEventHandlers = {-->
-
-<!--        fav: (device) => {-->
-<!--            if (device.isFav())-->
-<!--                device.unFav();-->
-<!--            else-->
-<!--                device.fav();-->
-<!--        },-->
-
-<!--        edit: (device) => {-->
-<!--            console.log(`Edit handler ${device}`);-->
-<!--        },-->
-
-<!--        history: (device) => {-->
-<!--            console.log(`History handler ${device}`);-->
-<!--        },-->
-
-<!--        delete: (device) => {-->
-<!--            console.log(`Delete handler ${device}`);-->
-<!--        }-->
-<!--    }-->
-
-<!--    class DeviceEventHandler {-->
-
-<!--        constructor(device) {-->
-<!--            this.device = device-->
-<!--        }-->
-
-<!--        handle(eventName){-->
-<!--            deviceEventHandlers[eventName](this.device)-->
-<!--        }-->
-<!--    }-->
-
-<!--</script>-->
 
 <style scoped>
 
