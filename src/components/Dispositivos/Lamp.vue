@@ -1,15 +1,11 @@
 <template>
-    <v-card>
+    <v-card :id="`#${props.id}`">
         <v-container >
             <v-row no-gutters dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :room="location"
-                            :icon="iconInfo"
-                            :fav="props.isFav()"
-                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col md="12"  class="px-5">
@@ -88,23 +84,6 @@
                     value: false,
                     message: 'Mas'
                 },
-                eventHandlers: {
-                    fav(target){ //target == this
-                        if (target.props.isFav())
-                            target.props.unFav();
-                        else
-                            target.props.fav();
-                    },
-                    edit(target){
-                        console.log(`Edit handler ${target}`);
-                    },
-                    history(target){
-                        console.log(`History handler ${target}`);
-                    },
-                    delete(target){
-                        console.log(`Delete handler ${target}`);
-                    }
-                },
                 booleanStatus: {
                     value: this.props.state.status === 'on',
                     actionTrue: 'turnOn',
@@ -142,9 +121,6 @@
                     return 'Off';
                 return `Prendido: ${this.props.state.color} ${this.props.state.brightness}%`;
             },
-            location(){
-                return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;
-            }
         },
         methods: {
             handleDispInfoEvents(event){

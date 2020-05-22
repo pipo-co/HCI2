@@ -142,7 +142,7 @@
                                 <v-carousel-item v-for="j in (0,2)" :key="j">
                                     <v-row align="center" wrap no-gutters>
                                         <v-col v-for="(dispositive, i) in homedevs" :key="i" cols="4" md="4">
-                                            <v-list-item :key="i" v-if="(j===1)? i<6: i>=6" :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeID: dispositive.deviceTypeID}}">
+                                            <v-list-item :key="i" v-if="(j===1)? i<6: i>=6" :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
                                                 <v-list-item-avatar class="ml-6" :color="dispositive.iconInfo.bgColor" >
                                                     <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
                                                 </v-list-item-avatar>
@@ -411,7 +411,7 @@
             },
             changeHomeDevices() {
                 //eslint-disable-next-line no-debugger
-                debugger;
+                // debugger;
                 getDeviceTypesInHome(this.currentHome.id).then(data => {
                     this.homedevs = data;
                 }).catch(error => {
@@ -472,7 +472,7 @@
             },
             deleteThisHome(){
                 //eslint-disable-next-line no-debugger
-                debugger;
+                // debugger;
                 console.log(this.auxHomeId);
                 deleteHome(this.auxHomeId).then( () =>{
                         this.changeHomes();

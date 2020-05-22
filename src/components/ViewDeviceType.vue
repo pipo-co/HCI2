@@ -16,7 +16,7 @@
             }
         },
         mounted(){
-            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeID)
+            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeName)
                 .then(this.loadCards)
                 .catch(error => {
                     console.log(`View Device Types ${error}`)

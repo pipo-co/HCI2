@@ -1,15 +1,11 @@
 <template>
-    <v-card>
+    <v-card :id="`#${props.id}`">
         <v-container>
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :room="location"
-                            :icon="iconInfo"
-                            :fav="props.isFav()"
-                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -75,8 +71,6 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
-    //let moment = require('moment');
-    //import Api from "../../assets/js/Api";
     const lib = require("../../assets/js/lib");
 
     export default {
@@ -92,23 +86,6 @@
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
                 statePolling: null,
-                eventHandlers:{
-                    fav(target){ //target == this
-                        if (target.props.isFav())
-                            target.props.unFav();
-                        else
-                            target.props.fav();
-                    },
-                    edit(target){
-                        console.log(`Edit handler ${target}`);
-                    },
-                    history(target){
-                        console.log(`History handler ${target}`);
-                    },
-                    delete(target){
-                        console.log(`Delete handler ${target}`);
-                    }
-                },
                 booleanStatus: {
                     value: this.props.state.status === 'closed',
                     actionTrue: 'open',
@@ -139,9 +116,6 @@
                 if(this.props.state.status === 'closed')
                     return 'Cerrado';
                 return 'Abierto';
-            },
-            location(){
-                return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;
             },
             invertedState(){
                 if(this.props.state.status === 'closed')

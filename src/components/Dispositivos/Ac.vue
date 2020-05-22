@@ -1,15 +1,11 @@
 <template>
-    <v-card class="disp">
+    <v-card :id="`#${props.id}`">
         <v-container >
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :room="location"
-                            :icon="iconInfo"
-                            :fav="props.isFav()"
-                            @disp-event="eventHandler.handle($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -203,11 +199,9 @@
     const lib = require("../../assets/js/lib")
     import {
         BooleanStatus,
-        DeviceEventHandler,
         ExtraControls,
         NumberFieldWithButtons,
         SelectionField,
-        getLocation
     } from "../../assets/js/DevicesLib";
 
     export default {
@@ -224,9 +218,6 @@
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
-                location: getLocation(this.props),
-                eventHandler: new DeviceEventHandler(this.props),
-                statePolling: null,
 
                 status: new BooleanStatus(this.props,'status','turnOn','turnOff','on','off'),
                 mode: new SelectionField(this.props,'mode','setMode'),

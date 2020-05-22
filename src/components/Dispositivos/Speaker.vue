@@ -1,15 +1,11 @@
 <template>
-    <v-card class="disp">
+    <v-card :id="`#${props.id}`">
         <v-container >
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :room="location"
-                            :icon="iconInfo"
-                            :fav="props.isFav()"
-                            @disp-event="eventHandler.handle($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -119,7 +115,6 @@
     import {
         BooleanStatus,
         ButtonStatus,
-        DeviceEventHandler,
         ExtraControls,
         NumberField, SelectionField
     } from "../../assets/js/DevicesLib";
@@ -138,7 +133,6 @@
             return{
                 iconInfo:lib.getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
-                eventHandler: new DeviceEventHandler(this.props),
                 statePolling: null,
 
                 status: new BooleanStatus(this.props,'status','play','stop','playing','stopped'),
@@ -158,9 +152,6 @@
                 else if(this.paused)
                     return `${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
                 return `${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
-            },
-            location(){
-                return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;
             },
             playPauseIcon(){
                 return (this.playing)? 'mdi-pause' : 'mdi-play';

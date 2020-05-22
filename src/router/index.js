@@ -51,7 +51,7 @@ const routes = [
     {
         component: () => import("../components/ViewDeviceType"),
         name: "deviceType",
-        path: "/deviceType/:homeID/:deviceTypeID",
+        path: "/deviceType/:homeID/:deviceTypeName",
     },
     {
         component: () => import("../components/DeviceLog"),

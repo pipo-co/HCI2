@@ -1,15 +1,11 @@
 <template>
-    <v-card class="disp">
+    <v-card :id="`#${props.id}`">
         <v-container >
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :icon="iconInfo"
-                            :room="location"
-                            :fav="props.isFav()"
-                            @disp-event="eventHandler.handle($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12"  class="px-5">
@@ -142,8 +138,6 @@
         BooleanStatus,
         NumberFieldWithButtons,
         ExtraControls,
-        DeviceEventHandler,
-        getLocation
     } from "../../assets/js/DevicesLib";
     const lib = require("../../assets/js/lib")
 
@@ -160,8 +154,6 @@
           return{
               iconInfo: lib.getIconInfo(this.props.type.name),
               extraControllers: new ExtraControls(),
-              eventHandler: new DeviceEventHandler(this.props),
-              location: getLocation(this.props),
               statePolling: null,
 
               status: new BooleanStatus(this.props, 'status', 'turnOn', 'turnOff','on','off'),

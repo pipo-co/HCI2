@@ -1,4 +1,4 @@
-export {SelectionField, BooleanStatus, ButtonStatus, NumberField, NumberFieldWithButtons, DeviceEventHandler, ExtraControls, getLocation}
+export {SelectionField, BooleanStatus, ButtonStatus, NumberField, NumberFieldWithButtons, ExtraControls, getLocation}
 
 class SelectionField{
 
@@ -78,37 +78,16 @@ class BooleanStatus{
 
 }
 
-class ButtonStatus{
+class ButtonStatus extends BooleanStatus{
 
     constructor(device, valueKey, actionTrue, actionFalse, statusTrue, statusFalse) {
-        this.device = device;
-        this.valueKey = valueKey;
-        this.value = this.device.state[this.valueKey] === statusTrue;
-        this.actionTrue = actionTrue;
-        this.actionFalse = actionFalse;
-        this.statusTrue = statusTrue;
-        this.statusFalse = statusFalse;
-        this.awaitingResponse = false;
+        super(device, valueKey, actionTrue, actionFalse, statusTrue, statusFalse);
     }
 
     changeState(){
         this.value = !this.value;
-        if(this.value) {
-            this.awaitingResponse = true;
-            this.device.execute(this.actionTrue)
-                .then( response => response.result && (this.device.state[this.valueKey] = this.statusTrue))
-                .catch(console.log)
-                .finally( () => this.awaitingResponse = false);
-        }
-        else {
-            this.awaitingResponse = true;
-            this.device.execute(this.actionFalse)
-                .then( response => response.result && (this.device.state[this.valueKey] = this.statusFalse))
-                .catch(console.log)
-                .finally( () => this.awaitingResponse = false);
-        }
+        super.changeState();
     }
-
 }
 
 class NumberField{
@@ -176,39 +155,6 @@ class NumberFieldWithButtons extends NumberField{
         if(this.value < this.minValue)
             this.value = this.minValue;
         this.changeState();
-    }
-}
-
-const deviceEventHandlers = {
-
-    fav: (device) => {
-        if (device.isFav())
-            device.unFav();
-        else
-            device.fav();
-    },
-
-    edit: (device) => {
-        console.log(`Edit handler ${device}`);
-    },
-
-    history: (device) => {
-        console.log(`History handler ${device}`);
-    },
-
-    delete: (device) => {
-        console.log(`Delete handler ${device}`);
-    }
-}
-
-class DeviceEventHandler {
-
-    constructor(device) {
-        this.device = device
-    }
-
-    handle(event){
-        deviceEventHandlers[event.eventName](this.device)
     }
 }
 
