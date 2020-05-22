@@ -15,7 +15,7 @@
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="baseline" dense justify="center"> <!--class="my-0 py-0" -->
-                            <v-col>
+                            <v-col cols="4">
                                 <v-select
                                         dense rounded outlined
                                         v-model="dispense.selectedUnit"
@@ -23,50 +23,49 @@
                                         label="Unidad"
                                 ></v-select>
                             </v-col>
-                            <v-col align="end">
+                            <v-spacer></v-spacer>
+                            <v-col cols="4" class="justify-end">
                                 <v-btn text color="#6563FF" @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-col>
-                <v-col cols="12" class="px-5">
-                    <v-card-text>
-                        <v-row align="baseline">
-                            <v-col>
-                                <v-form v-model="dispense.validInput">
-                                    <v-slider
-                                            color="#65C0AB"
-                                            thumb-color="#65C0AB"
-                                            track-color="#A8DED1"
-                                            v-model="dispense.selectedValue"
-                                            class="align-center"
-                                            :max="dispense.maxValue"
-                                            :min="dispense.minValue"
-                                            hide-details>
-                                        <template v-slot:prepend>
-                                            <v-icon color="#6563FF">
-                                                mdi-water
-                                            </v-icon>
-                                        </template>
-                                        <template v-slot:append>
-                                            <v-text-field
-                                                    v-model="dispense.selectedValue"
-                                                    solo rounded flat outlined dense
-                                                    type="number"
-                                                    :rules="dispense.validate"
-                                            ></v-text-field>
-                                        </template>
-                                    </v-slider>
-                                </v-form>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>
-                                <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
-                                <v-btn text color="#6563FF" @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
+                <v-col cols="12" class="px-5 py-0">
+                    <v-row align="baseline">
+                        <v-col class="py-0">
+                            <v-form v-model="dispense.validInput">
+                                <v-slider
+                                        color="#65C0AB"
+                                        thumb-color="#65C0AB"
+                                        track-color="#A8DED1"
+                                        v-model="dispense.selectedValue"
+                                        class="align-center"
+                                        :max="dispense.maxValue"
+                                        :min="dispense.minValue"
+                                        hide-details>
+                                    <template v-slot:prepend>
+                                        <v-icon color="#6563FF">
+                                            mdi-water
+                                        </v-icon>
+                                    </template>
+                                    <template v-slot:append>
+                                        <v-text-field
+                                                v-model="dispense.selectedValue"
+                                                solo rounded flat outlined dense
+                                                type="number"
+                                                :rules="dispense.validate"
+                                        ></v-text-field>
+                                    </template>
+                                </v-slider>
+                            </v-form>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="py-0">
+                            <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
+                            <v-btn text color="#6563FF" @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-container>
