@@ -89,7 +89,7 @@
                                         <v-col>
                                             <p class="red--text">Si elimina el hogar, se perderan todas las </p>
                                             <p class="red--text">habitaciones y dispositivos en ellas.</p>
-                                            <p class="red--text"> ¿ Esta seguro que quiere borrar el Hogar: </p>
+                                            <p class="red--text"> ¿Esta seguro que quiere borrar el Hogar: </p>
                                             <p class="red--text">{{this.auxiliarName}} ?</p>
                                         </v-col>
                                     </v-row>
@@ -154,6 +154,7 @@
                             <v-carousel
                                     hide-delimiters
                                     show-arrows-on-hover
+                                    continuous
                                     height="150"
                             >
                                 <v-carousel-item v-for="j in (0,2)" :key="j">

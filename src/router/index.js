@@ -30,11 +30,6 @@ const routes = [
         path: "/rutinas/nuevarutina"
     },
     {
-        component: () => import("@/components/NuevaRutina/NuevaRutina1"),
-        name: "nuevarutina1",
-        path: "/rutinas/nuevarutina1"
-    },
-    {
         component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
         name: "nuevodispositivo",
         path: "/dispositivo/nuevodispositivo1/:previousRoute/:homeID/:roomID"
