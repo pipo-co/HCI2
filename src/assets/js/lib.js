@@ -126,14 +126,25 @@ export function getFavs() {
     });
 }
 
-export function suscribeToDeviceEvent(scope, f, deviceId){
+export function suscribeToDeviceEvent(f, deviceId){
     let source;
     if(deviceId)
         source = Api.device.getEventSource(deviceId);
     else
         source = Api.device.getAllEventSource();
 
-    source.addEventListener('message', event => f(scope, JSON.parse(event.data)), false);
+    source.addEventListener('message', event => f(JSON.parse(event.data)), false);
+}
+
+export function setStatePolling(stateChangeHandler, timeout = 5000){
+    return setInterval(() => {
+        this.props.getState()
+            .then( data => {
+                this.props.state = data.result;
+                stateChangeHandler(data.result);
+            })
+            .catch(console.log);
+    }, timeout);
 }
 
 export function loadAllSupportedValues(deviceID, actions) {

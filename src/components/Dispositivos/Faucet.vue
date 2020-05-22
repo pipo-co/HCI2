@@ -52,6 +52,7 @@
                                 </v-form>
                             </v-col>
                             <v-col>
+                                <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
                                 <v-btn text @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                             </v-col>
                         </v-row>
@@ -65,6 +66,8 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
+    //let moment = require('moment');
+    //import Api from "../../assets/js/Api";
     const lib = require("../../assets/js/lib");
 
     export default {
@@ -79,6 +82,7 @@
         data(){
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
+                statePolling: null,
                 eventHandlers:{
                     fav(target){ //target == this
                         if (target.props.isFav())
@@ -137,6 +141,15 @@
             },
             validDispense(){
                 return this.props.state.status === 'closed' && this.dispense.validInput;
+            },
+            isDispensing(){
+                return !!(this.props.state.dispensedQuantity);
+            },
+            percentDispense(){
+                if(this.isDispensing)
+                    return Math.floor((this.props.state.dispensedQuantity / this.props.state.quantity) * 100);
+                else
+                    return 0;
             }
         },
         methods: {
@@ -179,9 +192,19 @@
                         .catch(console.log)
                         .finally( () => this.dispense.awaitingResponse = false);
                 }
+            },
+            stateChangeHandler(newState){
+                this.booleanStatus.value = newState.status === 'closed';
             }
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        },
         mounted(){
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
             let actions = [
                 {action: this.dispense.action, handler: this.loadSupportedDispense}
             ];

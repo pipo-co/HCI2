@@ -17,9 +17,9 @@
                         <v-row align="center" dense justify="center"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-btn :disabled="lock.value" :loading="open.awaitingResponse"
-                                       rounded class="mx-1" @click="open.changeState()">{{opened}}</v-btn>
+                                       color="#72E1C7" rounded class="black--text mx-1" @click="open.changeState()">{{opened}}</v-btn>
                                 <v-btn :disabled="lock.awaitingResponse" :loading="lock.awaitingResponse"
-                                       rounded class="mx-1" @click="lock.changeState()">{{locked}}</v-btn>
+                                       color="#72E1C7" rounded class="black--text mx-1" @click="lock.changeState()">{{locked}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -47,6 +47,7 @@
         data(){
             return{
                 iconInfo: lib.getIconInfo(this.props.type.name),
+                statePolling: null,
                 eventHandlers:{
                     fav(target){ //target == this
                         if (target.props.isFav())
@@ -100,38 +101,50 @@
             handleDispInfoEvents(event){
                 this.eventHandlers[event.eventName](this);
             },
-            isLocked(){
-                return this.lock.value === 'locked'
-            },
-            openDoor(){
-                this.props.state.status = "open";
-                this.open.value = true;
-                this.updateStateValue(this.open.action);
-            },
-            closeDoor(){
-                this.props.state.status = "close";
-                this.close.value = true;
-                this.updateStateValue(this.close.action);
-            },
-            lockDoor(){
-                if (this.props.state.lock === "locked"){
-                    this.lock.value = false;
-                    this.unlock.value = true;
-                    this.props.state.lock = "unlocked";
-                    this.updateStateValue(this.unlock.action);
-                }else {
-                    this.lock.value = true;
-                    this.unlock.value = false;
-                    this.props.state.lock = "locked";
-                    this.updateStateValue(this.lock.action);
-                }
-            },
-            updateStateValue(action, params = []){
-                this.props.execute(action, params)
-                    .then(console.log)
-                    .catch(errors => console.log(`${action} - Update Value ${errors}`))
+            stateChangeHandler(newState) {
+                this.open.value = newState.status === this.open.statusTrue;
+
+                this.lock.value = newState.lock === this.lock.statusTrue;
             }
+            // isLocked(){
+            //     return this.lock.value === 'locked'
+            // },
+            // openDoor(){
+            //     this.props.state.status = "open";
+            //     this.open.value = true;
+            //     this.updateStateValue(this.open.action);
+            // },
+            // closeDoor(){
+            //     this.props.state.status = "close";
+            //     this.close.value = true;
+            //     this.updateStateValue(this.close.action);
+            // },
+            // lockDoor(){
+            //     if (this.props.state.lock === "locked"){
+            //         this.lock.value = false;
+            //         this.unlock.value = true;
+            //         this.props.state.lock = "unlocked";
+            //         this.updateStateValue(this.unlock.action);
+            //     }else {
+            //         this.lock.value = true;
+            //         this.unlock.value = false;
+            //         this.props.state.lock = "locked";
+            //         this.updateStateValue(this.lock.action);
+            //     }
+            // },
+            // updateStateValue(action, params = []){
+            //     this.props.execute(action, params)
+            //         .then(console.log)
+            //         .catch(errors => console.log(`${action} - Update Value ${errors}`))
+            // }
         },
+        mounted() {
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
+        },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        }
     }
 
 </script>

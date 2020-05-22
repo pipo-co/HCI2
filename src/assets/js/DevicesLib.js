@@ -49,17 +49,28 @@ class BooleanStatus{
     }
 
     changeState(){
-        if(this.value) {
+        let value = this.value;
+        if(value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
-                .then( response => response.result && (this.device.state[this.valueKey] = this.statusTrue))
+                .then( response => {
+                    if(response.result){
+                        this.device.state[this.valueKey] = this.statusTrue;
+                        this.value = value;
+                    }
+                })
                 .catch(console.log)
                 .finally( () => this.awaitingResponse = false);
         }
         else {
             this.awaitingResponse = true;
             this.device.execute(this.actionFalse)
-                .then( response => response.result && (this.device.state[this.valueKey] = this.statusFalse))
+                .then( response => {
+                    if(response.result) {
+                        this.device.state[this.valueKey] = this.statusFalse;
+                        this.value = value;
+                    }
+                })
                 .catch(console.log)
                 .finally( () => this.awaitingResponse = false);
         }
@@ -81,9 +92,7 @@ class ButtonStatus{
     }
 
     changeState(){
-        console.log("changeState");
         this.value = !this.value;
-        console.log(this.value);
         if(this.value) {
             this.awaitingResponse = true;
             this.device.execute(this.actionTrue)
@@ -168,7 +177,6 @@ class NumberFieldWithButtons extends NumberField{
             this.value = this.minValue;
         this.changeState();
     }
-
 }
 
 const deviceEventHandlers = {

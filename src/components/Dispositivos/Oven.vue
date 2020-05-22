@@ -17,11 +17,12 @@
                         <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
                             <v-col>
                                 <v-switch
-                                          hide-details="true"
-                                          v-model="status.value"
-                                          @change="status.changeState()"
-                                          :loading="status.awaitingResponse"
-                                          :disabled="status.awaitingResponse">
+                                        color="#72E1C7"
+                                        hide-details="true"
+                                        v-model="status.value"
+                                        @change="status.changeState()"
+                                        :loading="status.awaitingResponse"
+                                        :disabled="status.awaitingResponse">
                                 </v-switch>
                             </v-col>
                             <v-col>
@@ -29,7 +30,7 @@
                                        :disabled="temperature.awaitingResponse"
                                        :loading="temperature.awaitingResponse"
                                        @click="temperature.decrement()">
-                                    <v-icon>mdi-minus</v-icon>
+                                    <v-icon color="#6563FF">mdi-minus</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -50,11 +51,11 @@
                                        :disabled="temperature.awaitingResponse"
                                        :loading="temperature.awaitingResponse"
                                        @click="temperature.increment()">
-                                    <v-icon>mdi-plus</v-icon>
+                                    <v-icon color="#6563FF">mdi-plus</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col ><!--class="pr-10" -->
-                                <v-btn text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
+                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -161,6 +162,8 @@
               extraControllers: new ExtraControls(),
               eventHandler: new DeviceEventHandler(this.props),
               location: getLocation(this.props),
+              statePolling: null,
+
               status: new BooleanStatus(this.props, 'status', 'turnOn', 'turnOff','on','off'),
               grill: new SelectionField(this.props,'grill','setGrill'),
               heat: new SelectionField(this.props,'heat','setHeat',),
@@ -173,7 +176,20 @@
                 if(!this.status.value)
                     return 'Off'
                 return `Prendido: ${this.props.state.heat} ${this.props.state.temperature}º`
-            },
+            }
+        },
+        methods: {
+            stateChangeHandler(newState) {
+                this.status.value = newState.status === this.status.statusTrue;
+
+                this.grill.value = newState.grill;
+
+                this.heat.value = newState.heat;
+
+                this.convection.value = newState.convection;
+
+                this.temperature.value = newState.temperature;
+            }
         },
         mounted() {
             let actions = [
@@ -184,7 +200,13 @@
             ];
 
             lib.loadAllSupportedValues(this.props.type.id, actions);
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
+        }
     }
 </script>
 

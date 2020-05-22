@@ -8,7 +8,7 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-subtitle>{{room}}</v-list-item-subtitle>
-                        <v-list-item-title class="title d-inline-block text-truncate">{{name}}</v-list-item-title>
+                        <v-list-item-title color="3C3F58" class="title d-inline-block text-truncate">{{name}}</v-list-item-title>
                         <v-list-item-subtitle class="text--primary">{{state}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>

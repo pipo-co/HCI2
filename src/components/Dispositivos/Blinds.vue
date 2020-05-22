@@ -15,18 +15,18 @@
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="center" ><!--class="my-0 py-0" -->
-                            <v-col>
+                            <v-col cols="8">
                                 <v-btn :disabled="level.awaitingResponse" :loading="level.awaitingResponse"
-                                       rounded class="mx-2" @click="closeBlinds()">
+                                       color="#72E1C7" class="black--text mx-2" rounded @click="closeBlinds()">
                                     Bajar
                                 </v-btn>
                                 <v-btn :disabled="level.awaitingResponse" :loading="level.awaitingResponse"
-                                       rounded @click="openBlinds()">
+                                       color="#72E1C7" class="black--text darken-4" rounded @click="openBlinds()">
                                     Subir
                                 </v-btn>
                             </v-col>
-                            <v-col align="end">
-                                <v-btn text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
+                            <v-col cols="4" align="end">
+                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -34,20 +34,19 @@
             </v-row>
             <v-row  dense v-show="extraControllers.value">
                 <v-col cols="12" class="px-5">
-                    <v-card-text>
+                    <v-card-text class="py-0 my-0">
                         <v-row>
-                            <v-col >
-                                <v-list-item class="px-0">
-                                    <v-list-item-content class="ma-1 pa-1">
-                                        <v-list-item-subtitle class="title">Seleccione Posicion:</v-list-item-subtitle>
-                                    </v-list-item-content>
-                                </v-list-item>
+                            <v-col class="py-0 my-0">
+                                <p class="font-weight-medium subtitle-1 my-0">Seleccione nivel:</p>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col class="pr-4">
                                 <v-form v-model="level.validInput">
                                     <v-slider
+                                            color="#65C0AB"
+                                            thumb-color="#87FFE3"
+                                            track-color="#A8DED1"
                                             :disabled="level.awaitingResponse"
                                             :loading="level.awaitingResponse"
                                             v-model="level.value"
@@ -100,6 +99,7 @@
                 location: getLocation(this.props),
                 eventHandler: new DeviceEventHandler(this.props),
                 level: new NumberField(this.props, 'level', 'setLevel'),
+                statePolling: null
             }
         },
         computed: {
@@ -121,6 +121,9 @@
             openBlinds(){
                 this.level.value = this.level.maxValue;
                 this.level.changeState();
+            },
+            stateChangeHandler(newState) {
+                this.level.value = newState.level;
             }
         },
         mounted(){
@@ -129,9 +132,11 @@
             ]
             lib.loadAllSupportedValues(this.props.type.id, actions);
 
-            // lib.deviceTypeActionParams(this.props.type.id, this.level.action)
-            //     .then(this.loadSupportedLevels)
-            //     .catch(errors => console.log(`Level - Supported Values ${errors}`));
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
+        },
+        beforeDestroy() {
+            if(this.statePolling)
+                clearInterval(this.statePolling);
         }
     }
 </script>
