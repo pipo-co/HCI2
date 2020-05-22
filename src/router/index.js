@@ -54,16 +54,21 @@ const routes = [
         name: "deviceType",
         path: "/deviceType/:homeID/:deviceTypeName",
     },
-    /*{
+    {
         component: () => import("../components/DeviceLog"),
         name: "deviceLog",
         path: "/deviceLog/:deviceId"
     },
     {
+        component: () => import("../components/Search"),
+        name: "search",
+        path: "/search/:name"
+    },
+    {
         component: () => import("../components/PageNotFound"),
         name: "pageNotFound",
         path: "*"
-    }*/
+    }
 
 ];
 
