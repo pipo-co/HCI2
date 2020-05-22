@@ -1,5 +1,5 @@
 <template>
-    <component :is="componentName" :params="params" :actionName="actionName" :key="actionName" @change="$emit('change', $event)"/>
+    <component :is="componentName" :params="params" :key="params.name" @change="$emit('change', $event)"/>
 </template>
 
 <script>
@@ -9,10 +9,6 @@
     export default {
         name: "ActionRouter",
         props: {
-            actionName:{
-                type: String,
-                require: true,
-            },
             params:{
                 type: Object,
                 require: true,

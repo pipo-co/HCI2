@@ -258,7 +258,6 @@
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn
                                                                 text
-                                                                color="red"
                                                                 v-on="on"
                                                         >
                                                             Eliminar
