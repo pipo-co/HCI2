@@ -381,3 +381,13 @@ export function getDevicesByHomeAndType(homeID, typeID){
         ).catch( error => reject(`getRoomDevices: ${error}`));
     });
 }
+
+export function searchDevicesByName(name){
+    name = name.trim();
+    return new Promise( (resolve, reject) => {
+        Api.device.getAll().then(data => resolve(data.result
+            .filter(elem => elem.split("_").pop().includes(name))
+            .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
+        ).catch( error => reject(`searchDevicesByName: ${error}`));
+    });
+}
