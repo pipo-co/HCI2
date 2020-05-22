@@ -43,10 +43,10 @@
                             </v-col>
                             <v-col>
                                 <v-container fluid class="pa-0">
-                                    <v-row no-gutters  align="top">
+                                    <v-row no-gutters>
                                         <v-col cols="2">
                                             <v-list class="ml-3 ">
-                                                <v-list-item-subtitle class="headline ">Titulo:</v-list-item-subtitle>
+                                                <v-list-item-subtitle class="headline">Titulo:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
@@ -64,7 +64,7 @@
                                             </v-form>
                                         </v-col>
                                     </v-row>
-                                    <v-row no-gutters class="ma-0 pa-0" align="top">
+                                    <v-row no-gutters class="ma-0 pa-0">
                                         <v-col cols="2">
                                             <v-list class="ml-3 pa-0" >
                                                 <v-list-item-subtitle >Descripcion:</v-list-item-subtitle>
@@ -122,7 +122,7 @@
                                                                     elevation="4"
                                                                     width="800">
                                                                 <v-container fluid class="pa-0">
-                                                                    <v-row no-gutters align="baseline">
+                                                                    <v-row no-gutters>
                                                                         <v-col cols="8">
                                                                             <p class="subtitle-1">Seleccione el hogar del dispositivo:</p>
                                                                         </v-col>
@@ -145,7 +145,7 @@
                                                                     elevation="4"
                                                                         width="800">
                                                                 <v-container fluid class="pa-0">
-                                                                    <v-row no-gutters align="center">
+                                                                    <v-row no-gutters>
                                                                         <v-col cols="8">
                                                                             <p class="subtitle-1" >Seleccione la habitacion del dispositivo:</p>
                                                                         </v-col>
@@ -169,7 +169,7 @@
                                                                     elevation="4"
                                                                     width="800">
                                                                 <v-container fluid class="pa-0">
-                                                                    <v-row no-gutters align="center">
+                                                                    <v-row no-gutters>
                                                                         <v-col cols="8">
                                                                             <p class="subtitle-1" >Seleccione el dispositivo:</p>
                                                                         </v-col>
@@ -193,39 +193,41 @@
                                                                     elevation="4"
                                                                     width="800">
                                                                 <v-container fluid class="pa-0">
-                                                                    <v-row no-gutters align="center">
+                                                                    <v-row no-gutters>
                                                                         <v-col cols="8">
                                                                             <p class="subtitle-1" >Seleccione la accion del dispositivo:</p>
                                                                         </v-col>
                                                                         <v-col>
                                                                             <v-select
                                                                                     class = "mt-3 mr-3"
-                                                                                    v-model = "action"
-                                                                                    :items = "actItems"
-                                                                                    placeholder = "Acciones"
+                                                                                    v-model="action"
+                                                                                    :items="actItems"
+                                                                                    placeholder="Acciones"
                                                                                     solo
-                                                                                    :disabled = "addActFlag"
+                                                                                    :disabled="addActFlag"
+                                                                                    @change="actionControl"
                                                                             ></v-select>
                                                                         </v-col>
                                                                     </v-row>
                                                                 </v-container>
                                                             </v-card>
                                                         </v-row>
-                                                        <v-row>
-                                                            <v-card class="rounded mx-auto my-3"
+                                                        <v-row v-if="hasParams">
+                                                            <v-card
+                                                                    class="rounded mx-auto my-3"
                                                                     elevation="4"
                                                                     width="800">
-                                                                <action-router v-if="action" :action-name="action.name" :params="action.params[0]" @change="actionValue($event)"/>
+                                                                <action-router v-for="(param, i) in action.params" :key="param.name" :params="param" @change="paramControl($event, i)"/>
                                                             </v-card>
                                                         </v-row>
 
-                                                        <v-row justify="left">
+                                                        <v-row>
                                                             <v-col>
                                                                 <v-btn
                                                                         @click="dialog=false"
                                                                         dark
                                                                         color="#65C2AD"
-                                                                        :disabled="addFlag">
+                                                                        :disabled="!validSave">
                                                                     Agregar Accion
                                                                 </v-btn>
                                                             </v-col>
@@ -270,25 +272,28 @@
         components: {ActionRouter},
         data() {
             return {
-                homeItems:null,
-                homeID:null,
-                roomItems: '',
-                roomID:null,
-                dispItems:'',
-                dispositive:null,
-                action:null,
-                actItems:'',
-                addHomeFlag:false,
-                addRoomFlag:true,
-                addDispFlag:true,
-                addActFlag:true,
-                addFlag:true,
-                dialog:false,
+                homeItems: null,
+                homeID: null,
+                roomItems: [],
+                roomID: null,
+                dispItems: [],
+                dispositive: null,
+                action: null,
+                actItems: [],
+                addHomeFlag: false,
+                addRoomFlag: true,
+                addDispFlag: true,
+                addActFlag: true,
+                addFlag: true,
+                validSave: false,
+                hasParams: false,
+                params: null,
+                dialog: false,
                 newRoutine: {
-                    actions:[],
+                    actions: [],
                     name: null,
-                    nameValid:false,
-                    desc:null,
+                    nameValid: false,
+                    desc: null,
                     descValid: false,
                 },
                 TitleRules: [
@@ -306,14 +311,14 @@
         },
         watch: {
         },
-        computed:{
+        computed: {
         },
         methods: {
             //Esta funcion muestar el resultado del action
-            actionValue(event){
-                console.log(event)
+            paramControl(value, index){
+                this.params[index] = value;
+                this.checkValidSave();
             },
-
 
             saveNewRoutine() {
                 this.stepController.value--;
@@ -332,7 +337,7 @@
             },
             getActItems(dispType){
                 // eslint-disable-next-line no-debugger
-                debugger;
+                //debugger;
                 getActionsItemsArray(dispType).then( data => {
                     this.actItems = data;
                 }).catch(error => {
@@ -355,6 +360,10 @@
             },
             dispReset(){
                 this.addActFlag=true;
+                this.hasParams = false;
+                this.params = null;
+                this.addFlag = true;
+                this.checkValidSave();
             },
             homeControl(){
                 this.homeReset();
@@ -370,6 +379,21 @@
                 this.dispReset();
                 this.addActFlag=false;
                 this.getActItems(this.dispositive.type.id);
+            },
+            actionControl(){
+                this.addFlag = false;
+                if(this.action.params.length !== 0){
+                    this.hasParams = true;
+                    this.paramsSetUp();
+                }
+                this.checkValidSave();
+            },
+            paramsSetUp(){
+                this.params = [];
+                this.action.params.forEach(() => this.params.push(null));
+            },
+            checkValidSave(){
+                this.validSave = !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem)));
             }
         }
     }

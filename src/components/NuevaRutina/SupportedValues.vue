@@ -4,7 +4,7 @@
             <v-col cols="3">
                 <v-list-item class="px-0">
                     <v-list-item-content>
-                        <v-list-item-title class="subtitle-1">{{actionName}}</v-list-item-title>
+                        <v-list-item-title class="subtitle-1">{{params.name}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-col>
@@ -20,10 +20,6 @@
     export default {
         name: "SupportedValues",
         props:{
-          actionName:{
-              type: String,
-              require: true,
-          },
           params:{
               type: Object,
               require: true,
@@ -31,8 +27,8 @@
         },
         data(){
             return{
-                value: null,
                 supportedValues: this.params.supportedValues,
+                value: null
             }
         }
     }
