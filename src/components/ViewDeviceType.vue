@@ -6,7 +6,6 @@
     import CardHolder from "./CardHolder";
     const lib = require("../assets/js/lib.js");
 
-
     export default {
         name: "ViewDeviceType",
         components: {CardHolder},
@@ -16,7 +15,9 @@
             }
         },
         mounted(){
-            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeID).then(this.loadCards).catch(error => console.log(`Favorites ${error}`));
+            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeName)
+                .then(this.loadCards)
+                .catch(error => console.log(`Favorites ${error}`));
         },
         methods:{
             loadCards(data){
