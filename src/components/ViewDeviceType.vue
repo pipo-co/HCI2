@@ -16,11 +16,18 @@
             }
         },
         mounted(){
-            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeID).then(this.loadCards).catch(error => console.log(`Favorites ${error}`));
+            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeID)
+                .then(this.loadCards)
+                .catch(error => {
+                    console.log(`View Device Types ${error}`)
+                });
         },
         methods:{
             loadCards(data){
-                this.cards = data;
+                if(data.length === 0)
+                        this.$router.push({name: "pageNotFound"});
+                else
+                    this.cards = data;
             }
         },
     }
