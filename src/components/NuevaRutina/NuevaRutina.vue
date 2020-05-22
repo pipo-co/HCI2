@@ -1,50 +1,32 @@
 <template>
     <div>
         <v-app-bar fixed color="#72E1C7">
-            <v-row align="center" justify="center">
-                <v-col cols="3">
-                    <v-toolbar-title color="3C3F58">SMARTIFY</v-toolbar-title>
-                </v-col>
-                <v-spacer></v-spacer>
-                <v-col cols="6" class="px-0">
-                    <v-tabs right color="#3C3F58" background-color="#72E1C7">
-                        <v-tabs-slider color="#87FFE3"></v-tabs-slider>
-                        <v-tab><v-icon right>mdi-magnify</v-icon></v-tab>
-                        <v-tab to="/favoritos">Favoritos</v-tab>
-                        <v-tab to="/">Hogares</v-tab>
-                        <v-tab to="/rutinas">Rutinas</v-tab>
-                        <v-tab to="/dispositivo/nuevodispositivo1">Consumos</v-tab>
-                    </v-tabs>
-                </v-col>
-            </v-row>
+            <v-container fluid>
+                <v-row no-gutters>
+                    <v-col cols="5">
+                        <v-list-item dense>
+                            <v-toolbar-title class="headline">SMARTIFY</v-toolbar-title>
+                            <v-btn class="ml-5 rounded" color="red" light outlined text :to="{ name : 'rutinas' }"> Cancelar</v-btn>
+                        </v-list-item>
+                    </v-col>
+                    <v-col cols="4" >
+                        <v-list-item dense>
+                            <v-toolbar-title class="ml-9">NUEVA RUTINA</v-toolbar-title>
+                        </v-list-item>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-app-bar>
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
                 <v-col cols="3" md="3" class=" ma-1 pa-0" >
-                    <v-btn rounded outlined color="#A5A5A5" @click='controllerBack()' v-show="stepController.value>1">
-                        Volver
-                    </v-btn>
                 </v-col>
                 <v-col cols="6" md="6">
-                    <v-stepper class="rounded my-4" v-model="stepController.value">
-                        <v-stepper-header>
-                            <v-stepper-step :complete="stepController.value >1" step="1"></v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step :complete="stepController.value >2" step="2"></v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step :complete="stepController.value >3" step="3"></v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step step="4"></v-stepper-step>
-                        </v-stepper-header>
-                    </v-stepper>
                 </v-col>
                 <v-col>
-                    <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()' v-show="stepController.value<4">
-                        Siguiente
-                    </v-btn>
-                    <!--<v-btn rounded outlined color="#A5A5A5" :to="{ name: 'homes' }" @click='saveDisp()' v-show="stepController.value===4" :disabled="newdisp.dispname != null">
+                    <v-btn rounded outlined color="#A5A5A5" @click='saveNewRoutine()' :disabled="false">
                         Guardar
-                    </v-btn>-->
+                    </v-btn>
                 </v-col>
             </v-row>
             <v-row>
@@ -55,45 +37,57 @@
                     <v-container fluid >
                         <v-row no-gutters>
                             <v-col cols="1" >
-                                <v-list-item-avatar color="primary" height="60" width="60" class="ma-1 white--text">{{stepController.value}}</v-list-item-avatar>
+                                <v-list-item-avatar color="#C6FFAB" height="60" width="60">
+                                    <v-icon class="ml-2"  flat color="black" left>mdi-format-list-bulleted</v-icon>
+                                </v-list-item-avatar>
                             </v-col>
                             <v-col>
                                 <v-container fluid class="pa-0">
-                                    <v-row no-gutters class="ma-0 pa-0" align="top">
+                                    <v-row no-gutters  align="top">
                                         <v-col cols="2">
-                                            <v-list class="ml-3">
+                                            <v-list class="ml-3 ">
                                                 <v-list-item-subtitle class="headline " align="left">Titulo:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
-                                            <v-text-field v-model="newRoutine.dispname" class="pa-0 my-0"  ></v-text-field>
+                                            <v-form
+                                                    ref="form"
+                                                    v-model="newRoutine.nameValid"
+                                                    lazy-validation
+                                                    @submit="false"
+                                            >
+                                                <v-text-field
+                                                        v-model="newRoutine.name"
+                                                        :rules="TitleRules"
+                                                        class="pa-0 my-0"
+                                                ></v-text-field>
+                                            </v-form>
                                         </v-col>
                                     </v-row>
-                                    <v-row no-gutters class="ma-0 pa-0">
+                                    <v-row no-gutters class="ma-0 pa-0" align="top">
                                         <v-col cols="2">
-                                            <v-list class="ml-3" >
+                                            <v-list class="ml-3 pa-0" >
                                                 <v-list-item-subtitle  align="left">Descripcion:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
-                                            <v-text-field v-model="newRoutine.desc" class="pa-0" height="25" ></v-text-field>
+                                            <v-form
+                                                    ref="form"
+                                                    v-model="newRoutine.descValid"
+                                                    lazy-validation
+                                                    @submit="false"
+                                            >
+                                                <v-text-field
+                                                        v-model="newRoutine.desc"
+                                                        class="pa-0" height="15"
+                                                        label="Opcional">
+                                                </v-text-field>
+                                            </v-form>
                                         </v-col>
                                     </v-row>
                                 </v-container>
                             </v-col>
                         </v-row>
-                                <!--<v-list class="ml-3">
-                                    <v-list-item-title class="headline " align="left">Titulo:</v-list-item-title>
-                                    <v-list-item-subtitle align="left" class="ml-1">Descripcion:</v-list-item-subtitle>
-                                </v-list>
-                            </v-col>
-                            <v-col>
-                                <v-list class="ml-3 pa-0">
-                                        <v-text-field v-model="newRoutine.dispname" class="pa-0 my-0" height="28" ></v-text-field>
-                                        <v-text-field v-model="newRoutine.desc" class="pa-0" height="18" ></v-text-field>
-                                </v-list>
-                            </v-col>
-                        </v-row>-->
                     </v-container>
                     <v-container class="py-0 my-0">
                         <v-row class="py-0 my-0">
@@ -105,18 +99,144 @@
                                 </v-list-item>
                             </v-col>
                         </v-row>
-                        <v-container class="py-0 my-0">
-                            <v-row>
-                                <v-col cols="6" md="6">
-                                    <v-btn height="70" width="350"  class="md-12 text--secondary border-dashed" outlined>
-                                        <v-icon large dark outlined>mdi-plus</v-icon>
-                                        Agregar Dispositivo
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
+                        <v-row>
+                            <v-col>
+                                <v-container class="py-0 my-0">
+                                    <v-row>
+                                        <v-col cols="6" md="6">
+                                            <v-dialog
+                                                    v-model="dialog"
+                                                    width="1100"
+                                            >
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn height="70" width="350" v-on="on" class="md-12 text--secondary border-dashed" outlined>
+                                                        <v-icon large dark outlined>mdi-plus</v-icon>
+                                                        Agregar Accion
+                                                    </v-btn>
+                                                </template>
+                                                <v-card class="rounded ma-auto"
+                                                        height="600">
+                                                    <v-container fluid>
+                                                        <v-row >
+                                                            <v-card class="rounded mx-auto"
+                                                                    elevation="4"
+                                                                    width="800">
+                                                                <v-container fluid class="pa-0">
+                                                                    <v-row no-gutters align="baseline">
+                                                                        <v-col cols="8">
+                                                                            <p class="subtitle-1">Seleccione el hogar del dispositivo:</p>
+                                                                        </v-col>
+                                                                        <v-col>
+                                                                            <v-select
+                                                                                    class="mt-3 mr-3"
+                                                                                    v-model="homeID"
+                                                                                    :items="homeItems"
+                                                                                    placeholder="Hogares"
+                                                                                    solo
+                                                                                    @change="homeControl()"
+                                                                            ></v-select>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-container>
+                                                            </v-card>
+                                                        </v-row>
+                                                        <v-row >
+                                                            <v-card class="rounded mx-auto my-3"
+                                                                    elevation="4"
+                                                                        width="800">
+                                                                <v-container fluid class="pa-0">
+                                                                    <v-row no-gutters align="center">
+                                                                        <v-col cols="8">
+                                                                            <p class="subtitle-1" >Seleccione la habitacion del dispositivo:</p>
+                                                                        </v-col>
+                                                                        <v-col>
+                                                                            <v-select
+                                                                                    class="mt-3 mr-3"
+                                                                                    v-model="roomID"
+                                                                                    :items="roomItems"
+                                                                                    placeholder="Habitaciones"
+                                                                                    solo
+                                                                                    :disabled="addRoomFlag"
+                                                                                    @change="roomControl()"
+                                                                            ></v-select>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-container>
+                                                            </v-card>
+                                                        </v-row>
+                                                        <v-row >
+                                                            <v-card class="rounded mx-auto my-3"
+                                                                    elevation="4"
+                                                                    width="800">
+                                                                <v-container fluid class="pa-0">
+                                                                    <v-row no-gutters align="center">
+                                                                        <v-col cols="8">
+                                                                            <p class="subtitle-1" >Seleccione el dispositivo:</p>
+                                                                        </v-col>
+                                                                        <v-col>
+                                                                            <v-select
+                                                                                    class="mt-3 mr-3"
+                                                                                    v-model="dispositive"
+                                                                                    :items="dispItems"
+                                                                                    placeholder="Dispositivos"
+                                                                                    solo
+                                                                                    :disabled="addDispFlag"
+                                                                                    @change="dispControl()"
+                                                                            ></v-select>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-container>
+                                                            </v-card>
+                                                        </v-row>
+                                                        <v-row>
+                                                            <v-card class="rounded mx-auto my-3"
+                                                                    elevation="4"
+                                                                    width="800">
+                                                                <v-container fluid class="pa-0">
+                                                                    <v-row no-gutters align="center">
+                                                                        <v-col cols="8">
+                                                                            <p class="subtitle-1" >Seleccione la accion del dispositivo:</p>
+                                                                        </v-col>
+                                                                        <v-col>
+                                                                            <v-select
+                                                                                    class = "mt-3 mr-3"
+                                                                                    v-model = "actionID"
+                                                                                    :items = "actItems"
+                                                                                    placeholder = "Acciones"
+                                                                                    solo
+                                                                                    :disabled = "addActFlag"
+                                                                            ></v-select>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-container>
+                                                            </v-card>
+                                                        </v-row>
+                                                        <v-row justify="left">
+                                                            <v-col>
+                                                                <v-btn
+                                                                        @click="dialog=false"
+                                                                        dark
+                                                                        color="#65C2AD"
+                                                                        :disabled="addFlag">
+                                                                    Agregar Accion
+                                                                </v-btn>
+                                                            </v-col>
+                                                        </v-row>
+                                                    </v-container>
+                                                </v-card>
+                                            </v-dialog>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-col>
+                        </v-row>
                     </v-container>
                 </v-card>
+            </v-row>
+            <v-row>
+                <v-col>
+
+                </v-col>
             </v-row>
         </v-container>
     </div>
@@ -128,29 +248,113 @@
     // const lib = require('../../assets/js/lib.js')
     //import {getRoomsFromHome} from "../../assets/js/lib";
 
+    //import Api from "../../assets/js/Api";
+    import {
+        getActionsItemsArray, getDeviceItemsArray,
+        getHomeItemsArray,
+        getRoomItemsArray,
+        getRoomsAndDeviceTypesMapFromHome
+    } from "../../assets/js/lib";
+
     export default {
         name: "NuevaRutina",
         data() {
             return {
-                stepController: {
-                    value: 1,
-                },
+                homeItems:null,
+                homeID:null,
+                roomItems: '',
+                roomID:null,
+                dispItems:'',
+                dispositive:null,
+                actionID:null,
+                actItems:'',
+                addHomeFlag:false,
+                addRoomFlag:false,
+                addDispFlag:false,
+                addActFlag:false,
+                addFlag:true,
+                dialog:false,
                 newRoutine: {
-                    home: null,
-                    room: null,
-                    typeid: null,
+                    actions:[],
                     name: null,
+                    nameValid:false,
                     desc:null,
+                    descValid: false,
                 },
+                TitleRules: [
+                    v => !!v || 'Es necesario un titulo',
+                    v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 20 caracteres',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                ],
             }
         },
+        mounted() {
+            getHomeItemsArray().then( data => {
+                this.homeItems = data;
+            }).catch(error => {
+                    console.log(`Error ${error}`)});
+        },
+        watch: {
+        },
+        computed:{
+        },
         methods: {
-            controllerBack() {
+            saveNewRoutine() {
                 this.stepController.value--;
             },
-            controllerNextPlus() {
-                this.stepController.value++;
+            getRoomItems(homeID){
+                getRoomItemsArray(homeID).then( data => {
+                    this.roomItems = data;
+                }).catch(error => {
+                    console.log(`Error ${error}`)});
             },
+            getDispsItems(roomID){
+                getDeviceItemsArray(roomID).then( data => {
+                    this.dispItems = data;
+                }).catch(error => {
+                    console.log(`Error ${error}`)});
+            },
+            getActItems(dispType){
+                // eslint-disable-next-line no-debugger
+                debugger;
+                getActionsItemsArray(dispType).then( data => {
+                    this.actItems = data;
+                }).catch(error => {
+                    console.log(`Error ${error}`)});
+            },
+            changeRoomMap() {
+                getRoomsAndDeviceTypesMapFromHome(this.roomID).then(data => {
+                    this.dispItems = data;
+                }).catch(error => {
+                    console.log(`Error ${error}`);
+                });
+            },
+            homeReset(){
+                this.addRoomFlag=true;
+                this.roomReset();
+            },
+            roomReset(){
+                this.addDispFlag=true;
+                this.dispReset();
+            },
+            dispReset(){
+                this.addActFlag=true;
+            },
+            homeControl(){
+                this.homeReset();
+                this.addRoomFlag=false;
+                this.getRoomItems(this.homeID);
+            },
+            roomControl(){
+                this.roomReset();
+                this.addDispFlag=false;
+                this.getDispsItems(this.roomID);
+            },
+            dispControl(){
+                this.dispReset();
+                this.addActFlag=false;
+                this.getActItems(this.dispositive.type.id);
+            }
         }
     }
 

@@ -52,16 +52,16 @@
     </v-card>
     <v-container fluid>
         <v-row no-gutters>
-            <v-col md="3">
+            <v-col cols="3">
                 <v-spacer></v-spacer>
             </v-col>
-            <v-col align-self="center" justify="center" md="6">
+            <v-col align-self="center" justify="center" cols="6">
                 <v-btn height="70" width="750"  class="ma-auto text--secondary border-dashed rounded" :to="{ name: 'nuevarutina' }"  text>
                     <v-icon large dark>mdi-plus</v-icon>
                     Agregar Rutina
                 </v-btn>
             </v-col>
-            <v-col md="3">
+            <v-col cols="3">
                 <v-spacer></v-spacer>
             </v-col>
         </v-row>
