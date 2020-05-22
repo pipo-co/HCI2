@@ -269,9 +269,9 @@
                 actionID:null,
                 actItems:'',
                 addHomeFlag:false,
-                addRoomFlag:false,
-                addDispFlag:false,
-                addActFlag:false,
+                addRoomFlag:true,
+                addDispFlag:true,
+                addActFlag:true,
                 addFlag:true,
                 dialog:false,
                 newRoutine: {
