@@ -36,7 +36,6 @@
                     </v-stepper>
                 </v-col>
                 <v-col>
-
                     <v-btn rounded outlined color="#A5A5A5"  @click='saveDisp()' v-show="stepController.value === 4" :disabled="newdisp.dispname === null || validDisp === false">
                         Guardar
                     </v-btn>
@@ -94,7 +93,7 @@
                             </v-col>
                             <v-col cols="6"></v-col>
                             <v-col>
-                                <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()'  :disabled="validation">
+                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
                                     Siguiente
                                 </v-btn>
                             </v-col>
@@ -147,13 +146,13 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-btn rounded outlined color="#A5A5A5" @click='controllerBack()'>
+                                <v-btn rounded outlined  @click='controllerBack()'>
                                     Volver
                                 </v-btn>
                             </v-col>
                             <v-col cols="6"></v-col>
                             <v-col>
-                                <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()'  :disabled="validation">
+                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
                                     Siguiente
                                 </v-btn>
                             </v-col>
@@ -186,13 +185,13 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-btn rounded outlined color="#A5A5A5" @click='controllerBack()'>
+                                <v-btn rounded outlined  @click='controllerBack()'>
                                     Volver
                                 </v-btn>
                             </v-col>
                             <v-col cols="6"></v-col>
                             <v-col>
-                                <v-btn rounded outlined color="#A5A5A5" @click='controllerNextPlus()'  :disabled="validation">
+                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
                                     Siguiente
                                 </v-btn>
                             </v-col>
@@ -245,6 +244,13 @@
                                     </v-col>
                                 </v-row>
                             </v-container>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-btn rounded outlined  @click='controllerBack()'>
+                                    Volver
+                                </v-btn>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card>
