@@ -399,7 +399,7 @@ export function getRoomItemsArray(homeID){
 export function getDeviceItemsArray(roomID) {
     return new Promise((resolve, reject) => {
         Api.room.getRoomDevices(roomID)
-            .then(data => resolve(data.result.map(device => {return {text: device.name.split("_").pop() , value: device.id }})))
+            .then(data => resolve(data.result.map(device => {return {text: device.name.split("_").pop() , value: device }})))
             .catch( error => reject(`getRoomItemsArray: ${error}`));
     })
 }
