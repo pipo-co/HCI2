@@ -231,6 +231,7 @@
                                                                             v-model="roomName"
                                                                             :label="room.roomName.split('_').pop()"
                                                                             :rules="newRoomRules"
+                                                                            autofocus
                                                                     >
                                                                     </v-text-field>
                                                                 </v-form>

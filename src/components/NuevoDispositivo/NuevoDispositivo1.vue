@@ -81,6 +81,7 @@
                                         class="ma-auto"
                                         @click="changeHomeFlag()"
                                         v-model="newhomename"
+                                        autofocus
                                         :rules="newHomeRules"
                                         :error-messages="homeerrormessage"
                                         label="Nombre del nuevo hogar"
@@ -136,6 +137,7 @@
                                     <v-text-field
                                             class="ma-auto"
                                             v-model="newroomname"
+                                            autofocus
                                             @click="changeRoomFlag()"
                                             :rules="newRoomRules"
                                             :error-messages="roomerrormessage"
@@ -230,6 +232,7 @@
                                                             @submit="saveDisp() && false"
                                                     >
                                                         <v-text-field
+                                                                autofocus
                                                                 v-model="newdisp.dispname"
                                                                 :rules="newDispRules"
                                                                 @click="changeDispFlag()"
