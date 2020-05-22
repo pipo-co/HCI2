@@ -1,7 +1,7 @@
 <template>
     <v-container >
         <v-row justify="center">
-            <v-col cols="12">
+            <v-col cols="12" xl="8">
                 <v-row>
                     <v-col md="6" v-for="card in cardArray" :key="card.id"> <!-- usar index en ves de card id-->
                         <card-router :card="card"></card-router>

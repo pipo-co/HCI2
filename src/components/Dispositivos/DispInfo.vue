@@ -8,7 +8,7 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
-                        <v-list-item-title class="title d-inline-block text-truncate">{{device.getName()}}</v-list-item-title>
+                        <v-list-item-title class="title d-inline-block text-truncate text--darken-1 indigo--text">{{device.getName()}}</v-list-item-title>
                         <v-list-item-subtitle class="text--primary">{{state}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
