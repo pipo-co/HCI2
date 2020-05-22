@@ -3,12 +3,12 @@
         <v-row align="center">
             <v-col cols="9" class="py-0 px-0" align="start">
                 <v-list-item class="pr-0">
-                    <v-list-item-avatar :color="icon.bgColor" >
-                        <v-icon large :color="icon.color">{{icon.src}}</v-icon>
+                    <v-list-item-avatar :color="iconInfo.bgColor" >
+                        <v-icon large :color="iconInfo.color">{{iconInfo.src}}</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-subtitle>{{room}}</v-list-item-subtitle>
-                        <v-list-item-title color="3C3F58" class="title d-inline-block text-truncate">{{name}}</v-list-item-title>
+                        <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
+                        <v-list-item-title class="title d-inline-block text-truncate">{{device.getName()}}</v-list-item-title>
                         <v-list-item-subtitle class="text--primary">{{state}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
@@ -16,9 +16,8 @@
 
             <v-col align="end" class="pl-0">
                 <v-btn icon>
-                    <v-icon :color="color" @click="eventDispatcher('fav')">mdi-heart</v-icon>
+                    <v-icon :color="color" @click="this.handleFav">mdi-heart</v-icon>
                 </v-btn>
-
 
                 <v-menu bottom :offset-x="true">
                     <template v-slot:activator="{ on }">
@@ -28,74 +27,147 @@
                     </template>
                     <v-list>
                         <v-list-item v-for="(option, index) in overflowOptions"
-                                     @click="eventDispatcher(option.eventName)" :key="index">
+                                     @click="option.handle()" :key="index">
                             <v-list-item-title>{{option.message}}</v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
-
+                <v-dialog v-model="overflowOptions.delete.dialog" max-width="290">
+                    <v-card>
+                        <v-card-title class="headline">Borrar dispositivo</v-card-title>
+                        <v-card-text>
+                            Se perdera toda la informacion vinculada al dispositivo
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn outlined @click="cancelRemove()">
+                                Cancelar
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn color="error"  @click="executeRemove()">
+                                Borrar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+<!--                    <v-alert border="top" colored-border type="error" elevation="2">-->
+<!--                        Fusce commodo aliquam arcu. Pellentesque posuere. Phasellus tempus. Donec posuere vulputate arcu.-->
+<!--                    </v-alert>-->
+                </v-dialog>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
+    import Device from "../../assets/js/Device";
+    import {getIconInfo} from "../../assets/js/lib";
+    import {getLocation} from "../../assets/js/DevicesLib";
+
     export default {
         name: "DispInfo",
-        props:{
-            icon : {
+        props: {
+            device: {
+                type: Device,
                 required: true
             },
-            name: {
+            state: {
                 type: String,
                 required: true
             },
-            room:{
-                type: String,
-                required: true
-            },
-            state:{
-                type: String,
-                required: true
-            },
-            fav:{
-                type: Boolean,
-                required: true,
-            }
         },
         data(){
             return{
+                iconInfo: getIconInfo(this.device.type.name),
+                location: getLocation(this.device),
+                removeDevice: false,
+
                 overflowOptions:{
-                    editar: {
+                    edit: {
                         message: 'Editar',
-                        eventName: 'edit'
+                        eventName: 'edit',
+                        handle: () => true,
                     },
-                    historial: {
+                    history: {
                         message: 'Historial',
-                        eventName: 'history'
+                        eventName: 'history',
+                        handle: () => true,
                     },
-                    eliminar: {
+                    delete: {
                         message: 'Eliminar',
-                        eventName: 'delete'
+                        eventName: 'delete',
+                        dialog: false,
+                        handle: () => this.overflowOptions.delete.dialog = true,
                     },
                 }
             }
         },
         computed:{
             color(){
-                if(this.fav)
+                if(this.device.isFav())
                     return 'red';
                 return 'disable';
             }
         },
         methods:{
-            eventDispatcher(eventName){
-                this.$emit('disp-event', {eventName: eventName})
+            cancelRemove(){
+                this.overflowOptions.delete.dialog = false;
             },
+            executeRemove(){
+                this.overflowOptions.delete.dialog = false;
+                this.device.delete()
+                    .then(this.removeFromDom)
+                    .catch(error => console.log(`Load all supported values: ${error}`));
+            },
+            handleFav(){
+                if (this.device.isFav())
+                    this.device.unFav();
+                else
+                    this.device.fav();
+            },
+            removeFromDom(){
+                this.device.isDeleted = true;
+                let elem = document.getElementById(`#${this.device.id}`).parentNode;
+                elem.parentNode.removeChild(elem);
+            }
         }
 
     }
 </script>
+
+<!--<script>-->
+<!--    const deviceEventHandlers = {-->
+
+<!--        fav: (device) => {-->
+<!--            if (device.isFav())-->
+<!--                device.unFav();-->
+<!--            else-->
+<!--                device.fav();-->
+<!--        },-->
+
+<!--        edit: (device) => {-->
+<!--            console.log(`Edit handler ${device}`);-->
+<!--        },-->
+
+<!--        history: (device) => {-->
+<!--            console.log(`History handler ${device}`);-->
+<!--        },-->
+
+<!--        delete: (device) => {-->
+<!--            console.log(`Delete handler ${device}`);-->
+<!--        }-->
+<!--    }-->
+
+<!--    class DeviceEventHandler {-->
+
+<!--        constructor(device) {-->
+<!--            this.device = device-->
+<!--        }-->
+
+<!--        handle(eventName){-->
+<!--            deviceEventHandlers[eventName](this.device)-->
+<!--        }-->
+<!--    }-->
+
+<!--</script>-->
 
 <style scoped>
 

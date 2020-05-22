@@ -7,30 +7,52 @@ class Api {
     return 60 * 1000;
   }
 
-  static fetch(url, init) {
+  static fetch(url, init, controller) {
     return new Promise((resolve, reject) => {
-      let controller = new AbortController();
-      let signal = controller.signal;
-
+      controller = controller || new AbortController();
       setTimeout(() => controller.abort(), Api.timeout);
-
-      init.signal = signal
+      init.signal = controller.signal
 
       fetch(url, init)
-      .then(response => {
-        if (!response.ok)
-          reject(new Error(response.statusText));
-
-        return response.json();
-      })
-      .then(data => {
-        resolve(data);
-      })
-      .catch(error => {
-        reject(error);
-      });
+          .then(response => {
+            return response.json();
+          })
+          .then(data => {
+            if (data.error)
+              reject(data.error);
+            else
+              resolve(data);
+          })
+          .catch(error => {
+            reject({ "code": 99, "description": error.message.toLowerCase() });
+          });
     });
   }
+
+  // static fetch(url, init) {
+  //   return new Promise((resolve, reject) => {
+  //     let controller = new AbortController();
+  //     let signal = controller.signal;
+  //
+  //     setTimeout(() => controller.abort(), Api.timeout);
+  //
+  //     init.signal = signal
+  //
+  //     fetch(url, init)
+  //     .then(response => {
+  //       if (!response.ok)
+  //         reject(new Error(response.statusText));
+  //
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       resolve(data);
+  //     })
+  //     .catch(error => {
+  //       reject(error);
+  //     });
+  //   });
+  // }
 
   static get(url) {
     return Api.fetch(url, {})

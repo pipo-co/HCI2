@@ -86,7 +86,7 @@
         },
         mounted() {
             if(!this.$route.params.deviceId)
-                this.$router.push("homes"); // Route 404 view
+                this.$router.push({name: "pageNotFound"});
 
             Api.device.get(this.$route.params.deviceId)
                 .then( data => {
@@ -107,7 +107,11 @@
                             this.loadingPage = false;
                         });
                 })
-                .catch( () => this.$router.push("homes")); //Deberia validar codigo de error y llevarlo a 404.
+                .catch( (error) => {
+                    if(error.code === 1)
+                        this.$router.push({name: "pageNotFound"});
+                    console.log(error.description);
+                });
         }
     }
 </script>

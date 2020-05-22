@@ -1,15 +1,11 @@
 <template>
-    <v-card>
+    <v-card :id="`#${props.id}`">
         <v-container>
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :room="location"
-                            :icon="iconInfo"
-                            :fav="props.isFav()"
-                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -36,7 +32,7 @@
                             </v-col>
                             <v-col cols="12" class="px-5">
                                 <v-container fluid class="py-0">
-                                    <v-row align="center" justify="start">
+                                    <v-row align="baseline" justify="start">
                                         <v-col class="py-0 px-0">
                                             <v-list-item class="px-0">
                                                 <v-list-item-content>
@@ -78,23 +74,6 @@
         data(){
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
-                eventHandlers: {
-                    fav(target){
-                        if (target.props.isFav())
-                            target.props.unFav();
-                        else
-                            target.props.fav();
-                    },
-                    edit(target){
-                        console.log(`Edit handler ${target}`);
-                    },
-                    history(target){
-                        console.log(`History handler ${target}`);
-                    },
-                    delete(target){
-                        console.log(`Delete handler ${target}`);
-                    }
-                },
                 multivaluedState: {
                     values: [
                         { state: 'active', text: 'Prender', action: 'start'},
@@ -122,9 +101,6 @@
                     return `Cargando - Bateria: ${this.props.state.batteryLevel}%`;
                 else
                     return `Prendido - Bateria: ${this.props.state.batteryLevel}%`;
-            },
-            location(){
-                return `${this.props.getHomeName()} - ${this.props.getRoomName()}`;
             },
             enoughBattery(){
                 return this.props.state.batteryLevel >= 6;

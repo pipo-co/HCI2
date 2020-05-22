@@ -52,15 +52,15 @@ const routes = [
     {
         component: () => import("../components/ViewDeviceType"),
         name: "deviceType",
-        path: "/deviceType/:homeID/:deviceTypeID",
+        path: "/deviceType/:homeID/:deviceTypeName",
     },
     {
-        component: () => import("../components/deviceLog"),
+        component: () => import("../components/DeviceLog"),
         name: "deviceLog",
         path: "/deviceLog/:deviceId"
     },
     {
-        component: () => import("../components/pageNotFound"),
+        component: () => import("../components/PageNotFound"),
         name: "pageNotFound",
         path: "*"
     }

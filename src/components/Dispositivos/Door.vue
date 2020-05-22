@@ -1,15 +1,11 @@
 <template>
-    <v-card>
+    <v-card :id="`#${props.id}`">
         <v-container>
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
-                            :name="props.getName()"
+                            :device="props"
                             :state="state"
-                            :room="location"
-                            :icon="iconInfo"
-                            :fav="props.isFav()"
-                            @disp-event="handleDispInfoEvents($event)"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -48,23 +44,6 @@
             return{
                 iconInfo: lib.getIconInfo(this.props.type.name),
                 statePolling: null,
-                eventHandlers:{
-                    fav(target){ //target == this
-                        if (target.props.isFav())
-                            target.props.unFav();
-                        else
-                            target.props.fav();
-                    },
-                    edit(target){
-                        console.log(`Edit handler ${target}`);
-                    },
-                    history(target){
-                        console.log(`History handler ${target}`);
-                    },
-                    delete (target){
-                        console.log(`Delete handler ${target}`);
-                    },
-                },
                 open: new ButtonStatus(this.props, 'status', 'open', 'close', 'opened', 'closed'),
                 lock: new ButtonStatus(this.props, 'lock', 'lock', 'unlock', 'locked', 'unlocked')
             }
@@ -93,9 +72,6 @@
                 }else
                     return "Bloquear";
             },
-            location() {
-                return `${this.props.room.home.name} - ${this.props.room.name}`
-            },
         },
         methods: {
             handleDispInfoEvents(event){
@@ -106,37 +82,6 @@
 
                 this.lock.value = newState.lock === this.lock.statusTrue;
             }
-            // isLocked(){
-            //     return this.lock.value === 'locked'
-            // },
-            // openDoor(){
-            //     this.props.state.status = "open";
-            //     this.open.value = true;
-            //     this.updateStateValue(this.open.action);
-            // },
-            // closeDoor(){
-            //     this.props.state.status = "close";
-            //     this.close.value = true;
-            //     this.updateStateValue(this.close.action);
-            // },
-            // lockDoor(){
-            //     if (this.props.state.lock === "locked"){
-            //         this.lock.value = false;
-            //         this.unlock.value = true;
-            //         this.props.state.lock = "unlocked";
-            //         this.updateStateValue(this.unlock.action);
-            //     }else {
-            //         this.lock.value = true;
-            //         this.unlock.value = false;
-            //         this.props.state.lock = "locked";
-            //         this.updateStateValue(this.lock.action);
-            //     }
-            // },
-            // updateStateValue(action, params = []){
-            //     this.props.execute(action, params)
-            //         .then(console.log)
-            //         .catch(errors => console.log(`${action} - Update Value ${errors}`))
-            // }
         },
         mounted() {
             this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
