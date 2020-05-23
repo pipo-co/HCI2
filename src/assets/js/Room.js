@@ -1,4 +1,5 @@
 import Api from "./Api.js";
+import Home from "./Home";
 
 class Room {
   constructor(id, name, meta, home) {
@@ -10,12 +11,25 @@ class Room {
     this.home = home;
   }
 
+  static emptyCheck(room){
+    Api.room.getRoomDevices(room.id)
+        .then( data => {
+          if(data.result.length === 0)
+            Api.room.delete(room.id)
+                .then(() => Home.emptyCheck(room.home.id))
+                .catch(console.log);
+        })
+        .catch(console.log);
+  }
+
   persistChange(){
     return Api.room.modify(this);
   }
 
   delete(){
-    return Api.room.delete(this.id);
+    return Api.room.delete(this.id)
+        .then( () => Home.emptyCheck(this.home.id))
+        .catch(console.log);
   }
 
   getName(){

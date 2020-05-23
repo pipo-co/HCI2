@@ -503,7 +503,6 @@
             },
             getIconInfo(deviceName){
                 return getIconInfo(deviceName);
-
             }
         }
     }

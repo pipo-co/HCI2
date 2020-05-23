@@ -255,8 +255,8 @@ Api.routine = class {
     return Api.get(Api.routine.url);
   }
 
-  static excecute(id){
-    return Api.get(`${Api.routine.url}/${id}/execute`);
+  static execute(id){
+    return Api.put(`${Api.routine.url}/${id}/execute`);
   }
 }
 

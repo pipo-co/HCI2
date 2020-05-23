@@ -27,7 +27,7 @@
         methods:{
             loadCards(data){
                 if(data.length === 0)
-                        this.$router.push({name: "pageNotFound"});
+                    this.$router.push({name: "pageNotFound"});
                 else
                     this.cards = data;
             }

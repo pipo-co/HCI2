@@ -1,4 +1,5 @@
 import Api from "./Api.js";
+import Room from "./Room";
 
 class Device {
   // Meta must have boolean value fav
@@ -22,7 +23,9 @@ class Device {
   }
 
   delete(){
-    return Api.device.delete(this.id);
+    return Api.device.delete(this.id)
+        .then( () => Room.emptyCheck(this.room))
+        .catch(console.log);
   }
 
   getName(){
