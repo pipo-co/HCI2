@@ -87,7 +87,7 @@
                         <v-card-actions right>
                             <v-spacer></v-spacer>
                             <v-btn text>
-                                <v-icon outlined >mdi-heart</v-icon>
+                                 <v-icon outlined fab>mdi-heart</v-icon>
                             </v-btn>
                             <v-btn rounded color="primary" dark right @click="executeRoutine(routine.id)">
                                 Ejecutar
