@@ -11,7 +11,7 @@
                 <v-col cols="12" class="px-5">
                     <v-container class="py-0"> <!--class="px-3 py-0" -->
                         <v-row align="baseline" dense justify="space-around"><!--class="my-0 py-0" -->
-                            <v-col>
+                            <v-col cols="2">
                                 <v-switch
                                         color="#72E1C7"
                                         hide-details="true"
@@ -21,7 +21,7 @@
                                         :disabled="status.awaitingResponse">
                                 </v-switch>
                             </v-col>
-                            <v-col>
+                            <v-col cols="2">
                                 <v-btn icon
                                        :disabled="temperature.awaitingResponse"
                                        :loading="temperature.awaitingResponse"
@@ -29,7 +29,7 @@
                                     <v-icon color="#6563FF">mdi-minus</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col>
+                            <v-col cols="2">
                                 <v-form v-model="temperature.validInput">
                                     <v-text-field
                                             v-model="temperature.value"
@@ -42,7 +42,7 @@
                                     ></v-text-field>
                                 </v-form>
                             </v-col>
-                            <v-col>
+                            <v-col cols="2">
                                 <v-btn icon
                                        :disabled="temperature.awaitingResponse"
                                        :loading="temperature.awaitingResponse"
@@ -51,8 +51,8 @@
                                 </v-btn>
                             </v-col>
 
-                            <v-col ><!--class="pr-10" -->
-                                <v-btn text color="#6563FF" @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
+                            <v-col cols="2"><!--class="pr-10" -->
+                                <v-btn text color="#6563FF" @click="extraControllers.changeState()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -66,7 +66,7 @@
                             <v-col class="py-0 px-0">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="title" align="left">Modo:</v-list-item-title>
+                                        <v-list-item-title class="title">Modo:</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -92,7 +92,7 @@
                             <v-col class="py-0 px-0">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="title" align="left">Desplazamiento de Aspas</v-list-item-title>
+                                        <v-list-item-title class="title">Desplazamiento de Aspas</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -106,7 +106,7 @@
                             <v-col class="py-0 px-0">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="text--primary" align="left">Vertical:</v-list-item-title>
+                                        <v-list-item-title class="text--primary">Vertical:</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -131,7 +131,7 @@
                             <v-col class="py-0 px-0">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="text--primary" align="left">Horizontal:</v-list-item-title>
+                                        <v-list-item-title class="text--primary">Horizontal:</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -156,7 +156,7 @@
                             <v-col class="py-0 px-0">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="title" align="left">Velocidad Ventilador</v-list-item-title>
+                                        <v-list-item-title class="title">Velocidad Ventilador</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -170,7 +170,7 @@
                             <v-col class="py-0 px-0">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="text--primary" align="left">Horizontal:</v-list-item-title>
+                                        <v-list-item-title class="text--primary">Horizontal:</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -202,7 +202,7 @@
         ExtraControls,
         NumberFieldWithButtons,
         SelectionField,
-    } from "../../assets/js/DevicesLib";
+    } from "@/assets/js/DevicesLib";
 
     export default {
         name: "ac",

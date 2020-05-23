@@ -11,7 +11,7 @@
                 <v-col md="12"  class="px-5">
                     <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
-                            <v-col cols="1" class="ma-0 pa-0">
+                            <v-col cols="2" class="ma-0 pa-0">
                                 <v-switch color="#72E1C7" v-model="booleanStatus.value" @change="invertBooleanState" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" ></v-switch><!--class="px-3 my-auto" -->
                             </v-col>
                             <v-col cols="7" class="ma-0 pa-0">
@@ -33,8 +33,8 @@
                                     ></v-slider>
                                 </v-form>
                             </v-col>
-                            <v-col cols="2" class="ma-0 pa-0"><!--class="pr-10" -->
-                                <v-btn color="#6563FF" text @click="controllerHandler">{{extraControllers.message}}</v-btn>
+                            <v-col cols="3" class="ma-0 pa-0"><!--class="pr-10" -->
+                                <v-btn color="#6563FF" text @click="controllerHandler">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -47,7 +47,7 @@
                             <v-col cols="12">
                                 <v-list-item class="px-0">
                                     <v-list-item-content class="ma-1 pa-1">
-                                        <v-list-item-title align="center" class="title">Seleccione Nuevo Color</v-list-item-title>
+                                        <v-list-item-title class="title">Seleccione Nuevo Color</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
