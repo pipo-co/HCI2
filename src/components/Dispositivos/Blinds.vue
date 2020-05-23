@@ -22,7 +22,7 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="4">
-                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}</v-btn>
+                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
                     </v-container>

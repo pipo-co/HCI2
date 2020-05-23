@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar home="Casa" room="Living"/>
+        <nav-bar :home="cards[0].room.home.name" :room="cards[0].getRoomName()"/>
         <v-container fluid>
             <v-row >
                 <v-col>

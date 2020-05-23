@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar/>
+        <nav-bar :home="cards[0].room.home.name" :room="cards[0].type.name"/>
     <card-holder :card-array="cards"/>
     </div>
 </template>

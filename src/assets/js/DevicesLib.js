@@ -163,14 +163,19 @@ class ExtraControls {
     constructor() {
         this.value = false;
         this.message = 'Mas'
+        this.icon = 'mdi-chevron-down'
     }
 
     changeState() {
         this.value = !this.value;
-        if (this.value)
+        if (this.value) {
             this.message = 'Menos';
-        else
+            this.icon = 'mdi-chevron-up';
+        }
+        else {
             this.message = 'Mas';
+            this.icon = 'mdi-chevron-down';
+        }
     }
 }
 

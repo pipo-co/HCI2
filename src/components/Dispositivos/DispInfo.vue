@@ -9,7 +9,7 @@
                     <v-list-item-content>
                         <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
                         <v-list-item-title class="title d-inline-block text-truncate text--darken-1 indigo--text">{{device.getName()}}</v-list-item-title>
-                        <v-list-item-subtitle class="text--primary">{{state}}</v-list-item-subtitle>
+                        <v-list-item-subtitle v-if="state" class="text--primary">{{state}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-col>
@@ -18,7 +18,6 @@
                 <v-btn icon>
                     <v-icon :color="color" @click="this.handleFav">mdi-heart</v-icon>
                 </v-btn>
-
                 <v-menu bottom :offset-x="true">
                     <template v-slot:activator="{ on }">
                         <v-btn icon v-on="on">
@@ -71,7 +70,7 @@
             },
             state: {
                 type: String,
-                required: true
+                required: false
             },
         },
         data(){
@@ -89,7 +88,7 @@
                     history: {
                         message: 'Historial',
                         eventName: 'history',
-                        handle: () => true,
+                        handle: () => this.$router.push({name: 'deviceLog', params: {deviceId: this.device.id}}),
                     },
                     delete: {
                         message: 'Eliminar',
