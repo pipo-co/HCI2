@@ -362,9 +362,6 @@
                     return true;
             },
             route() {
-                /*//eslint-disable-next-line no-debugger
-                debugger;*/
-                console.log(this.$route.params.previousRoute);
                 if (this.$route.params.previousRoute === 'room') {
                     return {
                         name: this.$route.params.previousRoute,
@@ -372,7 +369,6 @@
                     };
                 } else
                     return {name: 'homes'};
-
             },
             homeerrormessage() {
                 if (this.flagErrorHome) {
@@ -456,8 +452,6 @@
                 }
             },
             saveDisp() {
-                //eslint-disable-next-line no-debugger
-                debugger;
                 if (this.newdisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.newdisp.home.id}_${this.newdisp.room.id}_${this.newdisp.dispname}`)) {
                     this.flagErrorDisp = true;
                 } else if (this.newdisp.home === 0) {

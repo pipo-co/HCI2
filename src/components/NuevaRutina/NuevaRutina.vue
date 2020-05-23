@@ -24,7 +24,7 @@
                 <v-col cols="6" md="6">
                 </v-col>
                 <v-col>
-                    <v-btn rounded outlined color="#A5A5A5" @click='saveNewRoutine()' :disabled="false">
+                    <v-btn rounded outlined color="#A5A5A5" @click='saveNewRoutine()' :disabled="!validRoutine">
                         Guardar
                     </v-btn>
                 </v-col>
@@ -57,7 +57,7 @@
                                             >
                                                 <v-text-field
                                                         v-model="newRoutine.name"
-                                                        :rules="TitleRules"
+                                                        :rules="newRoutine.titleRules"
                                                         class="pa-0 my-0"
                                                 ></v-text-field>
                                             </v-form>
@@ -79,6 +79,7 @@
                                                 <v-text-field
                                                         v-model="newRoutine.desc"
                                                         class="pa-0" height="15"
+                                                        :rules="newRoutine.descRules"
                                                         label="Opcional">
                                                 </v-text-field>
                                             </v-form>
@@ -99,22 +100,22 @@
                             </v-col>
                         </v-row>
                         <v-row no-gutters wrap>
-                            <v-col v-for="action in newRoutine.actions" :key="action.name">
-                                <v-card class="rounded" elevation="3" width="390">
+                            <v-col v-for="(action, i) in newRoutine.actions" :key="i">
+                                <v-card class="rounded" elevation="3" width="600">
                                     <v-container fluid>
                                         <v-row no-gutters align="center">
                                             <v-col cols="1">
-                                                <v-btn text top fab>
+                                                <v-btn @click="removeAction(i)" text top fab>
                                                     <v-icon>mdi-close</v-icon>
                                                 </v-btn>
                                             </v-col>
                                             <v-col cols="1"></v-col>
-                                            <v-col cols="6">
+                                            <v-col cols="12">
                                                 <v-list>
-                                                    <v-list-item-title>{{action.homeName}}-{{action.roomName}}-{{action.deviceName}} </v-list-item-title>
+                                                    <v-list-item-title>{{action.action.actionName}}--{{action.homeName}}-{{action.roomName}}-{{action.deviceName}}--{{action.typeName}} </v-list-item-title>
                                                 </v-list>
                                             </v-col>
-                                            <v-col cols="1" v-for="(param, index) in action.action.params" :key="index">
+                                            <v-col cols="12" v-for="(param, index) in action.action.params" :key="index">
                                                 <v-list>
                                                     <v-list-item-title>{{param}}</v-list-item-title>
                                                 </v-list>
@@ -278,14 +279,9 @@
 </template>
 
 <script>
-    //import Api from "@/assets/js/Api.js";
-    //import {createDeviceFromScratch, getRoomsFromHome} from "../../assets/js/lib";
     import ActionRouter from "./ActionRouter";
-    // const lib = require('../../assets/js/lib.js')
-    //import {getRoomsFromHome} from "../../assets/js/lib";
-
-    //import Api from "../../assets/js/Api";
     import {
+        createRoutine,
         getActionsItemsArray, getDeviceItemsArray,
         getHomeItemsArray,
         getRoomItemsArray,
@@ -298,14 +294,14 @@
         components: {ActionRouter},
         data() {
             return {
-                homeItems: null,
+                homeItems: [],
                 home: null,
-                roomItems: null,
+                roomItems: [],
                 room: null,
-                dispItems: null,
+                dispItems: [],
                 dispositive: null,
                 action: null,
-                actItems: null,
+                actItems: [],
                 addHomeFlag: false,
                 addRoomFlag: true,
                 addDispFlag: true,
@@ -322,12 +318,16 @@
                     nameValid: false,
                     desc: null,
                     descValid: false,
+                    titleRules: [
+                        v => !!v || 'Es necesario un titulo',
+                        v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
+                        v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                    ],
+                    descRules: [
+                        v => (!v || v.length <= 80) || 'La descripcion debe tener como maximo 80 caracteres',
+                        v => !v || /^[A-Z a-z0-9]+$/.test(v) || 'La descripcion solo puede contener letras, numeros o espacios'
+                    ]
                 },
-                TitleRules: [
-                    v => !!v || 'Es necesario un titulo',
-                    v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
-                ],
             }
         },
         mounted() {
@@ -336,9 +336,10 @@
             }).catch(error => {
                     console.log(`Error ${error}`)});
         },
-        watch: {
-        },
         computed: {
+            validRoutine(){
+                return this.newRoutine.nameValid && this.newRoutine.descValid && this.newRoutine.actions.length !== 0;
+            }
         },
         methods: {
             paramControl(value, index){
@@ -351,7 +352,7 @@
                     let action = new Action(this.dispositive.id, this.action.name, params);
 
                     let displayAction = {
-                        typeId: this.dispositive.type.id,
+                        typeName: this.dispositive.type.name,
                         deviceName: this.dispositive.name.split("_").pop(),
                         roomName: this.room.name,
                         homeName: this.home.name,
@@ -364,8 +365,17 @@
                     this.resetActionForm();
                 }
             },
+            removeAction(index){
+                this.newRoutine.actions.splice(index, 1);
+            },
             saveNewRoutine() {
-                this.stepController.value--;
+                if(this.validRoutine){
+                    let desc = (this.newRoutine.desc)? this.newRoutine.desc : "";
+                    let actions = this.newRoutine.actions.map(elem => elem.action);
+                    createRoutine(this.newRoutine.name, actions, desc)
+                        .then( () => this.$router.push({name: 'homes'}))
+                        .catch(console.log);
+                }
             },
             getRoomItems(homeID){
                 getRoomItemsArray(homeID).then( data => {
@@ -427,7 +437,8 @@
                 if(this.action.params.length !== 0){
                     this.hasParams = true;
                     this.paramsSetUp();
-                }
+                } else
+                    this.hasParams = false;
                 this.checkValidSave();
             },
             paramsSetUp(){
@@ -442,12 +453,12 @@
             },
             resetActionForm(){
                 this.home = null;
-                this.roomItems = null;
+                this.roomItems = [];
                 this.room = null;
-                this.dispItems = null;
+                this.dispItems = [];
                 this.dispositive = null;
                 this.action = null;
-                this.actItems = null;
+                this.actItems = [];
                 this.addHomeFlag = false;
                 this.addRoomFlag = true;
                 this.addDispFlag = true;

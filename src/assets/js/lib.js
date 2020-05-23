@@ -64,15 +64,15 @@ export function createHome(name){
     });
 }
 
-export function createRoutine(name, actions){
-    let routine = new Routine(null, name, {fav: false}, actions, true);
+export function createRoutine(name, actions, description = ""){
+    let routine = new Routine(null, name, {fav: false, desc: description}, actions);
     return new Promise( (resolve, reject) =>
         Api.routine.add(routine)
             .then( data => {
                 routine.id = data.result.id;
                 resolve(routine);
             })
-            .catch( error => reject(`Add Routine ${name} ${error}`)))
+            .catch( error => reject(error)))
 }
 
 export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){

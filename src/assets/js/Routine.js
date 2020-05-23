@@ -1,14 +1,13 @@
 import Api from "./Api.js";
 
 class Routine {
-    constructor(id, name, meta, actions, hasActions = false){
+    constructor(id, name, meta, actions){
         if (id) {
             this.id = id;
         }
         this.name = name;
         this.meta = meta;
         this.actions = actions;
-        this.hasActions = hasActions;
     }
 
     persistChanges() {
