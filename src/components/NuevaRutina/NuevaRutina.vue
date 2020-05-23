@@ -94,9 +94,34 @@
                             <v-col cols="4" md="4" class="pa-0 my-0" >
                                 <v-list-item class="py-0 my-0">
                                     <v-list-item-content class="py-0 my-0">
-                                        <v-list-item-title class="pa-0 md-0"> Dispositivos agregados: </v-list-item-title>
+                                        <v-list-item-title class="pa-0 md-0"> Acciones agregados: </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
+                            </v-col>
+                        </v-row>
+                        <v-row no-gutters wrap>
+                            <v-col v-for="action in newRoutine.actions" :key="action.name">
+                                <v-card class="rounded" elevation="3" width="350">
+                                    <v-container>
+                                        <v-row no-gutters align="center">
+                                            <v-col cols="1">
+                                                <v-btn text top fab>
+                                                    <v-icon>mdi-close</v-icon>
+                                                </v-btn>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-list>
+                                                    <v-list-item-title>{{action.homeName}}-{{action.roomName}}-{{action.deviceName}} </v-list-item-title>
+                                                </v-list>
+                                            </v-col>
+                                            <v-col cols="1" v-for="(param, index) in action.action.params" :key="index">
+                                                <v-list>
+                                                    <v-list-item-title>{{param}}</v-list-item-title>
+                                                </v-list>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card>
                             </v-col>
                         </v-row>
                         <v-row>
