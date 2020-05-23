@@ -277,7 +277,7 @@
                                                                     class="rounded mx-auto my-3"
                                                                     elevation="4"
                                                                     width="700">
-                                                                <action-router v-for="(param, i) in action.params" :key="param.name" :params="param" @change="paramControl($event, i)"/>
+                                                                <action-router v-for="(param, i) in action.params" :key="param.name" :actionName="action.name" :rooms="roomItems" :params="param" @change="paramControl($event, i)"/>
                                                             </v-card>
                                                         </v-row>
                                                         <v-row>
@@ -406,7 +406,7 @@
                     let desc = (this.newRoutine.desc)? this.newRoutine.desc : "";
                     let actions = this.newRoutine.actions.map(elem => elem.action);
                     createRoutine(this.newRoutine.name, actions, desc)
-                        .then( () => this.$router.push({name: 'homes'}))
+                        .then( () => this.$router.push({name: 'rutinas'}))
                         .catch(console.log);
                 }
             },
@@ -503,7 +503,6 @@
             },
             getIconInfo(deviceName){
                 return getIconInfo(deviceName);
-
             }
         }
     }

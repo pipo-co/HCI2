@@ -9,6 +9,21 @@ class Home {
         this.meta = meta;
     }
 
+    static emptyCheck(homeId){
+        return new Promise((resolve, reject) => {
+            Api.home.getHomeRooms(homeId)
+                .then( data => {
+                    if(data.result.length === 0) {
+                        Api.home.delete(homeId)
+                            .catch(console.log);
+                        resolve(true);
+                    } else
+                        resolve(false);
+                })
+                .catch(reject);
+        });
+    }
+
     persistChanges(){
         return Api.home.modify(this);
     }

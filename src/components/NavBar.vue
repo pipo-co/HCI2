@@ -4,8 +4,10 @@
             <v-col>
                 <v-container fluid>
                     <v-row align="center" justify="start">
-                        <v-col cols="5">
-                            <v-toolbar-title class="headline" color="#3C3F58">SMARTIFY</v-toolbar-title>
+                        <v-col cols="5" >
+                            <v-btn @click="$router.push('/')" text>
+                                <v-toolbar-title class="headline" color="#3C3F58" to="/">SMARTIFY</v-toolbar-title>
+                            </v-btn>
                         </v-col>
                         <v-col cols="3">
                             <v-toolbar-title color="#3C3F58">{{home}}</v-toolbar-title>

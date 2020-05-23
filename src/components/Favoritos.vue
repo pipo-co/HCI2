@@ -1,7 +1,13 @@
 <template>
     <div>
         <nav-bar/>
-        <card-holder :card-array="cards"/>
+        <card-holder v-if="cards.length !== 0" :card-array="cards"/>
+        <div v-else>
+            <h1>No hay dispositivos marcados como favoritos.</h1>
+            <br>
+            <h3>Para agregar un dispositivo, busque la tarjeta correspondiente y apriete el corzaon (<v-icon>mdi-heart</v-icon>). </h3>
+            <h3>Si el corazon esta de color rojo (<v-icon color="red">mdi-heart</v-icon>) indica que la tarjeta esta marcada como favorito</h3>
+        </div>
     </div>
 </template>
 
