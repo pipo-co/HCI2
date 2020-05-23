@@ -1,23 +1,6 @@
 <template>
     <div>
-        <v-app-bar fixed color="#72E1C7">
-            <v-row align="center" justify="center">
-                <v-col cols="3">
-                    <v-toolbar-title color="3C3F58">SMARTIFY</v-toolbar-title>
-                </v-col>
-                <v-spacer></v-spacer>
-                <v-col cols="6" class="px-0">
-                    <v-tabs right color="#3C3F58" background-color="#72E1C7">
-                        <v-tabs-slider color="#87FFE3"></v-tabs-slider>
-                        <v-tab><v-icon right>mdi-magnify</v-icon></v-tab>
-                        <v-tab to="/favoritos">Favoritos</v-tab>
-                        <v-tab to="/">Hogares</v-tab>
-                        <v-tab to="/rutinas">Rutinas</v-tab>
-                        <v-tab to="/dispositivo/nuevodispositivo1">Consumos</v-tab>
-                    </v-tabs>
-                </v-col>
-            </v-row>
-        </v-app-bar>
+        <nav-bar/>
         <v-container class="pa-2">
             <v-row no-gutters class=" ma-1 pa-0">
                 <v-col cols="12" md="12">
@@ -341,10 +324,12 @@
     } from "../assets/js/lib";
     import Home from "../assets/js/Home";
     import Room from "../assets/js/Room";
+    import NavBar from "./NavBar";
     //import Home from "../../assets/js/Home";
     //import Room from "../../assets/js/Room";
     export default {
         name: "Homes",
+        components: {NavBar},
         data() {
             return {
                 dialog: false,

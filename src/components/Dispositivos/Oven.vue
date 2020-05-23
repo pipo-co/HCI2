@@ -89,9 +89,6 @@
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-col>
-<!--                                <v-col class="py-0"> &lt;!&ndash;class="pr-10" &ndash;&gt;-->
-<!--                                    <v-select :items="grill.supportedValues" v-model="grill.value" dense value="Convencional"></v-select>-->
-<!--                                </v-col>-->
                                 <v-col class="py-0"> <!--class="pr-10" -->
                                     <v-form v-model="grill.validInput">
                                         <v-select :items="grill.supportedValues" v-model="grill.value"

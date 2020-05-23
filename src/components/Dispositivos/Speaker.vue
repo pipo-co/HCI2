@@ -67,13 +67,19 @@
             </v-row>
             <v-row dense v-show="extraControllers.value">
                 <v-col cols="12" class="px-5">
-                    <v-container fluid class="py-0">
-                        <v-row align="center" justify="start">
-                            <v-col cols="3" class="py-0 px-0">
+                    <v-container class="py-0">
+                        <v-row align="baseline" justify="start">
+                            <v-col cols="3">
+                                <v-list-item class="px-0">
+                                    <v-list-item-content>
+                                        <v-list-item-title align="left" class="subtitle-1">Genero</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-col>
+                            <v-col class="py-0"> <!--class="pr-10" -->
                                 <v-select
                                         v-model="genre.value"
                                         :items="genre.supportedValues"
-                                        label="Genero"
                                         @change="changeGenre"
                                         :loading="genre.awaitingResponse"
                                         :disabled="genre.awaitingResponse"
@@ -81,6 +87,21 @@
                             </v-col>
                         </v-row>
                     </v-container>
+<!--                    -->
+<!--                    <v-container fluid class="py-0">-->
+<!--                        <v-row align="center" justify="start">-->
+<!--                            <v-col cols="3" class="py-0 px-0">-->
+<!--                                <v-select-->
+<!--                                        v-model="genre.value"-->
+<!--                                        :items="genre.supportedValues"-->
+<!--                                        label="Genero"-->
+<!--                                        @change="changeGenre"-->
+<!--                                        :loading="genre.awaitingResponse"-->
+<!--                                        :disabled="genre.awaitingResponse"-->
+<!--                                ></v-select>-->
+<!--                            </v-col>-->
+<!--                        </v-row>-->
+<!--                    </v-container>-->
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar/>
+        <nav-bar home="Casa" room="Living"/>
         <v-container fluid>
             <v-row >
                 <v-col>

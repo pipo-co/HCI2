@@ -1,9 +1,26 @@
 <template>
     <v-app-bar fixed color="#72E1C7">
         <v-row align="center" justify="space-between">
-            <v-col cols="3">
-                <v-toolbar-title color="#3C3F58">SMARTIFY</v-toolbar-title>
+            <v-col>
+                <v-container fluid>
+                    <v-row align="center" justify="start">
+                        <v-col cols="5">
+                            <v-toolbar-title class="headline" color="#3C3F58">SMARTIFY</v-toolbar-title>
+                        </v-col>
+                        <v-col cols="3">
+                            <v-toolbar-title color="#3C3F58">{{home}}</v-toolbar-title>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-toolbar-title color="#3C3F58" v-show="room">|</v-toolbar-title>
+                        </v-col>
+                        <v-col cols="3">
+                            <v-toolbar-title color="#3C3F58">{{room}}</v-toolbar-title>
+                        </v-col>
+                    </v-row>
+                </v-container>
+
             </v-col>
+
             <v-spacer/>
             <v-col v-show="searchBar.show" align-self="center">
                 <v-form v-model="searchBar.valid">
@@ -37,6 +54,17 @@
 <script>
     export default {
         name: "NavBar",
+        props:{
+            home:{
+                type: String,
+                require: false,
+            },
+            room:{
+                type: String,
+                require: false,
+            },
+
+        },
         data(){
             return{
                 searchBar:{
