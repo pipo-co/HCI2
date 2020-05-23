@@ -175,9 +175,17 @@
                                     <v-radio
                                             v-for="disps in disptypes"
                                             :key="disps.id"
-                                            :label="disps.name"
                                             :value="disps.id"
-                                    ></v-radio>
+                                    >
+                                        <template v-slot:label>
+                                            <v-list-item-avatar :color="disps.iconInfo.bgColor">
+                                                <v-icon :color="disps.iconInfo.color">
+                                                    {{disps.iconInfo.src}}
+                                                </v-icon>
+                                            </v-list-item-avatar>
+                                            {{$vuetify.lang.t(`$vuetify.${disps.name}`)}}
+                                        </template>
+                                    </v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
@@ -269,7 +277,7 @@
     import {
         createDevice,
         createDeviceFromNotExistingRoom,
-        createDeviceFromScratch,
+        createDeviceFromScratch, getSupportedDeviceTypes,
     } from "../../assets/js/lib";
     import Home from "../../assets/js/Home";
     import Room from "../../assets/js/Room";
@@ -347,8 +355,8 @@
                 })
                 .catch(error => console.log(`Error ${error}`));
 
-            Api.deviceType.getAll()
-                .then(data => this.disptypes = data.result)
+            getSupportedDeviceTypes()
+                .then(data => this.disptypes = data)
                 .catch(error => console.log(`Error ${error}`));
 
             if (this.routeHomeID !== undefined && this.routeRoomID !== undefined) {

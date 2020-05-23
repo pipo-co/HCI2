@@ -123,10 +123,14 @@
                 else
                     this.device.fav();
             },
-            removeFromDom(){
-                this.device.isDeleted = true;
-                let elem = document.getElementById(`#${this.device.id}`).parentNode;
-                elem.parentNode.removeChild(elem);
+            removeFromDom(wasCascade){
+                if(wasCascade)
+                    this.$router.push({name: 'homes'});
+                else{
+                    this.device.isDeleted = true;
+                    let elem = document.getElementById(`#${this.device.id}`).parentNode;
+                    elem.parentNode.removeChild(elem);
+                }
             }
         }
 
