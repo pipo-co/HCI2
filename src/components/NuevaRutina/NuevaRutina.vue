@@ -101,23 +101,40 @@
                         </v-row>
                         <v-row no-gutters wrap>
                             <v-col v-for="(action, i) in newRoutine.actions" :key="i">
-                                <v-card class="rounded" elevation="3" width="600">
+                                <v-card class="rounded my-4" elevation="3" width="350">
                                     <v-container fluid>
                                         <v-row no-gutters align="center">
                                             <v-col cols="1">
+                                                <v-list-item-avatar :color="getIconInfo(action.typeName).bgColor" >
+                                                    <v-icon large :color="getIconInfo(action.typeName).color">{{getIconInfo(action.typeName).src}}</v-icon>
+                                                </v-list-item-avatar>
+                                            </v-col>
+                                            <v-col>
+                                                <v-list class="mx-5">
+                                                    <v-list-item-title class="headline" align="left">{{action.deviceName}}</v-list-item-title>
+                                                    <v-list-item-subtitle align="left">{{action.homeName}}-{{action.roomName}}</v-list-item-subtitle>
+                                                </v-list>
+                                            </v-col>
+                                            <v-col></v-col>
+                                            <v-col cols="2">
                                                 <v-btn @click="removeAction(i)" text top fab>
                                                     <v-icon>mdi-close</v-icon>
                                                 </v-btn>
-                                            </v-col>
-                                            <v-col cols="1"></v-col>
-                                            <v-col cols="12">
+                                            </v-col >
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="7">
                                                 <v-list>
-                                                    <v-list-item-title>{{action.action.actionName}}--{{action.homeName}}-{{action.roomName}}-{{action.deviceName}}--{{action.typeName}} </v-list-item-title>
+                                                    <v-list-item>
+                                                        <v-list-item-title>Accion: {{action.action.actionName}}</v-list-item-title>
+                                                    </v-list-item>
                                                 </v-list>
                                             </v-col>
-                                            <v-col cols="12" v-for="(param, index) in action.action.params" :key="index">
+                                            <v-col v-for="(param, index) in action.action.params" :key="index">
                                                 <v-list>
-                                                    <v-list-item-title>{{param}}</v-list-item-title>
+                                                    <v-list-item>
+                                                        <v-list-item-title>{{param}}</v-list-item-title>
+                                                    </v-list-item>
                                                 </v-list>
                                             </v-col>
                                         </v-row>
@@ -142,16 +159,20 @@
                                                     </v-btn>
                                                 </template>
                                                 <v-card class="rounded ma-auto"
-                                                        height="600">
+                                                        height="700">
                                                     <v-container fluid>
                                                         <v-row >
                                                             <v-card class="rounded mx-auto"
                                                                     elevation="4"
-                                                                    width="800">
+                                                                    width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters>
                                                                         <v-col cols="8">
-                                                                            <p class="subtitle-1">Seleccione el hogar del dispositivo:</p>
+                                                                            <v-list>
+                                                                                <v-list-item>
+                                                                                    <v-list-item-title>Seleccione el hogar del dispositivo:</v-list-item-title>
+                                                                                </v-list-item>
+                                                                            </v-list>
                                                                         </v-col>
                                                                         <v-col>
                                                                             <v-select
@@ -170,11 +191,15 @@
                                                         <v-row >
                                                             <v-card class="rounded mx-auto my-3"
                                                                     elevation="4"
-                                                                        width="800">
+                                                                    width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters>
                                                                         <v-col cols="8">
-                                                                            <p class="subtitle-1" >Seleccione la habitacion del dispositivo:</p>
+                                                                            <v-list>
+                                                                                <v-list-item>
+                                                                                    <v-list-item-title>Seleccione la habitacion del dispositivo:</v-list-item-title>
+                                                                                </v-list-item>
+                                                                            </v-list>
                                                                         </v-col>
                                                                         <v-col>
                                                                             <v-select
@@ -194,11 +219,15 @@
                                                         <v-row >
                                                             <v-card class="rounded mx-auto my-3"
                                                                     elevation="4"
-                                                                    width="800">
+                                                                    width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters>
                                                                         <v-col cols="8">
-                                                                            <p class="subtitle-1" >Seleccione el dispositivo:</p>
+                                                                            <v-list>
+                                                                                <v-list-item>
+                                                                                    <v-list-item-title>Seleccione el dispositivo:</v-list-item-title>
+                                                                                </v-list-item>
+                                                                            </v-list>
                                                                         </v-col>
                                                                         <v-col>
                                                                             <v-select
@@ -218,11 +247,15 @@
                                                         <v-row>
                                                             <v-card class="rounded mx-auto my-3"
                                                                     elevation="4"
-                                                                    width="800">
+                                                                    width="700">
                                                                 <v-container fluid class="pa-0">
-                                                                    <v-row no-gutters>
+                                                                    <v-row no-gutters >
                                                                         <v-col cols="8">
-                                                                            <p class="subtitle-1" >Seleccione la accion del dispositivo:</p>
+                                                                            <v-list>
+                                                                                <v-list-item>
+                                                                                    <v-list-item-title>Seleccione la accion del dispositivo:</v-list-item-title>
+                                                                                </v-list-item>
+                                                                            </v-list>
                                                                         </v-col>
                                                                         <v-col>
                                                                             <v-select
@@ -243,7 +276,7 @@
                                                             <v-card
                                                                     class="rounded mx-auto my-3"
                                                                     elevation="4"
-                                                                    width="800">
+                                                                    width="700">
                                                                 <action-router v-for="(param, i) in action.params" :key="param.name" :params="param" @change="paramControl($event, i)"/>
                                                             </v-card>
                                                         </v-row>
@@ -283,7 +316,7 @@
     import {
         createRoutine,
         getActionsItemsArray, getDeviceItemsArray,
-        getHomeItemsArray,
+        getHomeItemsArray, getIconInfo,
         getRoomItemsArray,
         getRoomsAndDeviceTypesMapFromHome
     } from "../../assets/js/lib";
@@ -334,7 +367,7 @@
             getHomeItemsArray().then( data => {
                 this.homeItems = data;
             }).catch(error => {
-                    console.log(`Error ${error}`)});
+                console.log(`Error ${error}`)});
         },
         computed: {
             validRoutine(){
@@ -467,6 +500,10 @@
                 this.validSave = false;
                 this.hasParams = false;
                 this.params = null;
+            },
+            getIconInfo(deviceName){
+                return getIconInfo(deviceName);
+
             }
         }
     }
