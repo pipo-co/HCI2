@@ -10,12 +10,18 @@ class Home {
     }
 
     static emptyCheck(homeId){
-        Api.home.getHomeRooms(homeId)
-            .then( data => {
-                if(data.result.length === 0)
-                    Api.home.delete(homeId);
-            })
-            .catch(console.log);
+        return new Promise((resolve, reject) => {
+            Api.home.getHomeRooms(homeId)
+                .then( data => {
+                    if(data.result.length === 0) {
+                        Api.home.delete(homeId)
+                            .catch(console.log);
+                        resolve(true);
+                    } else
+                        resolve(false);
+                })
+                .catch(reject);
+        });
     }
 
     persistChanges(){

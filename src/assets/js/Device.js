@@ -23,9 +23,18 @@ class Device {
   }
 
   delete(){
-    return Api.device.delete(this.id)
-        .then( () => Room.emptyCheck(this.room))
-        .catch(console.log);
+    return new Promise((resolve, reject) => {
+      Api.device.delete(this.id)
+          .then( () => {
+            Room.emptyCheck(this.room)
+                .then(resolve)
+                .catch(error => {
+                  console.log(error);
+                  resolve(false);
+                });
+          })
+          .catch(reject);
+    });
   }
 
   getName(){
