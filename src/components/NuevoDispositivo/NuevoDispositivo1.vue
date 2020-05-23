@@ -529,10 +529,10 @@
                 }
             },
             saveDisp() {
-                if(this.editFlag)
+                if(!this.editFlag)
                     this.createDisp();
-                else
-                    this.editDisp();
+                // else
+                //     this.editDisp();
             },
             createDisp(){
                 if (this.disp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.disp.home.id}_${this.disp.room.id}_${this.disp.dispname}`)) {
