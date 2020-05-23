@@ -381,7 +381,7 @@ export function getDevicesByHomeAndType(homeID, typeName){
 export function getHomeItemsArray(){
     return new Promise((resolve, reject) => {
         Api.home.getAll()
-            .then(data => resolve(data.result.map(home => {return {text: home.name , value: home.id }})))
+            .then(data => resolve(data.result.map(home => { return {text: home.name , value: { id: home.id, name: home.name }} })))
             .catch( error => reject(`getHomeItemsArray: ${error}`));
     })
 }
@@ -389,7 +389,7 @@ export function getHomeItemsArray(){
 export function getRoomItemsArray(homeID){
     return new Promise((resolve, reject) => {
         Api.home.getHomeRooms(homeID)
-            .then(data => resolve(data.result.map(room => {return {text: room.name.split("_").pop() , value: room.id }})))
+            .then(data => resolve(data.result.map(room => {return {text: room.name.split("_").pop() , value: { id: room.id, name: room.name.split("_").pop() }} })))
             .catch( error => reject(`getRoomItemsArray: ${error}`));
     })
 }

@@ -129,7 +129,7 @@
                                                                         <v-col>
                                                                             <v-select
                                                                                     class="mt-3 mr-3"
-                                                                                    v-model="homeID"
+                                                                                    v-model="home"
                                                                                     :items="homeItems"
                                                                                     placeholder="Hogares"
                                                                                     solo
@@ -152,7 +152,7 @@
                                                                         <v-col>
                                                                             <v-select
                                                                                     class="mt-3 mr-3"
-                                                                                    v-model="roomID"
+                                                                                    v-model="room"
                                                                                     :items="roomItems"
                                                                                     placeholder="Habitaciones"
                                                                                     solo
@@ -220,11 +220,10 @@
                                                                 <action-router v-for="(param, i) in action.params" :key="param.name" :params="param" @change="paramControl($event, i)"/>
                                                             </v-card>
                                                         </v-row>
-
                                                         <v-row>
                                                             <v-col>
                                                                 <v-btn
-                                                                        @click="dialog=false"
+                                                                        @click="saveAction"
                                                                         dark
                                                                         color="#65C2AD"
                                                                         :disabled="!validSave">
@@ -266,6 +265,7 @@
         getRoomItemsArray,
         getRoomsAndDeviceTypesMapFromHome
     } from "../../assets/js/lib";
+    import Action from "../../assets/js/Action";
 
     export default {
         name: "NuevaRutina",
@@ -273,13 +273,13 @@
         data() {
             return {
                 homeItems: null,
-                homeID: null,
-                roomItems: [],
-                roomID: null,
-                dispItems: [],
+                home: null,
+                roomItems: null,
+                room: null,
+                dispItems: null,
                 dispositive: null,
                 action: null,
-                actItems: [],
+                actItems: null,
                 addHomeFlag: false,
                 addRoomFlag: true,
                 addDispFlag: true,
@@ -289,6 +289,7 @@
                 hasParams: false,
                 params: null,
                 dialog: false,
+
                 newRoutine: {
                     actions: [],
                     name: null,
@@ -298,7 +299,7 @@
                 },
                 TitleRules: [
                     v => !!v || 'Es necesario un titulo',
-                    v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 20 caracteres',
+                    v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
             }
@@ -314,12 +315,29 @@
         computed: {
         },
         methods: {
-            //Esta funcion muestar el resultado del action
             paramControl(value, index){
                 this.params[index] = value;
                 this.checkValidSave();
             },
+            saveAction(){
+                if(this.isValidState()) {
+                    let params = (this.hasParams)? this.params : [];
+                    let action = new Action(this.dispositive.id, this.action.name, params);
 
+                    let displayAction = {
+                        typeId: this.dispositive.type.id,
+                        deviceName: this.dispositive.name.split("_").pop(),
+                        roomName: this.room.name,
+                        homeName: this.home.name,
+                        action: action
+                    };
+
+                    this.newRoutine.actions.push(displayAction);
+                    this.dialog = false;
+
+                    this.resetActionForm();
+                }
+            },
             saveNewRoutine() {
                 this.stepController.value--;
             },
@@ -336,15 +354,13 @@
                     console.log(`Error ${error}`)});
             },
             getActItems(dispType){
-                // eslint-disable-next-line no-debugger
-                //debugger;
                 getActionsItemsArray(dispType).then( data => {
                     this.actItems = data;
                 }).catch(error => {
                     console.log(`Error ${error}`)});
             },
             changeRoomMap() {
-                getRoomsAndDeviceTypesMapFromHome(this.roomID).then(data => {
+                getRoomsAndDeviceTypesMapFromHome(this.room).then(data => {
                     this.dispItems = data;
                 }).catch(error => {
                     console.log(`Error ${error}`);
@@ -367,17 +383,17 @@
             },
             homeControl(){
                 this.homeReset();
-                this.addRoomFlag=false;
-                this.getRoomItems(this.homeID);
+                this.addRoomFlag = false;
+                this.getRoomItems(this.home.id);
             },
             roomControl(){
                 this.roomReset();
-                this.addDispFlag=false;
-                this.getDispsItems(this.roomID);
+                this.addDispFlag = false;
+                this.getDispsItems(this.room.id);
             },
             dispControl(){
                 this.dispReset();
-                this.addActFlag=false;
+                this.addActFlag = false;
                 this.getActItems(this.dispositive.type.id);
             },
             actionControl(){
@@ -393,7 +409,27 @@
                 this.action.params.forEach(() => this.params.push(null));
             },
             checkValidSave(){
-                this.validSave = !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem)));
+                this.validSave = this.isValidState();
+            },
+            isValidState(){
+                return !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem)));
+            },
+            resetActionForm(){
+                this.home = null;
+                this.roomItems = null;
+                this.room = null;
+                this.dispItems = null;
+                this.dispositive = null;
+                this.action = null;
+                this.actItems = null;
+                this.addHomeFlag = false;
+                this.addRoomFlag = true;
+                this.addDispFlag = true;
+                this.addActFlag = true;
+                this.addFlag = true;
+                this.validSave = false;
+                this.hasParams = false;
+                this.params = null;
             }
         }
     }
