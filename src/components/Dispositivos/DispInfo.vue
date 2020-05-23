@@ -83,7 +83,8 @@
                     edit: {
                         message: 'Editar',
                         eventName: 'edit',
-                        handle: () => true,
+                        handle: () => this.$router
+                            .push({ name: 'editardispositivo', params: { edit: 'true', id: this.device.id, typeid: this.device.type.id, deviceName: this.device.getName()}}),
                     },
                     history: {
                         message: 'Historial',
