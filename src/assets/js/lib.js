@@ -216,6 +216,11 @@ export function loadAllSupportedValues(deviceID, actions) {
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
 
+const supportedDeviceTypes = [
+    'ac','oven','speaker','lamp',
+    'faucet', 'vacuum','blinds', 'door',
+]
+
 const iconInfo = {
     ac : {
         bgColor: '#FFF3C8',
@@ -262,6 +267,66 @@ const iconInfo = {
 
 export function getIconInfo(deviceName) {
     return iconInfo[deviceName];
+}
+
+export function getSupportedDeviceTypes() {
+    return new Promise((resolve, reject) => {
+        Api.deviceType.getAll().then(data => resolve(data.result
+            .filter(entry => supportedDeviceTypes.includes(entry.name))
+            .map(entry => {return{id: entry.id, name: entry.name, iconInfo: getIconInfo(entry.name)}})
+        )).catch(errors => reject(`getSupportedDeviceTypes ${errors}`))
+    });
+    //
+    //
+    // [
+    //     {
+    //         name: 'Aire Acondicionado', icon: {
+    //             bgColor: '#FFF3C8',
+    //             color: '#FDC701',
+    //             src: 'mdi-fan'
+    //         } },
+    //     { name: 'Persiana', icon: {
+    //             bgColor: '#f2d6ff',
+    //             color: '#BF38FF',
+    //             src:'mdi-window-shutter'
+    //         }},
+    //     { name: 'Parlante', icon: {
+    //             bgColor: '#E1E0FE',
+    //             color: '#6563FF',
+    //             src:'mdi-speaker'
+    //         }},
+    //     { name: 'Horno', icon: {
+    //             bgColor: '#FFBBBB',
+    //             color: '#C01616',
+    //             src:'mdi-stove'
+    //         }},
+    //     { name: 'Regador', icon:{
+    //             bgColor: '#B5FFB4',
+    //             color: '#08B106',
+    //             src:'mdi-sprinkler-variant'
+    //         } },
+    //     {
+    //         name:'Lampara', icon:{
+    //             bgColor: '#FFFBDB',
+    //             color: '#E9D94D',
+    //             src:'mdi-lamp'
+    //         }
+    //     },
+    //     {
+    //         name:'Aspiradora', icon:{
+    //             bgColor: "#BEF3FF",
+    //             color: "#0091B1",
+    //             src:'mdi-robot-vacuum-variant'
+    //         }
+    //     },
+    //     {
+    //         name:'Puerta', icon: {
+    //             bgColor: "#C8A776",
+    //             color: "#6D4201",
+    //             src: "mdi-door"
+    //         }
+    //     }
+    // ];
 }
 
 export function getDeviceTypesInHome(homeID) {

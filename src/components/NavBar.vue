@@ -46,7 +46,6 @@
                     <v-tab to="/favoritos" >Favoritos</v-tab>
                     <v-tab to="/">Hogares</v-tab>
                     <v-tab to="/rutinas">Rutinas</v-tab>
-<!--                    <v-tab to="/dispositivo/nuevodispositivo1">Consumos</v-tab>-->
                 </v-tabs>
             </v-col>
         </v-row>
