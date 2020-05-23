@@ -19,7 +19,7 @@ class Routine {
     }
 
     execute(){
-        return Api.routine.excecute(this.id);
+        return Api.routine.execute(this.id);
     }
 }
 export default Routine;

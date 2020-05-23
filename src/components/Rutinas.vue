@@ -87,7 +87,7 @@
                         <v-card-actions right>
                             <v-spacer></v-spacer>
                             <v-btn text>
-                                <v-icon outlined >mdi-heart</v-icon>
+                                 <v-icon outlined fab>mdi-heart</v-icon>
                             </v-btn>
                             <v-btn rounded color="primary" dark right @click="executeRoutine(routine.id)">
                                 Ejecutar
@@ -124,12 +124,8 @@
         name: "Rutinas",
         components: {NavBar},
         data() {
-            return { routines: [
-                    /*{ name: "Modo Dormir", desc: "Apaga las luces y baja las persianas"},
-                    { name: "Modo Cine", desc: "Baja las luces y prende el equipo de musica"},
-                    { name: "Regar Frente", desc: "Prende aspersores del frente del hogar"},
-                    { name: "Refrescar living", desc: "Bajar persianas living y prender el aire en 24"},*/
-                ],
+            return {
+                routines: [],
                 RoutineEditDialog:false,
                 routineEliminateDialog:false,
                 currentRoutineID:false,
@@ -156,11 +152,13 @@
                 });
             },
             executeRoutine(routineID){
-                Api.routine.execute(routineID).
-                then(()=> {this.getRoutines();})
-                    .catch(error => {
-                        console.log(`Error ${error}`);
-                    });
+                console.log(routineID);
+                Api.routine.execute(routineID)
+                    .then( data => {
+                        console.log(data);
+                        this.getRoutines();
+                    })
+                    .catch(console.log);
             }
         }
     }
