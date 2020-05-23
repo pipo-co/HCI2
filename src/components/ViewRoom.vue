@@ -16,6 +16,7 @@
                 <v-col>
                      <card-holder :card-array="cards"/>
                 </v-col>
+
             </v-row>
         </v-container>
     </div>
@@ -62,21 +63,10 @@
 </script>
 
 <style scoped>
-    .rounded{
-        border-radius: 25px;
-    }
-    .v-card.rounded.v-sheet{
-        border-radius: 25px;
-    }
-    .top-rounded{
-        border-top-left-radius: 25px;
-        border-top-right-radius: 25px;
-    }
     .border-dashed{
         border-radius: 25px 25px 25px 25px;
         -moz-border-radius: 25px 25px 25px 25px;
         -webkit-border-radius: 25px 25px 25px 25px;
         border: 3px dashed #a6a6a6;
-
     }
 </style>
