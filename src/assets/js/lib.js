@@ -114,7 +114,7 @@ export function updateDeviceToNewHome(homeName, newRoom, device){
                                 room.addDevice(device.id)
                                     .then( () => {
                                         device.room = room;
-                                        device.name = `${room.home.id}_${room.id}`
+                                        device.setNewName(device.getName());
                                         device.persistChanges();
                                         resolve(device);
                                     })
@@ -137,6 +137,7 @@ export function updateDeviceToNewRoom(home, newRoom, device){
                         room.addDevice(device.id)
                             .then( () => {
                                 device.room = room;
+                                device.setNewName(device.getName());
                                 device.persistChanges();
                                 resolve(device);
                             })
@@ -155,6 +156,7 @@ export function updateDeviceToExistingRoom(room, device){
                 room.addDevice(device.id)
                     .then( () => {
                         device.room = room;
+                        device.setNewName(device.getName());
                         device.persistChanges();
                         resolve(device);
                     })
