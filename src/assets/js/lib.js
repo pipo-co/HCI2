@@ -103,6 +103,10 @@ export function createDeviceFromNotExistingRoom(home, roomName, deviceName, type
     });
 }
 
+export function updateDeviceToNewHome(homeName, newRoom, device){
+    Api.
+}
+
 export function getActionParams(actions, action){
     return actions.find(elem => elem.name === action).params;
 }

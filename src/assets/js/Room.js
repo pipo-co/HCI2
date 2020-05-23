@@ -12,14 +12,20 @@ class Room {
   }
 
   static emptyCheck(room){
-    Api.room.getRoomDevices(room.id)
-        .then( data => {
-          if(data.result.length === 0)
-            Api.room.delete(room.id)
-                .then(() => Home.emptyCheck(room.home.id))
-                .catch(console.log);
-        })
-        .catch(console.log);
+    return new Promise((resolve, reject) => {
+      Api.room.getRoomDevices(room.id)
+          .then( data => {
+            if(data.result.length === 0) {
+              Api.room.delete(room.id)
+                  .then(() => Home.emptyCheck(room.home.id))
+                  .catch(console.log);
+              resolve(true);
+            } else
+              resolve(false);
+          })
+          .catch(reject);
+    });
+
   }
 
   persistChange(){
@@ -27,9 +33,18 @@ class Room {
   }
 
   delete(){
-    return Api.room.delete(this.id)
-        .then( () => Home.emptyCheck(this.home.id))
-        .catch(console.log);
+    return new Promise((resolve, reject) => {
+      Api.room.delete(this.id)
+          .then( () => {
+            Home.emptyCheck(this.home.id)
+                .then(resolve)
+                .catch(error => {
+                  console.log(error);
+                  resolve(false);
+                });
+          })
+          .catch(reject);
+    });
   }
 
   getName(){
@@ -49,7 +64,7 @@ class Room {
   }
 
   removeDevice(deviceId){
-    return Api.room.delete(deviceId);
+    return Api.room.removeDevice(deviceId);
   }
 
   static persistNewName(id, newName, meta){
