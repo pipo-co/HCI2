@@ -491,7 +491,10 @@
                 this.dialog = false;
             },
             deleteCurrentRoom(){
-                deleteRoom(this.auxRoomId, this.currentHome.id, true).then( () =>{
+                deleteRoom(this.auxRoomId, this.currentHome.id, true).then( cascade =>{
+                    if(cascade)
+                        this.changeHomes();
+
                     this.changeRoomMap();
                     this.changeHomeDevices();
                     }
