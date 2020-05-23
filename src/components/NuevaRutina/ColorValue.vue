@@ -9,7 +9,7 @@
                 </v-list-item>
             </v-col>
             <v-col cols="9">
-                <v-color-picker v-model="color" mode="hexa" hide-inputs  @input="emit()"></v-color-picker>
+                <v-color-picker v-model="color" mode="hexa" hide-inputs @input="emit()"></v-color-picker>
             </v-col>
         </v-row>
     </v-container>
