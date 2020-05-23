@@ -7,10 +7,9 @@ Vue.use(VueRouter)
 import Homes from "@/components/Homes";
 
 
-
 const routes = [
     {
-        component: () => import("@/components/Favoritos"),
+        component: () => import(/* webpackChunkName: "Favoritos" */"@/components/Favoritos"),
         name: "favoritos",
         path: "/favoritos",
     },
@@ -20,47 +19,47 @@ const routes = [
         path: "/"
     },
     {
-        component: () => import("@/components/Rutinas"),
+        component: () => import(/* webpackChunkName: "Rutinas" */"@/components/Rutinas"),
         name: "rutinas",
         path: "/rutinas"
     },
     {
-        component: () => import("@/components/NuevaRutina/NuevaRutina"),
+        component: () => import(/* webpackChunkName: "NuevaRutina" */"@/components/NuevaRutina/NuevaRutina"),
         name: "nuevarutina",
         path: "/rutinas/nuevarutina"
     },
     {
-        component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
+        component: () => import(/* webpackChunkName: "NuevoDispositivo1" */"@/components/NuevoDispositivo/NuevoDispositivo1"),
         name: "nuevodispositivo",
         path: "/dispositivo/nuevodispositivo1/:previousRoute/:homeID/:roomID"
     },
     {
-        component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
+        component: () => import(/* webpackChunkName: "NuevoDispositivo1" */"@/components/NuevoDispositivo/NuevoDispositivo1"),
         name: "nuevodispositivo1",
         path: "/dispositivo/nuevodispositivo1"
     },
     {
-        component: () => import("../components/ViewRoom"),
+        component: () => import(/* webpackChunkName: "ViewRoom" */"@/components/ViewRoom"),
         name: "room",
         path: "/room/:homeID/:roomID",
     },
     {
-        component: () => import("../components/ViewDeviceType"),
+        component: () => import(/* webpackChunkName: "ViewDeviceType" */"@/components/ViewDeviceType"),
         name: "deviceType",
         path: "/deviceType/:homeID/:deviceTypeName",
     },
     {
-        component: () => import("../components/DeviceLog"),
+        component: () => import(/* webpackChunkName: "DeviceLog" */"@/components/DeviceLog"),
         name: "deviceLog",
         path: "/deviceLog/:deviceId"
     },
     {
-        component: () => import("../components/Search"),
+        component: () => import(/* webpackChunkName: "Search" */"@/components/Search"),
         name: "search",
         path: "/search/:name"
     },
     {
-        component: () => import("../components/PageNotFound"),
+        component: () => import(/* webpackChunkName: "PageNotFound" */"../components/PageNotFound"),
         name: "pageNotFound",
         path: "*"
     }

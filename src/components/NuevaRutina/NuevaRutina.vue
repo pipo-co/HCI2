@@ -406,7 +406,7 @@
                     let desc = (this.newRoutine.desc)? this.newRoutine.desc : "";
                     let actions = this.newRoutine.actions.map(elem => elem.action);
                     createRoutine(this.newRoutine.name, actions, desc)
-                        .then( () => this.$router.push({name: 'homes'}))
+                        .then( () => this.$router.push({name: 'rutinas'}))
                         .catch(console.log);
                 }
             },
