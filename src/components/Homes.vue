@@ -1,6 +1,7 @@
 <template>
     <div>
         <nav-bar/>
+        <fab></fab>
         <v-container class="pa-2">
             <v-row no-gutters class=" ma-1 pa-0">
                 <v-col cols="12" md="12">
@@ -325,11 +326,12 @@
     import Home from "../assets/js/Home";
     import Room from "../assets/js/Room";
     import NavBar from "./NavBar";
+    import Fab from "./Fab";
     //import Home from "../../assets/js/Home";
     //import Room from "../../assets/js/Room";
     export default {
         name: "Homes",
-        components: {NavBar},
+        components: {Fab, NavBar},
         data() {
             return {
                 dialog: false,

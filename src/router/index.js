@@ -27,7 +27,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "NuevaRutina" */"@/components/NuevaRutina/NuevaRutina"),
         name: "nuevarutina",
         path: "/rutinas/nuevarutina"
+    }, {
+        component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
+        name: "editardispositivo",
+        path: "/dispositivo/nuevodispositivo1/:edit/:id/:typeid/:deviceName/"
     },
+
     {
         component: () => import(/* webpackChunkName: "NuevoDispositivo1" */"@/components/NuevoDispositivo/NuevoDispositivo1"),
         name: "nuevodispositivo",
