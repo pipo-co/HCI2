@@ -38,7 +38,7 @@
                                 </v-btn>
                             </v-col>
                             <v-col ><!--class="pr-10" -->
-                                <v-btn color="#6563FF" text @click="controllerHandler()">{{extraControllers.message}}</v-btn>
+                                <v-btn color="#6563FF" text @click="controllerHandler()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -72,7 +72,7 @@
                             <v-col cols="3">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title align="left" class="subtitle-1">Genero</v-list-item-title>
+                                        <v-list-item-title class="subtitle-1">Genero</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -108,14 +108,14 @@
                         <v-row>
                             <v-col class="py-0 px-0">
                                 <v-list > <!--class="px-7" -->
-                                    <v-list-item-title class="title" align="left">Lista de reporduccion:</v-list-item-title>
+                                    <v-list-item-title class="title">Lista de reporduccion:</v-list-item-title>
                                     <v-list-item-group color="primary">
                                         <v-list-item v-for="song in this.playlist" :key="song.title">
                                             <v-list-item-icon>
                                                 <v-icon>mdi-minus</v-icon>
                                             </v-list-item-icon>
                                             <v-list-item-content>
-                                                <v-list-item-title align="left">{{song.title}}</v-list-item-title>
+                                                <v-list-item-title>{{song.title}}</v-list-item-title>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list-item-group>
@@ -138,7 +138,7 @@
         ButtonStatus,
         ExtraControls,
         NumberField, SelectionField
-    } from "../../assets/js/DevicesLib";
+    } from "@/assets/js/DevicesLib";
     const lib = require("../../assets/js/lib")
 
     export default {
