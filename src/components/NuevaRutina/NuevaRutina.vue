@@ -31,8 +31,7 @@
             </v-row>
             <v-row>
                 <v-card elevation="5" class="mx-auto rounded"
-                        width="750"
-                        height="280"
+                        width="800"
                 >
                     <v-container fluid >
                         <v-row no-gutters>
@@ -101,14 +100,15 @@
                         </v-row>
                         <v-row no-gutters wrap>
                             <v-col v-for="action in newRoutine.actions" :key="action.name">
-                                <v-card class="rounded" elevation="3" width="350">
-                                    <v-container>
+                                <v-card class="rounded" elevation="3" width="390">
+                                    <v-container fluid>
                                         <v-row no-gutters align="center">
                                             <v-col cols="1">
                                                 <v-btn text top fab>
                                                     <v-icon>mdi-close</v-icon>
                                                 </v-btn>
                                             </v-col>
+                                            <v-col cols="1"></v-col>
                                             <v-col cols="6">
                                                 <v-list>
                                                     <v-list-item-title>{{action.homeName}}-{{action.roomName}}-{{action.deviceName}} </v-list-item-title>
@@ -132,9 +132,10 @@
                                             <v-dialog
                                                     v-model="dialog"
                                                     width="1100"
+                                                    height="900"
                                             >
                                                 <template v-slot:activator="{ on }">
-                                                    <v-btn height="70" width="350" v-on="on" class="md-12 text--secondary border-dashed" outlined>
+                                                    <v-btn height="70" width="450" v-on="on" class="md-12 text--secondary border-dashed" outlined>
                                                         <v-icon large dark outlined>mdi-plus</v-icon>
                                                         Agregar Accion
                                                     </v-btn>
