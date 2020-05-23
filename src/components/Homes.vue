@@ -337,15 +337,15 @@
                 dialog: false,
                 dialog2:false,
                 auxiliarName: false,
-                auxHomeName:null,
-                auxHomeId:null,
-                roomNameValid:false,
-                flagErrorRoom:false,
+                auxHomeName: null,
+                auxHomeId: null,
+                roomNameValid: false,
+                flagErrorRoom: false,
                 auxHome: {},
-                roomEditDialog:false,
-                auxRoomId:null,
-                roomName:null,
-                roomEliminateDialog:false,
+                roomEditDialog: false,
+                auxRoomId: null,
+                roomName: null,
+                roomEliminateDialog: false,
                 homes: null,
                 currentHomeindex: null,
                 currentHome: null,
@@ -473,10 +473,7 @@
                 this.roomEditDialog = flag;
             },
             deleteThisHome(){
-                //eslint-disable-next-line no-debugger
-                debugger;
-                console.log(this.auxHomeId);
-                deleteHome(this.auxHomeId).then( () =>{
+                deleteHome(this.auxHomeId).then( () => {
                         this.changeHomes();
                     }
                 ).catch(error => console.log(`Error ${error}`));
@@ -484,10 +481,7 @@
                 this.dialog = false;
             },
             deleteCurrentRoom(){
-                /*//eslint-disable-next-line no-debugger
-                debugger;
-                console.log(this.auxRoomId);*/
-                deleteRoom(this.auxRoomId).then( () =>{
+                deleteRoom(this.auxRoomId, this.currentHome.id, true).then( () =>{
                     this.changeRoomMap();
                     this.changeHomeDevices();
                     }

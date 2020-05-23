@@ -41,6 +41,22 @@ class Room {
     });
   }
 
+  static deleteRoom(roomId, homeId){
+      return new Promise((resolve, reject) => {
+          Api.room.delete(roomId)
+              .then( () => {
+                  console.log(homeId);
+                  Home.emptyCheck(homeId)
+                      .then(resolve)
+                      .catch(error => {
+                          console.log(error);
+                          resolve(false);
+                      });
+              })
+              .catch(reject);
+      });
+  }
+
   static persistNewName(id, newName, meta){
     return Api.room.modify({id: id, name: newName, meta: meta});
   }

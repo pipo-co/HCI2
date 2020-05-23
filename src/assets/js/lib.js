@@ -114,6 +114,7 @@ export function updateDeviceToNewHome(homeName, newRoom, device){
                                 room.addDevice(device.id)
                                     .then( () => {
                                         device.room = room;
+                                        device.name = `${room.home.id}_${room.id}`
                                         device.persistChanges();
                                         resolve(device);
                                     })
@@ -309,7 +310,7 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
     });
 }
 
-export function deleteRoom(roomId){
+export function deleteRoom(roomId, homeId, upCascade = false){
     return new Promise( (resolve, reject) => {
         Api.room.getRoomDevices(roomId)
             .then(data => {
@@ -317,9 +318,14 @@ export function deleteRoom(roomId){
                     Api.room.removeDevice(device.id).catch(error => reject(`Remove device ${device.name} from Room ${error}`));
                     Api.device.delete(device.id).catch(error => reject(`Delete device ${device.name} ${error}`));
                 });
-                Api.room.delete(roomId)
-                    .then(response => resolve(response.result))
-                    .catch(error => reject(`Delete room ${error}`));
+                if(upCascade)
+                    Room.deleteRoom(roomId, homeId)
+                        .then(resolve)
+                        .catch(error => reject(`Delete room ${error}`));
+                else
+                    Api.room.delete(roomId)
+                        .then(response => resolve(response.result))
+                        .catch(error => reject(`Delete room ${error}`));
             })
             .catch(error => reject(`Get room devices ${error}`));
     });
