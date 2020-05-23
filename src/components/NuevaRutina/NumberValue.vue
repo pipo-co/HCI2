@@ -8,13 +8,13 @@
                             thumb-color="#65C0AB"
                             track-color="#A8DED1"
                             v-model="value"
-                            @change="emit()"
+                            @input="emit()"
                             class="align-center"
                             :max='maxValue'
                             :min='minValue'
                             hide-details>
                         <template v-slot:prepend>
-                            <v-card-text>{{actionName}}</v-card-text>
+                            <v-card-text>{{params.name}}</v-card-text>
                         </template>
                         <template v-slot:append>
                             <v-text-field
@@ -36,10 +36,6 @@
     export default {
         name: "NumberValue",
         props:{
-            actionName:{
-                type: String,
-                require: true,
-            },
             params:{
                 type: Object,
                 require: true,
@@ -53,7 +49,6 @@
                 maxValue: this.params.maxValue,
                 value: this.params.minValue,
                 rules: [
-                    entry => !! entry || "Debe ingresar un valor",
                     entry => /[0-9]+/.test(entry) || "El valor debe ser un numero",
                     entry => entry >= this.minValue || "Valor por debajo del minimo",
                     entry => entry <= this.maxValue || "Valor por arriba del maximo",
@@ -63,7 +58,7 @@
         methods:{
             emit(){
                 if(this.validInput)
-                    this.$emit('change', this.value)
+                    this.$emit('change', this.value);
             }
         }
     }
