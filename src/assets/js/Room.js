@@ -15,12 +15,15 @@ class Room {
     return new Promise((resolve, reject) => {
       Api.room.getRoomDevices(roomId)
           .then( data => {
-            if(data.result.length === 0) {
+            if(data.result.length === 0)
               Api.room.delete(roomId)
-                  .then(() => Home.emptyCheck(homeId))
+                  .then(() => {
+                      Home.emptyCheck(homeId)
+                          .catch(console.log)
+                          .finally(() => resolve(true));
+                  })
                   .catch(console.log);
-              resolve(true);
-            } else
+            else
               resolve(false);
           })
           .catch(reject);
@@ -31,8 +34,8 @@ class Room {
     return new Promise((resolve, reject) => {
       Api.room.removeDevice(deviceId)
           .then(response => {
-            this.emptyCheck(roomId, homeId);
-            resolve(response);
+            this.emptyCheck(roomId, homeId)
+                .finally(() => resolve(response))
           })
           .catch(reject);
     });
