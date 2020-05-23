@@ -104,7 +104,63 @@ export function createDeviceFromNotExistingRoom(home, roomName, deviceName, type
 }
 
 export function updateDeviceToNewHome(homeName, newRoom, device){
-    Api.
+    return new Promise((resolve, reject) => {
+        Room.removeDevice(device.id, device.room.id, device.room.home.id)
+            .then(() => {
+                createHome(homeName)
+                    .then(home => {
+                        createRoom(newRoom, home)
+                            .then(room => {
+                                room.addDevice(device.id)
+                                    .then( () => {
+                                        device.room = room;
+                                        device.persistChanges();
+                                        resolve(device);
+                                    })
+                                    .catch(reject);
+                            })
+                            .catch(reject);
+                    })
+                    .catch(reject);
+            })
+            .catch(reject);
+    });
+}
+
+export function updateDeviceToNewRoom(home, newRoom, device){
+    return new Promise((resolve, reject) => {
+        Room.removeDevice(device.id, device.room.id, device.room.home.id)
+            .then(() => {
+                createRoom(newRoom, home)
+                    .then(room => {
+                        room.addDevice(device.id)
+                            .then( () => {
+                                device.room = room;
+                                device.persistChanges();
+                                resolve(device);
+                            })
+                            .catch(reject);
+                    })
+                    .catch(reject);
+            })
+            .catch(reject);
+    });
+}
+
+export function updateDeviceToExistingRoom(room, device){
+    return new Promise((resolve, reject) => {
+        Room.removeDevice(device.id, device.room.id, device.room.home.id)
+            .then(() => {
+                room.addDevice(device.id)
+                    .then( () => {
+                        device.room = room;
+                        device.persistChanges();
+                        resolve(device);
+                    })
+                    .catch(reject);
+            })
+            .catch(reject);
+    });
 }
 
 export function getActionParams(actions, action){
