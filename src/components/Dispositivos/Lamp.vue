@@ -123,14 +123,6 @@
             },
         },
         methods: {
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
-            },
-            excecuteAction(action, params){
-                this.props.execute(action, params)
-                    .then(console.log)
-                    .catch( errors => console.log(`${action} -  ${errors}`) );
-            },
             controllerHandler() {
                 this.extraControllers.value = !this.extraControllers.value;
                 if (this.extraControllers.value)

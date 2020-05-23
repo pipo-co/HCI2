@@ -244,7 +244,7 @@
                                                                     class="rounded mx-auto my-3"
                                                                     elevation="4"
                                                                     width="800">
-                                                                <action-router v-for="(param, i) in action.params" :key="param.name" :params="param" @change="paramControl($event, i)"/>
+                                                                <action-router v-for="(param, i) in action.params" :key="param.name" :actionName="action.name" :rooms="roomItems" :params="param" @change="paramControl($event, i)"/>
                                                             </v-card>
                                                         </v-row>
                                                         <v-row>
