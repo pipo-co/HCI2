@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar :home="cards[0].room.home.name" :room="cards[0].type.name"/>
+        <nav-bar :home="home.name" :room="room.name"/>
     <card-holder :card-array="cards"/>
     </div>
 </template>
@@ -17,6 +17,12 @@
         data(){
             return{
                 cards: null,
+                home: {
+                    name: null,
+                },
+                room: {
+                    name: null,
+                }
             }
         },
         mounted(){
@@ -27,9 +33,12 @@
         methods:{
             loadCards(data){
                 if(data.length === 0)
-                        this.$router.push({name: "pageNotFound"});
-                else
+                    this.$router.push({name: "pageNotFound"});
+                else {
+                    this.home.name = data[0].room.home.name;
+                    this.room.name = data[0].getRoomName();
                     this.cards = data;
+                }
             }
         },
     }
