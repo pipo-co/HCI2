@@ -13,11 +13,11 @@ class Home {
         return new Promise((resolve, reject) => {
             Api.home.getHomeRooms(homeId)
                 .then( data => {
-                    if(data.result.length === 0) {
+                    if(data.result.length === 0)
                         Api.home.delete(homeId)
-                            .catch(console.log);
-                        resolve(true);
-                    } else
+                            .catch(console.log)
+                            .finally(() => resolve(true));
+                    else
                         resolve(false);
                 })
                 .catch(reject);
