@@ -471,10 +471,10 @@ export function getActionsItemsArray(deviceTypeID) {
 }
 
 export function searchDevicesByName(name){
-    name = name.trim();
+    name = name.trim().toLowerCase();
     return new Promise( (resolve, reject) => {
         Api.device.getAll().then(data => resolve(data.result
-            .filter(elem => elem.name.split("_").pop().includes(name))
+            .filter(elem => elem.name.split("_").pop().toLowerCase().includes(name))
             .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
         ).catch( error => reject(`searchDevicesByName: ${error}`));
     });
