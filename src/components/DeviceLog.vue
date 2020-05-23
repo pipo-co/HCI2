@@ -31,7 +31,7 @@
                                                 <v-text-field
                                                         v-model="search"
                                                         append-icon="mdi-magnify"
-                                                        label="Search"
+                                                        label="Buscar"
                                                         single-line
                                                         hide-details
                                                 ></v-text-field>
@@ -44,7 +44,6 @@
                                             :headers="headers"
                                             :items="logs"
                                             :search="search"
-                                            no-data-text="No hay acciones para mostrar"
                                     ></v-data-table>
                                 </v-col>
                             </v-row>
@@ -82,6 +81,9 @@
                     { text: 'Accion', value: 'action' },
                     { text: 'Parametros', value: 'params' },
                 ],
+                blacklistActions: [
+                    'getPlaylist'
+                ]
             }
         },
         mounted() {
@@ -92,11 +94,16 @@
                 .then( data => {
                     this.device = new Device(data.result.id, data.result.name, data.result.type, data.result.meta, data.result.state, data.result.room);
 
-                    this.awaitingLogs = true;
                     this.device.getLogs()
                         .then( data => {
-                            this.logs = data.result.filter( log => log.result);
-                            this.logs.forEach(log => log.timestamp = new Date(log.timestamp).toLocaleString())
+                            this.logs = data.result.filter( log => log.result && ! this.blacklistActions.includes(log.action));
+                            this.logs.forEach(log => {
+                                log.timestamp = new Date(log.timestamp).toLocaleString()
+                                log.action = this.$vuetify.lang.t(`$vuetify.${log.action}`)
+                                let aux = this.$vuetify.lang.t(`$vuetify.${log.params}`)
+                                if( ! aux.includes("$vuetify"))
+                                    log.params = aux;
+                            })
                         })
                         .catch(console.log)
                         .finally( () => {

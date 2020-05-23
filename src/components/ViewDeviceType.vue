@@ -36,7 +36,7 @@
                     this.$router.push({name: "pageNotFound"});
                 else {
                     this.home.name = data[0].room.home.name;
-                    this.room.name = data[0].getRoomName();
+                    this.room.name = this.$vuetify.lang.t(`$vuetify.${data[0].type.name}`);
                     this.cards = data;
                 }
             }

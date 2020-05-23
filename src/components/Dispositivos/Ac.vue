@@ -71,14 +71,14 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle color="#6563FF" v-model="mode.value" rounded dense
+                                <v-btn-toggle v-model="mode.value" rounded dense
                                               @change="mode.changeState()"
                                               :mandatory="true">
-                                    <v-btn v-for="value in mode.supportedValues"
+                                    <v-btn color="#6563FF" v-for="value in mode.supportedValues"
                                            text :key="value" :value="value"
                                            :loading="mode.awaitingResponse"
                                            :disabled="mode.awaitingResponse">
-                                        {{value}}
+                                        {{$vuetify.lang.t(`$vuetify.${value}`)}}
                                     </v-btn>
                                 </v-btn-toggle>
                             </v-col>
@@ -111,10 +111,10 @@
                                 </v-list-item>
                             </v-col>
                             <v-col md="10" class="py-0"> <!--class="pr-10" -->
-                                <v-btn-toggle color="#6563FF" v-model="swing.vertical.value" rounded dense
+                                <v-btn-toggle v-model="swing.vertical.value" rounded dense
                                               @change="swing.vertical.changeState()"
                                               :mandatory="true">
-                                    <v-btn v-for="value in swing.vertical.supportedValues"
+                                    <v-btn color="#6563FF" v-for="value in swing.vertical.supportedValues"
                                            text :key="value" :value="value"
                                            :loading="swing.vertical.awaitingResponse"
                                            :disabled="swing.vertical.awaitingResponse">{{value}}

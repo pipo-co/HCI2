@@ -79,7 +79,7 @@
                             <v-col class="py-0"> <!--class="pr-10" -->
                                 <v-select
                                         v-model="genre.value"
-                                        :items="genre.supportedValues"
+                                        :items="getTranslation(genre.supportedValues)"
                                         @change="changeGenre"
                                         :loading="genre.awaitingResponse"
                                         :disabled="genre.awaitingResponse"
@@ -258,6 +258,10 @@
                     this.refreshPlaylist();
                 } else
                     this.updatePlaylistBeginning();
+            },
+            getTranslation(baseArray){
+                if(baseArray)
+                    return baseArray.map(entry => {return {value: entry, text: this.$vuetify.lang.t(`$vuetify.${entry}`)}})
             }
         },
         mounted(){

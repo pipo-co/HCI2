@@ -26,7 +26,7 @@
                                            text :key="value" :value="value"
                                            :loading="mode.awaitingResponse"
                                            :disabled="mode.awaitingResponse">
-                                        {{value}}
+                                        {{$vuetify.lang.t(`$vuetify.${value}`)}}
                                     </v-btn>
                                 </v-btn-toggle>
                             </v-col>

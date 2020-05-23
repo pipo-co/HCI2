@@ -70,7 +70,7 @@
                                 </v-col>
                                 <v-col class="py-0"> <!--class="pr-10" -->
                                     <v-form v-model="heat.validInput">
-                                        <v-select :items="heat.supportedValues" v-model="heat.value"
+                                        <v-select :items="getTranslation(heat.supportedValues)" v-model="heat.value"
                                                   @change="heat.changeState()" dense
                                                   :loading="heat.awaitingResponse"
                                                   :disabled="heat.awaitingResponse" ></v-select>
@@ -91,7 +91,8 @@
                                 </v-col>
                                 <v-col class="py-0"> <!--class="pr-10" -->
                                     <v-form v-model="grill.validInput">
-                                        <v-select :items="grill.supportedValues" v-model="grill.value"
+                                        <v-select :items="getTranslation(grill.supportedValues)"
+                                                  v-model="grill.value"
                                                   @change="grill.changeState()" dense
                                                   :loading="grill.awaitingResponse"
                                                   :disabled="grill.awaitingResponse" >
@@ -102,25 +103,25 @@
                         </v-container>
                     </v-col>
                     <v-col cols="12" class="px-5">
-                    <v-container class="py-0">
-                        <v-row align="baseline" justify="start">
-                            <v-col cols="3">
-                                <v-list-item class="px-0">
-                                    <v-list-item-content>
-                                        <v-list-item-title class="subtitle-1">Conveccion</v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-col>
-                            <v-col class="py-0"> <!--class="pr-10" -->
-                                <v-form v-model="convection.validInput">
-                                    <v-select :items="convection.supportedValues" v-model="convection.value"
-                                              @change="convection.changeState()" dense
-                                              :loading="convection.awaitingResponse"
-                                              :disabled="convection.awaitingResponse" ></v-select>
-                                </v-form>
-                            </v-col>
-                        </v-row>
-                    </v-container>
+                        <v-container class="py-0">
+                            <v-row align="baseline" justify="start">
+                                <v-col cols="3">
+                                    <v-list-item class="px-0">
+                                        <v-list-item-content>
+                                            <v-list-item-title class="subtitle-1">Conveccion</v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-col>
+                                <v-col class="py-0"> <!--class="pr-10" -->
+                                    <v-form v-model="convection.validInput">
+                                        <v-select :items="getTranslation(convection.supportedValues)" v-model="convection.value"
+                                                  @change="convection.changeState()" dense
+                                                  :loading="convection.awaitingResponse"
+                                                  :disabled="convection.awaitingResponse" ></v-select>
+                                    </v-form>
+                                </v-col>
+                            </v-row>
+                        </v-container>
                 </v-col>
             </v-row>
         </v-container>
