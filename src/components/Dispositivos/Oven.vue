@@ -179,6 +179,10 @@
                 this.convection.value = newState.convection;
 
                 this.temperature.value = newState.temperature;
+            },
+            getTranslation(baseArray){
+                if(baseArray)
+                    return baseArray.map(entry => {return {value: entry, text: this.$vuetify.lang.t(`$vuetify.${entry}`)}})
             }
         },
         mounted() {
