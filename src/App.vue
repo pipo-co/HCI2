@@ -28,6 +28,6 @@ export default {
         background-attachment: fixed;
     }
     .v-card--shaped {
-        border-radius: 25px !important;
+        border-radius: 15px !important;
     }
 </style>

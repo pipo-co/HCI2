@@ -126,7 +126,7 @@
                                                             <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
                                                         </v-list-item-avatar>
                                                         <v-list-item-content>
-                                                            <v-list-item-title align="left" class="headline black--text pt-1 pb-2 ">{{ $vuetify.lang.t(`$vuetify.${dispositive.deviceTypeName}`)}}</v-list-item-title>
+                                                            <v-list-item-title class="headline black--text pt-1 pb-2 ">{{ $vuetify.lang.t(`$vuetify.${dispositive.deviceTypeName}`)}}</v-list-item-title>
                                                         </v-list-item-content>
                                                     </v-list-item>
                                                 </v-hover>
