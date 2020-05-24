@@ -26,5 +26,8 @@ export default {
         background-image: url("assets/bg.png");
         background-repeat: no-repeat;
         background-attachment: fixed;
-}
+    }
+    .v-card--shaped {
+        border-radius: 25px !important;
+    }
 </style>
