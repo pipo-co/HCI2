@@ -60,14 +60,14 @@
                             </v-list>
                         </v-menu>
                     </v-col>
-                    <v-col cols="5" >
+                    <v-col cols="8" >
                         <v-list-item dense>
                             <v-list-item-avatar color="#C6FFAB">
                                 <v-icon class="ml-2"  flat color="black" large left>mdi-clipboard-list-outline</v-icon>
                             </v-list-item-avatar>
                             <v-list-item-content>
-                                <v-list-item-title align="left" class="headline pt-1 pb-2 ">{{routine.name}}</v-list-item-title>
-                                <v-list-item-subtitle align="left" >{{routine.meta.desc}}</v-list-item-subtitle>
+                                <v-list-item-title class="headline pt-1 pb-2 ">{{routine.name}}</v-list-item-title>
+                                <v-list-item-subtitle>{{routine.meta.desc}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                     </v-col>
@@ -181,6 +181,9 @@
         -moz-border-radius: 25px 25px 25px 25px;
         -webkit-border-radius: 25px 25px 25px 25px;
         border: 3px dashed #a6a6a6;
+    }
+    .v-list-item__content{
+        text-align: left;
     }
 
 </style>
