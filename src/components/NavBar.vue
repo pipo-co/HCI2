@@ -6,7 +6,7 @@
                     <v-row align="center" justify="start">
                         <v-col cols="5" >
                             <v-btn @click="$router.push('/')" text>
-                                <v-toolbar-title class="headline" color="#3C3F58" to="/">SMARTIFY</v-toolbar-title>
+                                <v-toolbar-title class="headline teal--text text--darken-4 font-weight-bold" color="#3C3F58" to="/">SMARTIFY</v-toolbar-title>
                             </v-btn>
                         </v-col>
                         <v-col cols="3">
@@ -20,9 +20,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-
             </v-col>
-
             <v-spacer/>
             <v-col v-show="searchBar.show" align-self="center">
                 <v-form v-model="searchBar.valid">
@@ -43,9 +41,9 @@
                     <v-tab v-show="! searchBar.show" @click="openSearchBar()">
                         <v-icon right>mdi-magnify</v-icon>
                     </v-tab>
-                    <v-tab to="/favoritos" >Favoritos</v-tab>
-                    <v-tab to="/">Hogares</v-tab>
-                    <v-tab to="/rutinas">Rutinas</v-tab>
+                    <v-tab class="blue-grey--text text--darken-4 font-weight-bold" to="/favoritos" >Favoritos</v-tab>
+                    <v-tab class="blue-grey--text text--darken-4 font-weight-bold" to="/">Hogares</v-tab>
+                    <v-tab class="blue-grey--text text--darken-4 font-weight-bold" to="/rutinas">Rutinas</v-tab>
                 </v-tabs>
             </v-col>
         </v-row>

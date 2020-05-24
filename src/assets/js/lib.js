@@ -173,34 +173,27 @@ export function getActionParams(actions, action){
     return actions.find(elem => elem.name === action).params;
 }
 
-// No se que preferis Nacho, un array mezclado, o las dos arrays separadas.
 export function getFavs() {
-    let p1 = Api.device.getAll();
-    let p2 = Api.routine.getAll();
-
     return new Promise( (resolve, reject) => {
-        Promise.all([p1, p2])
-            .then( values => resolve( [].concat(
-                values[0].result
+        Api.device.getAll()
+            .then( data => resolve(
+                data.result
                     .filter( elem => elem.meta.fav )
-                    .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)),
-                values[1].result
-                    .filter( elem => elem.meta.fav)
-                    .map( elem => new Routine(elem.id, elem.name, elem.meta))
-            )))
-            .catch( error => reject(`Get Favs: ${error}`));
+                    .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room))
+            ))
+            .catch(reject);
     });
 }
 
-export function suscribeToDeviceEvent(f, deviceId){
-    let source;
-    if(deviceId)
-        source = Api.device.getEventSource(deviceId);
-    else
-        source = Api.device.getAllEventSource();
-
-    source.addEventListener('message', event => f(JSON.parse(event.data)), false);
-}
+// export function suscribeToDeviceEvent(f, deviceId){
+//     let source;
+//     if(deviceId)
+//         source = Api.device.getEventSource(deviceId);
+//     else
+//         source = Api.device.getAllEventSource();
+//
+//     source.addEventListener('message', event => f(JSON.parse(event.data)), false);
+// }
 
 export function setStatePolling(stateChangeHandler, timeout = 5000){
     return setInterval(() => {

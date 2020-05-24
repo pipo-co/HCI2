@@ -6,16 +6,9 @@
             <v-container class="pa-2">
                 <v-row no-gutters class=" ma-1 pa-0">
                     <v-col cols="12" md="12">
-                        <v-dialog
-                                v-model="dialog"
-                                width="500"
-                        >
+                        <v-dialog v-model="dialog" width="500">
                             <template v-slot:activator="{ on }">
-                                <v-btn
-                                        color="#65C2AD"
-                                        dark
-                                        v-on="on"
-                                >
+                                <v-btn color="#72E1C7" class="teal--text text--darken-4 font-weight-bold" dark v-on="on">
                                     Editar Hogares
                                 </v-btn>
                             </template>
@@ -63,46 +56,26 @@
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
-                        <v-dialog
-                                v-model="dialog2"
-                                max-width="500px"
-                        >
-                            <v-card class="rounded">
-                                <v-card-title>
-                                    <v-container>
-                                        <v-row align="center" wrap no-gutters>
-                                            <v-col>
-                                                <p class="red--text">Si elimina el hogar, se perderan todas las </p>
-                                                <p class="red--text">habitaciones y dispositivos en ellas.</p>
-                                                <p class="red--text"> ¿Esta seguro que quiere borrar el Hogar: </p>
-                                                <p class="red--text">{{this.auxiliarName}} ?</p>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-title>
-                                <v-card-actions>
-                                    <v-container fluid><v-row align="center">
-                                        <v-col>
-                                            <v-btn
-                                                    color="primary"
-                                                    dark
-                                                    @click=" dialog2 = false"
-                                            >
-                                                Cancelar
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col>
-                                            <v-btn
-                                                    color="red"
-                                                    dark
-                                                    @click="deleteThisHome()"
-                                            >
-                                                Eliminar
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row></v-container>
-                                </v-card-actions>
-                            </v-card>
+
+                        <v-dialog v-model="dialog2" max-width="500">
+                            <v-alert class="my-0 pa-0" border="top" colored-border color="red">
+                                <v-card-text class="pb-0 display-1">Eliminar Hogar</v-card-text>
+                                <v-card-text>
+                                    Si elimina el hogar, se perderan todas las habitaciones y dispositivos en ellas.
+                                </v-card-text>
+                                <v-card-text>¿Esta seguro que quiere borrar el Hogar: {{this.auxiliarName}} ?</v-card-text>
+                                <v-card tile class="blue-grey lighten-5">
+                                    <v-card-actions>
+                                        <v-btn depressed color="white"  @click=" dialog2 = false">
+                                            Cancelar
+                                        </v-btn>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="error"  @click="deleteThisHome()">
+                                            Eliminar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-alert>
                         </v-dialog>
                     </v-col>
                 </v-row>
@@ -116,11 +89,11 @@
                         <v-tabs class="top-rounded"
                                 fixed-tabs
                                 v-model="currentHomeindex"
-                                background-color="#65C2AD"
+                                background-color="#72E1C7"
                                 dark
                         >
-                            <v-tabs-slider color="black"></v-tabs-slider>
-                            <v-tab v-for="home in homes" :key="home.id" >
+                            <v-tabs-slider color="teal"></v-tabs-slider>
+                            <v-tab class="teal--text text--darken-4 font-weight-bold" v-for="home in homes" :key="home.id" >
                                 {{home.name}}
                             </v-tab>
                         </v-tabs>
@@ -137,7 +110,7 @@
                         >
                             <v-container fluid>
                                 <v-carousel
-                                        hide-delimiters
+                                        hide-delimiters :show-arrows="homedevs && (homedevs.length - 1) / 6 >= 1"
                                         show-arrows-on-hover
                                         continuous
                                         height="150"
@@ -145,15 +118,17 @@
                                     <v-carousel-item v-for="j in (0,2)" :key="j">
                                         <v-row align="center" wrap no-gutters>
                                             <v-col v-for="(dispositive, i) in homedevs" :key="i" cols="4" md="4">
-                                                <v-list-item :key="i" v-if="(j===1)? i<6: i>=6"
-                                                             :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
-                                                    <v-list-item-avatar class="ml-6" :color="dispositive.iconInfo.bgColor" >
-                                                        <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
-                                                    </v-list-item-avatar>
-                                                    <v-list-item-content>
-                                                        <v-list-item-title align="left" class="headline black--text pt-1 pb-2 ">{{ $vuetify.lang.t(`$vuetify.${dispositive.deviceTypeName}`)}}</v-list-item-title>
-                                                    </v-list-item-content>
-                                                </v-list-item>
+                                                <v-hover v-slot:default="{ hover }">
+                                                    <v-list-item :key="i" v-if="(j === 1)? i < 6: i >= 6" :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
+                                                        <v-overlay absolute :opacity=".1" :value="hover"></v-overlay>
+                                                        <v-list-item-avatar class="ml-6" :color="dispositive.iconInfo.bgColor" >
+                                                            <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
+                                                        </v-list-item-avatar>
+                                                        <v-list-item-content>
+                                                            <v-list-item-title align="left" class="headline black--text pt-1 pb-2 ">{{ $vuetify.lang.t(`$vuetify.${dispositive.deviceTypeName}`)}}</v-list-item-title>
+                                                        </v-list-item-content>
+                                                    </v-list-item>
+                                                </v-hover>
                                             </v-col>
                                         </v-row>
                                     </v-carousel-item>
@@ -241,10 +216,7 @@
                                             </v-dialog>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-dialog
-                                                        v-model="roomEliminateDialog"
-                                                        max-width="500px"
-                                                >
+                                                <v-dialog v-model="roomEliminateDialog" max-width="500">
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn
                                                                 text
@@ -253,41 +225,74 @@
                                                             Eliminar
                                                         </v-btn>
                                                     </template>
-                                                    <v-card class="rounded">
-                                                        <v-card-title>
-                                                            <v-container>
-                                                                <v-row align="center" wrap no-gutters>
-                                                                    <v-col>
-                                                                        <p class="red--text">Si elimina la habitacion, se borraran todos los dispositivos en ella.</p>
-                                                                        <p class="red--text">¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}? </p>
-                                                                    </v-col>
-                                                                </v-row>
-                                                            </v-container>
-                                                        </v-card-title>
-                                                        <v-card-actions>
-                                                            <v-container fluid><v-row align="center">
-                                                                <v-col>
-                                                                    <v-btn
-                                                                            color="primary"
-                                                                            dark
-                                                                            @click="roomEliminateDialog = false"
-                                                                    >
-                                                                        Cancelar
-                                                                    </v-btn>
-                                                                </v-col>
-                                                                <v-col>
-                                                                    <v-btn
-                                                                            color="red"
-                                                                            dark
-                                                                            @click="deleteCurrentRoom()"
-                                                                    >
-                                                                        Eliminar
-                                                                    </v-btn>
-                                                                </v-col>
-                                                            </v-row></v-container>
-                                                        </v-card-actions>
-                                                    </v-card>
+                                                    <v-alert class="my-0 pa-0" border="top" colored-border color="red">
+                                                        <v-card-text class="pb-0 display-1">Eliminar Hogar</v-card-text>
+                                                        <v-card-text>
+                                                            Si elimina la habitacion, se borraran todos los dispositivos en ella.
+                                                        </v-card-text>
+                                                        <v-card-text>¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}?</v-card-text>
+                                                        <v-card tile class="blue-grey lighten-5">
+                                                            <v-card-actions>
+                                                                <v-btn depressed color="white"  @click="roomEliminateDialog = false">
+                                                                    Cancelar
+                                                                </v-btn>
+                                                                <v-spacer></v-spacer>
+                                                                <v-btn color="error" @click="deleteCurrentRoom()">
+                                                                    Eliminar
+                                                                </v-btn>
+                                                            </v-card-actions>
+                                                        </v-card>
+                                                    </v-alert>
                                                 </v-dialog>
+
+<!--                                                <v-dialog-->
+<!--                                                        v-model="roomEliminateDialog"-->
+<!--                                                        max-width="500px"-->
+<!--                                                >-->
+<!--                                                    <template v-slot:activator="{ on }">-->
+<!--                                                        <v-btn-->
+<!--                                                                text-->
+<!--                                                                v-on="on"-->
+<!--                                                        >-->
+<!--                                                            Eliminar-->
+<!--                                                        </v-btn>-->
+<!--                                                    </template>-->
+<!--                                                    <v-card class="rounded">-->
+<!--                                                        <v-card-title>-->
+<!--                                                            <v-container>-->
+<!--                                                                <v-row align="center" wrap no-gutters>-->
+<!--                                                                    <v-col>-->
+<!--                                                                        <p class="red&#45;&#45;text">Si elimina la habitacion, se borraran todos los dispositivos en ella.</p>-->
+<!--                                                                        <p class="red&#45;&#45;text">¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}? </p>-->
+<!--                                                                    </v-col>-->
+<!--                                                                </v-row>-->
+<!--                                                            </v-container>-->
+<!--                                                        </v-card-title>-->
+<!--                                                        <v-card-actions>-->
+<!--                                                            <v-container fluid><v-row align="center">-->
+<!--                                                                <v-col>-->
+<!--                                                                    <v-btn-->
+<!--                                                                            color="primary"-->
+<!--                                                                            dark-->
+<!--                                                                            @click="roomEliminateDialog = false"-->
+<!--                                                                    >-->
+<!--                                                                        Cancelar-->
+<!--                                                                    </v-btn>-->
+<!--                                                                </v-col>-->
+<!--                                                                <v-col>-->
+<!--                                                                    <v-btn-->
+<!--                                                                            color="red"-->
+<!--                                                                            dark-->
+<!--                                                                            @click="deleteCurrentRoom()"-->
+<!--                                                                    >-->
+<!--                                                                        Eliminar-->
+<!--                                                                    </v-btn>-->
+<!--                                                                </v-col>-->
+<!--                                                            </v-row></v-container>-->
+<!--                                                        </v-card-actions>-->
+<!--                                                    </v-card>-->
+<!--                                                </v-dialog>-->
+
                                             </v-list-item>
                                         </v-list>
                                     </v-menu>
