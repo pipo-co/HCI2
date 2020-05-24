@@ -2,7 +2,7 @@
     <div>
         <nav-bar/>
         <fab></fab>
-        <div v-if="homes">
+        <div v-if="homes && !loading">
             <v-container class="pa-2">
                 <v-row no-gutters class=" ma-1 pa-0">
                     <v-col cols="12" md="12">
@@ -315,11 +315,14 @@
                 </v-container>
             </v-card>
         </div>
-        <div v-else>
+        <div v-else-if="!loading" >
             <h1>Todavia no hay dispositivos registrados.</h1>
             <br>
             <h3>Para agregar un nuevo dispositivo, apretar el boton (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
             <h3>Al hacer click aparecera un menu. Ahi se debe seleccionar la opcion de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
+        </div>
+        <div v-else>
+            <p>Loading...</p>
         </div>
     </div>
 </template>
@@ -343,6 +346,7 @@
         components: {Fab, NavBar},
         data() {
             return {
+                loading: true,
                 dialog: false,
                 dialog2:false,
                 auxiliarName: false,
@@ -395,20 +399,23 @@
         },
         methods: {
             changeHomes(){
-                Api.home.getAll().then(data => {
-                    if (data.result.length === 0)
-                        return
+                Api.home.getAll()
+                    .then(data => {
+                        if (data.result.length === 0){
+                            this.homes = null;
+                            return;
+                        }
 
-                    this.homes = data.result;
-                    this.currentHome = this.homes[0];
-                    this.homes.forEach(elem => {
-                        this.auxHome[elem.id] = {name:'', valid:false, flagErrorHome:false};
-                    } )
-                    this.changeHomeDevices();
-                    this.changeRoomMap();
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
+                        this.homes = data.result;
+                        this.currentHome = this.homes[0];
+                        this.homes.forEach(elem => {
+                            this.auxHome[elem.id] = {name:'', valid:false, flagErrorHome:false};
+                        } )
+                        this.changeHomeDevices();
+                        this.changeRoomMap();
+                    })
+                    .catch(error => console.log(`Error ${error}`))
+                    .finally( () => this.loading = false);
             },
             homeerrormessage(flag) {
                 if(flag){
