@@ -96,10 +96,10 @@
                 },
                 dispense: {
                     selectedUnit: null,
-                    selectedValue:null,
+                    selectedValue: 0,
                     unitSupportedValues: null,
-                    minValue: null,
-                    maxValue: null,
+                    minValue: 0,
+                    maxValue: 0,
                     action: 'dispense',
                     validInput: true,
                     awaitingResponse: false,
@@ -136,20 +136,12 @@
             }
         },
         methods: {
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
-            },
             loadSupportedDispense(params){
                 this.dispense.minValue = params[0].minValue;
                 this.dispense.maxValue = params[0].maxValue;
                 this.dispense.unitSupportedValues = params[1].supportedValues;
                 this.dispense.selectedUnit = this.dispense.unitSupportedValues[0];
                 this.dispense.selectedValue = this.dispense.maxValue;
-            },
-            excecuteAction(action, params){
-                this.props.execute(action, params)
-                    .then(console.log)
-                    .catch( errors => console.log(`${action} -  ${errors}`) );
             },
             invertState(){
                 if(this.props.state.status === this.booleanStatus.statusFalse) {
@@ -185,9 +177,7 @@
                 clearInterval(this.statePolling);
         },
         mounted(){
-
             this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
-
             let actions = [
                 {action: this.dispense.action, handler: this.loadSupportedDispense}
             ];
