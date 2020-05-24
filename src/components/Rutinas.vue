@@ -1,6 +1,17 @@
 <template>
     <div>
         <nav-bar/>
+        <v-alert
+                v-model="alert"
+                :value="!alert"
+                transition="scale-transition"
+                dense
+                text
+                type="success"
+                class="ma-auto"
+        >
+            Rutina {{currentRoutine}} ejecutada correctamente
+        </v-alert>
         <v-card v-for="routine in routines" :key="routine.name" elevation="5" class="mx-auto my-2 rounded"
                 max-width="750"
                 max-height="80"
@@ -72,7 +83,7 @@
                             </v-list>
                         </v-menu>
                     </v-col>
-                    <v-col cols="7" >
+                    <v-col cols="5" >
                         <v-list-item dense>
                             <v-list-item-avatar color="#C6FFAB">
                                 <v-icon class="ml-2"  flat color="black" large left>mdi-clipboard-list-outline</v-icon>
@@ -83,13 +94,10 @@
                             </v-list-item-content>
                         </v-list-item>
                     </v-col>
-                    <v-col cols="3" align-self="center">
+                    <v-col align-self="center">
                         <v-card-actions right>
                             <v-spacer></v-spacer>
-                            <v-btn text>
-                                 <v-icon outlined fab>mdi-heart</v-icon>
-                            </v-btn>
-                            <v-btn rounded color="primary" dark right @click="executeRoutine(routine.id)">
+                            <v-btn rounded color="primary" dark right :loading="auxRoutine[routine.id].loadingFlag" @click="executeRoutine(routine.id, routine.name)">
                                 Ejecutar
                                 <v-icon >mdi-play</v-icon>
                             </v-btn>
@@ -129,8 +137,10 @@
                 RoutineEditDialog:false,
                 routineEliminateDialog:false,
                 currentRoutineID:false,
-
-
+                currentRoutine: null,
+                alert:false,
+                auxRoutine: {},
+                timeout: 3000,
             }
         },
         mounted() {
@@ -140,25 +150,39 @@
             getRoutines(){
                 Api.routine.getAll().then(data => {
                     this.routines = data.result;
+                    this.routines.forEach(elem =>{
+                        this.auxRoutine[elem.id] = {loadingFlag : false};
+                    })
                 }).catch(error => {
                     console.log(`Error ${error}`);
                 });
             },
             deleteCurrentRoutine(routineID){
                 Api.routine.delete(routineID).
-                then(()=> {this.getRoutines();})
+                then(()=> this.getRoutines())
                     .catch(error => {
-                    console.log(`Error ${error}`);
-                });
+                        console.log(`Error ${error}`);
+                    });
             },
-            executeRoutine(routineID){
+            executeRoutine(routineID, title){
+                this.auxRoutine[routineID].loadingFlag = true;
+                this.currentRoutine = title;
                 console.log(routineID);
                 Api.routine.execute(routineID)
                     .then( data => {
                         console.log(data);
                         this.getRoutines();
+
+
+                        setTimeout(function () {
+                            this.alert=false;
+                        }.bind(this),3000);
                     })
-                    .catch(console.log);
+                    .catch(console.log)
+                    .finally( () => {
+                        this.auxRoutine[routineID].loadingFlag = false;
+                        this.alert=true;
+                    });
             }
         }
     }
