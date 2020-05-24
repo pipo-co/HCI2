@@ -137,7 +137,7 @@
                         >
                             <v-container fluid>
                                 <v-carousel
-                                        hide-delimiters
+                                        hide-delimiters :show-arrows="homedevs && (homedevs.length - 1) / 6 >= 1"
                                         show-arrows-on-hover
                                         continuous
                                         height="150"
@@ -145,14 +145,17 @@
                                     <v-carousel-item v-for="j in (0,2)" :key="j">
                                         <v-row align="center" wrap no-gutters>
                                             <v-col v-for="(dispositive, i) in homedevs" :key="i" cols="4" md="4">
-                                                <v-list-item :key="i" v-if="(j===1)? i<6: i>=6" :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
-                                                    <v-list-item-avatar class="ml-6" :color="dispositive.iconInfo.bgColor" >
-                                                        <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
-                                                    </v-list-item-avatar>
-                                                    <v-list-item-content>
-                                                        <v-list-item-title align="left" class="headline black--text pt-1 pb-2 ">{{ $vuetify.lang.t(`$vuetify.${dispositive.deviceTypeName}`)}}</v-list-item-title>
-                                                    </v-list-item-content>
-                                                </v-list-item>
+                                                <v-hover v-slot:default="{ hover }">
+                                                    <v-list-item :key="i" v-if="(j === 1)? i < 6: i >= 6" :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
+                                                        <v-overlay absolute :opacity=".1" :value="hover"></v-overlay>
+                                                        <v-list-item-avatar class="ml-6" :color="dispositive.iconInfo.bgColor" >
+                                                            <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
+                                                        </v-list-item-avatar>
+                                                        <v-list-item-content>
+                                                            <v-list-item-title align="left" class="headline black--text pt-1 pb-2 ">{{ $vuetify.lang.t(`$vuetify.${dispositive.deviceTypeName}`)}}</v-list-item-title>
+                                                        </v-list-item-content>
+                                                    </v-list-item>
+                                                </v-hover>
                                             </v-col>
                                         </v-row>
                                     </v-carousel-item>
