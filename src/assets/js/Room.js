@@ -45,7 +45,6 @@ class Room {
       return new Promise((resolve, reject) => {
           Api.room.delete(roomId)
               .then( () => {
-                  console.log(homeId);
                   Home.emptyCheck(homeId)
                       .then(resolve)
                       .catch(error => {
