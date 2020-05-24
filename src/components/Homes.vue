@@ -116,7 +116,7 @@
                                         continuous
                                         height="150"
                                 >
-                                    <v-carousel-item v-for="j in (0,2)" :key="j">
+                                    <v-carousel-item v-for="j in (0, 2)" :key="j">
                                         <v-row align="center" wrap no-gutters>
                                             <v-col v-for="(dispositive, i) in homedevs" :key="i" cols="4" md="4">
                                                 <v-hover v-slot:default="{ hover }">

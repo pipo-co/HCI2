@@ -6,7 +6,6 @@
                     <v-col cols="5">
                         <v-list-item dense>
                             <v-toolbar-title class="headline">SMARTIFY</v-toolbar-title>
-
                         </v-list-item>
                     </v-col>
                     <v-col cols="4" >
@@ -19,11 +18,11 @@
         </v-app-bar>
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
-                <v-col cols="3"  class=" ma-1 pa-0" >
-                    <v-btn class="ml-5"  rounded outlined @click="cancelProcess()"> Cancelar</v-btn>
+                <v-col cols="3"  class="ma-1 pa-0" >
+                    <v-btn rounded outlined @click="cancelProcess()"> Cancelar</v-btn>
                 </v-col>
-                <v-col cols="6" >
-                    <v-stepper class="rounded my-4" v-model="stepController.value">
+                <v-col cols="6">
+                    <v-stepper class="rounded my-4 mr-4" v-model="stepController.value">
                         <v-stepper-header>
                             <v-stepper-step :complete="stepController.value > 1" step="1"></v-stepper-step>
                             <v-divider></v-divider>
