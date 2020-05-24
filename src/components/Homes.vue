@@ -188,7 +188,7 @@
                                         <v-list>
                                             <v-list-item>
                                             <v-dialog
-                                                    v-model="RoomEditDialog"
+                                                    v-model="roomEditDialog"
                                                     width="500"
                                             >
                                                 <template v-slot:activator="{ on }">
@@ -216,7 +216,7 @@
                                                                             v-model="roomName"
                                                                             :label="room.roomName.split('_').pop()"
                                                                             :rules="newRoomRules"
-                                                                            :error-messages="roomerrormessage(roomEditDialog)"
+                                                                            :error-messages="roomerrormessage(flagErrorRoom)"
                                                                             autofocus
                                                                     >
                                                                     </v-text-field>
@@ -401,7 +401,7 @@
             changeHomes(){
                 Api.home.getAll()
                     .then(data => {
-                        if (data.result.length === 0){
+                        if (data.result === null || data.result.length === 0){
                             this.homes = null;
                             return;
                         }
