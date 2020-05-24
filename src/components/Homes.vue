@@ -145,7 +145,8 @@
                                     <v-carousel-item v-for="j in (0,2)" :key="j">
                                         <v-row align="center" wrap no-gutters>
                                             <v-col v-for="(dispositive, i) in homedevs" :key="i" cols="4" md="4">
-                                                <v-list-item :key="i" v-if="(j===1)? i<6: i>=6" :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
+                                                <v-list-item :key="i" v-if="(j===1)? i<6: i>=6"
+                                                             :to="{name: 'deviceType', params: {homeID: currentHome.id , deviceTypeName: dispositive.deviceTypeName}}">
                                                     <v-list-item-avatar class="ml-6" :color="dispositive.iconInfo.bgColor" >
                                                         <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
                                                     </v-list-item-avatar>
@@ -171,6 +172,7 @@
                     <v-card flat elevation="4"
                             class="ma-auto rounded"
                             width="750"
+                            @click="$router.push({ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }})"
                     >
                         <v-container fluid class="py-0">
                             <v-row align="center" no-gutters>
@@ -304,7 +306,7 @@
                                     </v-col>
                                     </span>
                                     <v-col cols="1">
-                                        <v-btn text fab right :to="{ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }}">
+                                        <v-btn text fab right>
                                             <v-icon color="#65C2AD" large class="px-4">mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-col>
