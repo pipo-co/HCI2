@@ -285,6 +285,7 @@
     } from "../../assets/js/lib";
     import Home from "../../assets/js/Home";
     import Room from "../../assets/js/Room";
+    import Device from "../../assets/js/Device";
     // const lib = require('../../assets/js/lib.js')
     export default {
         name: "NuevoDispositivo1",
@@ -569,33 +570,40 @@
             },
             editDisp() {
                 // eslint-disable-next-line no-debugger
-                debugger
+                //debugger
                 if (this.olddisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.olddisp.home.id}_${this.olddisp.room.id}_${this.olddisp.dispname}`)) {
                     this.flagErrorDisp = true;
+
+                    // Nueva Casa
                 } else if (this.olddisp.home === 0) {
                     this.olddisp.disp.setNewName(this.olddisp.dispname);
                     updateDeviceToNewHome(this.newhomename, this.newroomname, this.olddisp.disp)
                         .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
+
+                    // Nueva habitacion
                 } else if (this.olddisp.room === 0) {
+                    console.log(this.olddisp.disp);
+                    console.log(this.olddisp.disp instanceof Device);
                     this.olddisp.disp.setNewName( this.olddisp.dispname);
                     updateDeviceToNewRoom(new Home(this.olddisp.home.id, this.olddisp.home.name, this.olddisp.home.meta), this.newroomname, this.olddisp.disp)
                         .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
+
+                    // Cambias a una habitacion existente
                 } else if (this.olddisp.disp.room.id !== this.olddisp.room.id) {
-                    console.log(this.olddisp.disp);
                     this.olddisp.disp.setNewName( this.olddisp.dispname);
-                    console.log(this.olddisp.disp.name);
                     updateDeviceToExistingRoom(new Room(this.olddisp.room.id, this.olddisp.room.name, this.olddisp.room.meta, this.olddisp.home), this.olddisp.disp)
-                        .then(() => {
-                            console.log(this.olddisp.disp.name);
-                        this.$router.push(this.route); })
-                        .catch(error => console.log(`Error ${error}`));
+                        .then(() => this.$router.push(this.route))
+                        .catch(console.log);
                 }
+
+                // Solo cambias el nombre
                 else{
                     this.olddisp.disp.setNewName( this.olddisp.dispname);
-                    this.olddisp.disp.persistChanges();
-                    this.$router.push(this.route);
+                    this.olddisp.disp.persistChanges()
+                        .then( () => this.$router.push(this.route))
+                        .catch(console.log);
                 }
             },
             cancelProcess() {
