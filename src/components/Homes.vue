@@ -188,7 +188,7 @@
                                         <v-list>
                                             <v-list-item>
                                             <v-dialog
-                                                    v-model="RoomEditDialog"
+                                                    v-model="roomEditDialog"
                                                     width="500"
                                             >
                                                 <template v-slot:activator="{ on }">
@@ -216,7 +216,7 @@
                                                                             v-model="roomName"
                                                                             :label="room.roomName.split('_').pop()"
                                                                             :rules="newRoomRules"
-                                                                            :error-messages="roomerrormessage(roomEditDialog)"
+                                                                            :error-messages="roomerrormessage(flagErrorRoom)"
                                                                             autofocus
                                                                     >
                                                                     </v-text-field>
@@ -321,6 +321,7 @@
             <h3>Para agregar un nuevo dispositivo, apretar el boton (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
             <h3>Al hacer click aparecera un menu. Ahi se debe seleccionar la opcion de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
         </div>
+        <!--TODO que no se muestre si hay casa-->
         <div v-else>
             <p>Loading...</p>
         </div>
@@ -388,20 +389,12 @@
                 this.changeHomeDevices();
                 this.changeRoomMap();
             },
-            /*'homes'(){
-                Api.home.getAll().then(data => {
-                    this.homes = data.result;
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
-
-            }*/
         },
         methods: {
             changeHomes(){
                 Api.home.getAll()
                     .then(data => {
-                        if (data.result.length === 0){
+                        if ( !data.result  || data.result.length === 0){
                             this.homes = null;
                             return;
                         }
@@ -410,7 +403,7 @@
                         this.currentHome = this.homes[0];
                         this.homes.forEach(elem => {
                             this.auxHome[elem.id] = {name:'', valid:false, flagErrorHome:false};
-                        } )
+                        })
                         this.changeHomeDevices();
                         this.changeRoomMap();
                     })
@@ -470,15 +463,11 @@
                             } )
                             this.auxHome[elem.id].name = '';
                         }
-
                     }
                         this.dialog = flag;
                 })
             },
             saveRoomChanges(){
-               /* //eslint-disable-next-line no-debugger
-                debugger;*/
-                console.log(this.auxRoomId);
                 let flag = false;
                 if(this.roomNameValid){
                     if(this.roomMap.some(elem => elem.roomName.split('_').pop().toUpperCase().trim() === this.roomName.toUpperCase().trim() )){

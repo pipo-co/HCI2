@@ -21,25 +21,5 @@ class Routine {
     execute(){
         return Api.routine.execute(this.id);
     }
-
-    fav(){
-        if(!this.meta.fav){
-            this.meta.fav = true;
-            this.persistChanges()
-                .catch( error => {  console.log(`Fav: ${error}`)});
-        }
-    }
-
-    unFav(){
-        if(this.meta.fav){
-            this.meta.fav = false;
-            this.persistChanges()
-                .catch( error => {  console.log(`UnFav: ${error}`)});
-        }
-    }
-
-    isFav(){
-        return this.meta.fav;
-    }
 }
 export default Routine;

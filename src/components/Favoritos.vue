@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav-bar/>
-        <card-holder v-if="cards.length !== 0" :card-array="cards"/>
+        <card-holder v-if="cards && cards.length !== 0" :card-array="cards"/>
         <div v-else>
             <h1>No hay dispositivos marcados como favoritos.</h1>
             <br>
