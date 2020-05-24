@@ -130,7 +130,21 @@
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
-                                            <v-col v-for="(param, index) in action.action.params" :key="index">
+                                            <v-col v-if="action.action.actionName === 'setLocation'">
+                                                <v-list>
+                                                    <v-list-item>
+                                                        <v-list-item-title>{{action.setLocationRoom}}</v-list-item-title>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </v-col>
+                                            <v-col v-else-if="action.action.actionName === 'setColor'">
+                                                <v-list>
+                                                    <v-list-item>
+                                                        <v-avatar size="16" :color="`#${action.action.params[0]}`"></v-avatar>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </v-col>
+                                            <v-col v-else v-for="(param, index) in action.action.params" :key="index">
                                                 <v-list>
                                                     <v-list-item>
                                                         <v-list-item-title>{{param}}</v-list-item-title>
@@ -321,6 +335,7 @@
         getRoomsAndDeviceTypesMapFromHome
     } from "../../assets/js/lib";
     import Action from "../../assets/js/Action";
+    import Api from "../../assets/js/Api";
 
     export default {
         name: "NuevaRutina",
@@ -391,6 +406,20 @@
                         homeName: this.home.name,
                         action: action
                     };
+
+                    // Guardo el nombre de la habitacion elegida. Caso especial setLocation (parche)
+                    if(action.actionName === 'setLocation') {
+                        Api.room.get(params[0])
+                            .then( data => {
+                                displayAction.setLocationRoom = data.result.name.split('_').pop();
+                                this.newRoutine.actions.push(displayAction);
+                                this.dialog = false;
+                                this.resetActionForm();
+                            })
+                            .catch(console.log);
+                        return;
+                    }
+
 
                     this.newRoutine.actions.push(displayAction);
                     this.dialog = false;
