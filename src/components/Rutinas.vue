@@ -31,53 +31,30 @@
                             </template>
                             <v-list>
                                 <v-list-item class="pa-0">
-                                    <v-dialog
-                                            v-model="routineEliminateDialog"
-                                            max-width="500px"
-                                    >
+
+                                    <v-dialog v-model="routineEliminateDialog" max-width="330">
                                         <template v-slot:activator="{ on }">
-                                            <v-btn
-                                                    text
-                                                    v-on="on"
-                                            >
+                                            <v-btn text v-on="on">
                                                 Eliminar
                                             </v-btn>
                                         </template>
-                                        <v-card class="rounded">
-                                            <v-card-title>
-                                                <v-container>
-                                                    <v-row align="center" wrap no-gutters>
-                                                        <v-col>
-                                                            <p class="red--text">¿Esta seguro que quiere borrar la Rutina: {{routine.name}}? </p>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-container>
-                                            </v-card-title>
-                                            <v-card-actions>
-                                                <v-container fluid>
-                                                    <v-row align="center">
-                                                        <v-col>
-                                                            <v-btn
-                                                                    color="primary"
-                                                                    dark
-                                                                    @click="routineEliminateDialog = false"
-                                                            >
-                                                                Cancelar
-                                                            </v-btn>
-                                                        </v-col>
-                                                        <v-col>
-                                                            <v-btn
-                                                                    color="red"
-                                                                    dark
-                                                                    @click="deleteCurrentRoutine(routine.id)"
-                                                            >
-                                                                Eliminar
-                                                            </v-btn>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-container>
-                                            </v-card-actions>
-                                        </v-card>
+                                        <v-alert class="my-0 pa-0" border="top" colored-border color="red">
+                                            <v-card-text class="pb-0 display-1">Eliminar Rutina</v-card-text>
+                                            <v-card-text class="subtitle-2">
+                                                ¿Esta seguro que quiere borrar la Rutina: "{{routine.name}}"?
+                                            </v-card-text>
+                                            <v-card tile class="blue-grey lighten-5">
+                                                <v-card-actions>
+                                                    <v-btn depressed color="white" @click="routineEliminateDialog = false">
+                                                        Cancelar
+                                                    </v-btn>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn color="error"  @click="deleteCurrentRoutine(routine.id)">
+                                                        Eliminar
+                                                    </v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-alert>
                                     </v-dialog>
                                 </v-list-item>
                             </v-list>
