@@ -191,7 +191,7 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-btn rounded outlined  @click='controllerBack()'>
+                                <v-btn rounded outlined  @click='controllerBack()' v-show="flagFromRoom">
                                     Volver
                                 </v-btn>
                             </v-col>
@@ -334,6 +334,7 @@
                 flagErrorHome: false,
                 flagErrorRoom: false,
                 flagErrorDisp: false,
+                flagFromRoom: true,
                 newhomename: null,
                 newroomname: null,
             }
@@ -365,6 +366,7 @@
 
             if (this.routeHomeID !== undefined && this.routeRoomID !== undefined) {
                 this.stepController.value = 3;
+                this.flagFromRoom=false;
                 this.getRooms(this.routeHomeID);
             }
         },
@@ -457,7 +459,13 @@
                 this.flagErrorDisp = false;
             },
             controllerBack() {
-                if(this.editFlag && this.stepController.value === 4)
+                if(this.stepController.value === 2) {
+                    this.stepController.value--
+                    this.rooms=null;
+                    this.disp.room=null;
+                    this.newroomname=null;
+                }
+                else if(this.editFlag && this.stepController.value === 4)
                     this.stepController.value-=2;
                 else
                     this.stepController.value--;
