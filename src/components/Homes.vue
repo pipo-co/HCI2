@@ -453,14 +453,17 @@
                 });
             },
             saveChanges(){
-                let flag= false;
+                let flag = false;
                 this.homes.forEach(elem =>{
                     let nameaux=this.auxHome[elem.id].name.trim();
                     if(this.auxHome[elem.id].valid && nameaux !=='') {
 
                         if (this.homes.some(elem => elem.name.toUpperCase().trim() === nameaux.toUpperCase() ))
+                        {
+                            // eslint-disable-next-line no-debugger
+                            debugger;
 
-                        {  this.auxHome[elem.id].flagErrorHome = true;
+                            this.auxHome[elem.id].flagErrorHome = true;
                             flag = true;
 
                         } else {

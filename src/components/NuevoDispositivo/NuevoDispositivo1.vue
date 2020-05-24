@@ -20,7 +20,7 @@
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
                 <v-col cols="3"  class=" ma-1 pa-0" >
-                    <v-btn class="ml-5 rounded"  light outlined text @click="cancelProcess()"> Cancelar</v-btn>
+                    <v-btn class="ml-5"  rounded outlined @click="cancelProcess()"> Cancelar</v-btn>
                 </v-col>
                 <v-col cols="6" >
                     <v-stepper class="rounded my-4" v-model="stepController.value">
@@ -73,15 +73,15 @@
                                         lazy-validation
                                         @submit="controllerNextPlus() && false"
                                 >
-                                <v-text-field
-                                        class="ma-auto"
-                                        @click="changeHomeFlag()"
-                                        v-model="newhomename"
-                                        autofocus
-                                        :rules="newHomeRules"
-                                        :error-messages="homeerrormessage"
-                                        label="Nombre del nuevo hogar"
-                                ></v-text-field>
+                                    <v-text-field
+                                            class="ma-auto"
+                                            @click="changeHomeFlag()"
+                                            v-model="newhomename"
+                                            autofocus
+                                            :rules="newHomeRules"
+                                            :error-messages="homeerrormessage"
+                                            label="Nombre del nuevo hogar"
+                                    ></v-text-field>
                                 </v-form>
                             </v-col>
                         </v-row>
@@ -553,10 +553,12 @@
                 }
             },
             saveDisp() {
-                if (this.editFlag)
-                    this.editDisp();
-                else
-                    this.createDisp();
+                if(this.validDisp){
+                    if (this.editFlag)
+                        this.editDisp();
+                    else
+                        this.createDisp();
+                }
             },
             createDisp() {
                 if (this.newdisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.newdisp.home.id}_${this.newdisp.room.id}_${this.newdisp.dispname}`)) {

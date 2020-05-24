@@ -6,7 +6,6 @@
                     <v-col cols="5">
                         <v-list-item dense>
                             <v-toolbar-title class="headline">SMARTIFY</v-toolbar-title>
-                            <v-btn class="ml-5 rounded" color="red" light outlined text :to="{ name : 'rutinas' }"> Cancelar</v-btn>
                         </v-list-item>
                     </v-col>
                     <v-col cols="4" >
@@ -19,12 +18,13 @@
         </v-app-bar>
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
-                <v-col cols="3" md="3" class=" ma-1 pa-0" >
+                <v-col cols="3" class=" ma-1 pa-0" >
+                    <v-btn rounded outlined :to="{ name : 'rutinas' }">Cancelar</v-btn>
                 </v-col>
-                <v-col cols="6" md="6">
+                <v-col cols="6">
                 </v-col>
                 <v-col>
-                    <v-btn rounded outlined color="#A5A5A5" @click='saveNewRoutine()' :disabled="!validRoutine">
+                    <v-btn rounded outlined  @click='saveNewRoutine()' :disabled="!validRoutine">
                         Guardar
                     </v-btn>
                 </v-col>
@@ -173,7 +173,7 @@
                                                     </v-btn>
                                                 </template>
                                                 <v-card class="rounded ma-auto"
-                                                        height="700">
+                                                        height="850">
                                                     <v-container fluid>
                                                         <v-row >
                                                             <v-card class="rounded mx-auto"
