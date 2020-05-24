@@ -582,7 +582,7 @@
                     updateDeviceToNewRoom(new Home(this.olddisp.home.id, this.olddisp.home.name, this.olddisp.home.meta), this.newroomname, this.olddisp.disp)
                         .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
-                } else {
+                } else if (this.olddisp.disp.room.id !== this.olddisp.room.id) {
                     console.log(this.olddisp.disp);
                     this.olddisp.disp.setNewName( this.olddisp.dispname);
                     console.log(this.olddisp.disp.name);
@@ -591,7 +591,11 @@
                             console.log(this.olddisp.disp.name);
                         this.$router.push(this.route); })
                         .catch(error => console.log(`Error ${error}`));
-
+                }
+                else{
+                    this.olddisp.disp.setNewName( this.olddisp.dispname);
+                    this.olddisp.disp.persistChanges();
+                    this.$router.push(this.route);
                 }
             },
             cancelProcess() {
