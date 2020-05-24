@@ -4,9 +4,9 @@ export default {
     ...es,
 
     speaker: "Parlante",
-    ac: "Aire Acondicionado",
+    ac: "Aire",
     oven: "Horno",
-    lamp: "Lamapra",
+    lamp: "Lampara",
     door: "Puerta",
     blinds: "Persiana",
     faucet: "Regador",

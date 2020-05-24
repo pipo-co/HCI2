@@ -321,6 +321,7 @@
             <h3>Para agregar un nuevo dispositivo, apretar el boton (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
             <h3>Al hacer click aparecera un menu. Ahi se debe seleccionar la opcion de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
         </div>
+        <!--TODO que no se muestre si hay casa-->
         <div v-else>
             <p>Loading...</p>
         </div>
