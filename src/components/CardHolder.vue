@@ -2,11 +2,33 @@
     <v-container >
         <v-row justify="center">
             <v-col cols="12" xl="8">
-                <v-row>
-                    <v-col md="6" v-for="card in cardArray" :key="card.id"> <!-- usar index en ves de card id-->
-                        <card-router :card="card"></card-router>
-                    </v-col>
-                </v-row>
+                <v-container>
+                    <v-row v-if="cards">
+                        <v-col class="px-0" cols="6">
+                            <v-container>
+                                <v-row>
+                                    <v-col class="py-1" cols="12" v-for="card in cards[0]" :key="card.id">
+                                        <card-router :card="card"></card-router>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-col>
+                        <v-col class="px-0" cols="6">
+                            <v-container>
+                                <v-row>
+                                    <v-col class="py-1" cols="12" v-for="card in cards[1]" :key="card.id">
+                                        <card-router :card="card"></card-router>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-col>
+                    </v-row>
+                </v-container>
+<!--                <v-row>-->
+<!--                    <v-col md="6" v-for="card in cardArray" :key="card.id"> &lt;!&ndash; usar index en ves de card id&ndash;&gt;-->
+<!--                        <card-router :card="card"></card-router>-->
+<!--                    </v-col>-->
+<!--                </v-row>-->
             </v-col>
         </v-row>
     </v-container>
@@ -18,11 +40,22 @@
     export default {
         name: "CardHolder",
         components: {CardRouter},
+        data(){
+            return{
+                cards: null,
+            }
+        },
         props: {
             cardArray: {
                 type: Array,
                 require: true,
             }
+        },
+        mounted() {
+            this.cards = [];
+            this.cards[0] = [];
+            this.cards[1] = [];
+            this.cardArray.forEach((entry,index) => this.cards[index % 2].push(entry));
         }
     }
 </script>

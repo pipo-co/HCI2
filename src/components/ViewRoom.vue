@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav-bar :home="home.name" :room="room.name"/>
-        <v-container fluid>
+        <v-container fluid v-if="cards && cards.length !== 0">
             <v-row >
                 <v-col>
                     <v-btn height="70" width="350"
@@ -16,9 +16,11 @@
                 <v-col>
                      <card-holder :card-array="cards"/>
                 </v-col>
-
             </v-row>
         </v-container>
+        <div v-else>
+            <p>Loading...</p>
+        </div>
     </div>
 </template>
 

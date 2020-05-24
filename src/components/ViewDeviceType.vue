@@ -1,7 +1,13 @@
 <template>
     <div>
         <nav-bar :home="home.name" :room="room.name"/>
-    <card-holder :card-array="cards"/>
+        <div v-if="cards && cards.length !== 0">
+            <card-holder :card-array="cards"/>
+        </div>
+        <div v-else>
+            <p>Loading...</p>
+        </div>
+
     </div>
 </template>
 
