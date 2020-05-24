@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar></nav-bar>
+        <nav-bar :show-back="true"></nav-bar>
         <h1>Dispositivos encontrados al buscar: {{$route.params.name}}</h1>
         <card-holder v-if="successfulSearch" :card-array="cards"/>
         <div v-else-if="!loading">

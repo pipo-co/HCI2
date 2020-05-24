@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar></nav-bar>
+        <nav-bar :show-back="true"></nav-bar>
         <v-dialog v-model="loadingPage" hide-overlay persistent width="30%">
             <v-card color="primary" dark>
                 <v-card-text>

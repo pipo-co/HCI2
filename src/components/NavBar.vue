@@ -4,7 +4,10 @@
             <v-col>
                 <v-container fluid>
                     <v-row align="center" justify="start">
-                        <v-col cols="5" >
+                        <v-col cols="1">
+                            <go-back v-show="showBack"></go-back>
+                        </v-col>
+                        <v-col cols="4" >
                             <v-btn @click="$router.push('/')" text>
                                 <v-toolbar-title class="headline teal--text text--darken-4 font-weight-bold" color="#3C3F58" to="/">SMARTIFY</v-toolbar-title>
                             </v-btn>
@@ -54,8 +57,10 @@
 </template>
 
 <script>
+    import GoBack from "./GoBack";
     export default {
         name: "NavBar",
+        components: {GoBack},
         props:{
             home:{
                 type: String,
@@ -65,6 +70,11 @@
                 type: String,
                 require: false,
             },
+            showBack: {
+                type: Boolean,
+                require: false,
+                default: false
+            }
 
         },
         data(){
