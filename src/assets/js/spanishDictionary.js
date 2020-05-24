@@ -68,6 +68,10 @@ export default {
     lock: "Bloquear",
     unlock: "Desbloquear",
 
+    start: "Iniciar",
+    dock: "Cargar",
+    setLocation: "Elegir Ubicacion"
+
 
 
 }
