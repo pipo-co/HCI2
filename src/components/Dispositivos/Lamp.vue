@@ -1,5 +1,5 @@
 <template>
-    <v-card :id="`#${props.id}`">
+    <v-card :id="`#${props.id}`" shaped raised>
         <v-container class="pt-0">
             <v-row no-gutters dense>
                 <v-col cols="12" class="px-5">
