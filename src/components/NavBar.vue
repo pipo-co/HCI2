@@ -21,10 +21,11 @@
                     </v-row>
                 </v-container>
             </v-col>
-            <v-spacer/>
-            <v-col v-show="searchBar.show" align-self="center">
-                <v-form v-model="searchBar.valid">
-                    <v-text-field prepend-icon="mdi-magnify" class="my-0" background-color="#67CDB3"
+            <v-col align-self="center" order="end">
+                <v-form v-show="searchBar.show" v-model="searchBar.valid">
+                    <v-text-field
+                            class="my-0" background-color="#67CDB3"
+                            placeholder="Buscar"
                               autofocus solo flat dense hide-details v-model="searchBar.value"
                               @keydown.enter="executeSearch">
                     <template v-slot:append>
@@ -35,10 +36,10 @@
                 </v-text-field>
                 </v-form>
             </v-col>
-            <v-col class="px-0 justify-end">
+            <v-col class="px-0 justify-end" order="end">
                 <v-tabs right color="#3C3F58" background-color="#72E1C7">
                     <v-tabs-slider color="#87FFE3"></v-tabs-slider>
-                    <v-tab v-show="! searchBar.show" @click="openSearchBar()">
+                    <v-tab @click="openSearchBar()">
                         <v-icon right>mdi-magnify</v-icon>
                     </v-tab>
                     <v-tab class="blue-grey--text text--darken-4 font-weight-bold" to="/favoritos" >Favoritos</v-tab>
