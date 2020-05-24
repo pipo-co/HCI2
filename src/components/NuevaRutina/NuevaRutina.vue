@@ -424,6 +424,7 @@
             },
             getActItems(dispType){
                 getActionsItemsArray(dispType).then( data => {
+                    data.forEach(entry => entry.text = this.$vuetify.lang.t(`$vuetify.${entry.text}`));
                     this.actItems = data;
                 }).catch(error => {
                     console.log(`Error ${error}`)});
