@@ -36,36 +36,34 @@
                                 <p class="font-weight-medium subtitle-1 my-0">Seleccione nivel:</p>
                             </v-col>
                         </v-row>
-                        <v-row>
-                            <v-col class="pr-4">
-                                <v-form v-model="level.validInput">
-                                    <v-slider
-                                            color="#65C0AB"
-                                            thumb-color="#65C0AB"
-                                            track-color="#A8DED1"
-                                            :disabled="level.awaitingResponse"
-                                            :loading="level.awaitingResponse"
-                                            v-model="level.value"
-                                            @change="level.changeState()"
-                                            class="align-center"
-                                            :max='level.maxValue'
-                                            :min='level.minValue'
-                                            hide-details>
-                                        <template v-slot:append>
-                                            <v-text-field
-                                                    :disabled="level.awaitingResponse"
-                                                    :loading="level.awaitingResponse"
-                                                    class="inputNumber"
-                                                    v-model="level.value"
-                                                    @change="level.changeState()"
-                                                    solo rounded flat outlined dense
-                                                    :rules="level.rules"
-                                            ></v-text-field>
-                                        </template>
-                                    </v-slider>
-                                </v-form>
-                            </v-col>
-                        </v-row>
+                        <v-form v-model="level.validInput">
+                            <v-row>
+                                <v-col class="pr-4">
+                                        <v-slider
+                                                color="#65C0AB"
+                                                thumb-color="#65C0AB"
+                                                track-color="#A8DED1"
+                                                :disabled="level.awaitingResponse"
+                                                :loading="level.awaitingResponse"
+                                                v-model="level.value"
+                                                @change="level.changeState()"
+                                                :max='level.maxValue'
+                                                :min='level.minValue'
+                                                hide-details></v-slider>
+                                </v-col>
+                                 <v-col class="pr-4">
+                                     <v-text-field
+                                             :disabled="level.awaitingResponse"
+                                             :loading="level.awaitingResponse"
+                                             class="inputNumber"
+                                             v-model="level.value"
+                                             @change="level.changeState()"
+                                             solo rounded flat outlined dense
+                                             :rules="level.rules"
+                                     ></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-form>
                     </v-card-text>
                 </v-col>
             </v-row>

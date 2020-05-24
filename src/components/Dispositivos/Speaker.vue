@@ -81,6 +81,7 @@
                                         v-model="genre.value"
                                         :items="getTranslation(genre.supportedValues)"
                                         @change="changeGenre"
+                                        hide-details
                                         :loading="genre.awaitingResponse"
                                         :disabled="genre.awaitingResponse"
                                 ></v-select>
@@ -115,7 +116,7 @@
                                                 <v-icon>mdi-minus</v-icon>
                                             </v-list-item-icon>
                                             <v-list-item-content>
-                                                <v-list-item-title>{{song.title}}</v-list-item-title>
+                                                <v-list-item-title>{{song.artist}} - {{song.title}}</v-list-item-title>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list-item-group>

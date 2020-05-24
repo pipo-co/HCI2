@@ -123,30 +123,30 @@
                                             </v-col >
                                         </v-row>
                                         <v-row no-gutters>
-                                            <v-col cols="7">
+                                            <v-col class="px-0" cols="10">
                                                 <v-list>
-                                                    <v-list-item>
+                                                    <v-list-item class="px-0">
                                                         <v-list-item-title>Accion: {{$vuetify.lang.t(`$vuetify.${action.action.actionName}`)}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
-                                            <v-col v-if="action.action.actionName === 'setLocation'">
+                                            <v-col class="px-0" v-if="action.action.actionName === 'setLocation'">
                                                 <v-list>
-                                                    <v-list-item>
+                                                    <v-list-item class="px-0">
                                                         <v-list-item-title>{{action.setLocationRoom}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
-                                            <v-col v-else-if="action.action.actionName === 'setColor'">
+                                            <v-col class="px-0" v-else-if="action.action.actionName === 'setColor'">
                                                 <v-list>
-                                                    <v-list-item>
+                                                    <v-list-item class="px-0">
                                                         <v-avatar size="16" :color="`#${action.action.params[0]}`"></v-avatar>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
-                                            <v-col v-else v-for="(param, index) in action.action.params" :key="index">
+                                            <v-col class="px-0" v-else v-for="(param, index) in action.action.params" :key="index">
                                                 <v-list>
-                                                    <v-list-item>
+                                                    <v-list-item  class="px-0">
                                                         <v-list-item-title>{{param}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
@@ -512,7 +512,7 @@
                 this.validSave = this.isValidState();
             },
             isValidState(){
-                return !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem)));
+                return !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem !== null)));
             },
             resetActionForm(){
                 this.home = null;
