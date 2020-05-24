@@ -96,10 +96,10 @@
                 },
                 dispense: {
                     selectedUnit: null,
-                    selectedValue:null,
+                    selectedValue: 0,
                     unitSupportedValues: null,
-                    minValue: null,
-                    maxValue: null,
+                    minValue: 0,
+                    maxValue: 0,
                     action: 'dispense',
                     validInput: true,
                     awaitingResponse: false,
@@ -177,9 +177,7 @@
                 clearInterval(this.statePolling);
         },
         mounted(){
-
             this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
-
             let actions = [
                 {action: this.dispense.action, handler: this.loadSupportedDispense}
             ];
