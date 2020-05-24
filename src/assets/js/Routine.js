@@ -22,20 +22,31 @@ class Routine {
         return Api.routine.execute(this.id);
     }
 
-    fav(){
-        if(!this.meta.fav){
-            this.meta.fav = true;
-            this.persistChanges()
-                .catch( error => {  console.log(`Fav: ${error}`)});
-        }
+    refreshActions(){
+        return Api.routine.get(this.id)
+            .then( data => this.actions = data.result.actions)
+            .catch(console.log);
     }
 
-    unFav(){
-        if(this.meta.fav){
-            this.meta.fav = false;
+    fav() {
+        if (!this.meta.fav)
+            this.invertFav();
+    }
+
+    unFav() {
+        if (this.meta.fav)
+            this.invertFav();
+    }
+
+    invertFav(){
+        this.meta.fav = !this.meta.fav;
+        if(!this.actions || this.actions.length === 0)
+            this.refreshActions()
+                .then(() => this.persistChanges().catch(console.log))
+                .catch(console.log);
+        else
             this.persistChanges()
-                .catch( error => {  console.log(`UnFav: ${error}`)});
-        }
+                .catch(console.log);
     }
 
     isFav(){

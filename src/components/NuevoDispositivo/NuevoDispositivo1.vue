@@ -476,7 +476,6 @@
                         this.rooms = data.result
                         if (id !== undefined) {
                             this.rooms.forEach(elem => {
-                                console.log(id);
                                 if (elem.id === this.routeRoomID)
                                     this.newdisp.room = elem;
                             })
