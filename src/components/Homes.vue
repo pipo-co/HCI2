@@ -148,6 +148,7 @@
                     <v-card flat elevation="4"
                             class="ma-auto rounded"
                             width="750"
+                            @click="$router.push({ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }})"
                     >
                         <v-container fluid class="py-0">
                             <v-row align="center" no-gutters>
@@ -216,7 +217,6 @@
                                             </v-dialog>
                                             </v-list-item>
                                             <v-list-item>
-
                                                 <v-dialog v-model="roomEliminateDialog" max-width="500">
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn
@@ -312,7 +312,7 @@
                                     </v-col>
                                     </span>
                                     <v-col cols="1">
-                                        <v-btn text fab right :to="{ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }}">
+                                        <v-btn text fab right>
                                             <v-icon color="#65C2AD" large class="px-4">mdi-chevron-right</v-icon>
                                         </v-btn>
                                     </v-col>

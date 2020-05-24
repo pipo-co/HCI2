@@ -126,7 +126,7 @@
                                             <v-col cols="7">
                                                 <v-list>
                                                     <v-list-item>
-                                                        <v-list-item-title>Accion: {{action.action.actionName}}</v-list-item-title>
+                                                        <v-list-item-title>Accion: {{$vuetify.lang.t(`$vuetify.${action.action.actionName}`)}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
