@@ -1,6 +1,6 @@
 <template>
     <v-card :id="`#${props.id}`">
-        <v-container >
+        <v-container class="pt-0">
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info

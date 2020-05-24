@@ -68,6 +68,23 @@ export default {
     lock: "Bloquear",
     unlock: "Desbloquear",
 
+    start: "Iniciar",
+    dock: "Cargar",
+    setLocation: "Elegir Ubicacion",
 
-
+    volume: "Volumen",
+    genre: "Genero",
+    quantity: "Cantidad",
+    unit: "Unidad",
+    level: "Nivel",
+    color: "Color",
+    brightness: "Brillo",
+    temperature: "Temperatura",
+    grill: "Parrilla",
+    convection: "Conveccion",
+    mode: "Modo",
+    verticalSwing: "Barrido vertical",
+    horizontalSwing: "Barrido horizontal",
+    fanSpeed: "Velocidad del ventilador",
+    roomId: "Habitacion",
 }

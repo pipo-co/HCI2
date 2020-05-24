@@ -14,7 +14,7 @@
                             :min='minValue'
                             hide-details>
                         <template v-slot:prepend>
-                            <v-card-text>{{params.name}}</v-card-text>
+                            <v-card-text>{{$vuetify.lang.t(`$vuetify.${params.name}`)}}</v-card-text>
                         </template>
                         <template v-slot:append>
                             <v-text-field

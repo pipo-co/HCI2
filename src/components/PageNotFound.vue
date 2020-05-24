@@ -1,6 +1,5 @@
 <template>
     <div>
-        <nav-bar/>
         <p>404 oh nooooooo</p>
     </div>
 </template>

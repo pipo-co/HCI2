@@ -1,6 +1,6 @@
 <template>
     <v-card :id="`#${props.id}`">
-        <v-container>
+        <v-container class="pt-0">
             <v-row dense>
                 <v-col cols="12" class="px-5">
                     <disp-info
@@ -19,9 +19,12 @@
                                         label="Unidad"
                                 ></v-select>
                             </v-col>
-                            <v-spacer></v-spacer>
-                            <v-col cols="4" class="justify-end">
-                                <v-btn text color="#6563FF" @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
+                            <v-col cols="4">
+                                <v-btn color="#72E1C7" class="black--text mx-2" rounded @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
+                                <v-btn color="#72E1C7" class="black--text mx-2" rounded @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -46,6 +49,7 @@
                                     </template>
                                     <template v-slot:append>
                                         <v-text-field
+                                                :suffix="dispense.selectedUnit"
                                                 v-model="dispense.selectedValue"
                                                 solo rounded flat outlined dense
                                                 type="number"
@@ -54,12 +58,6 @@
                                     </template>
                                 </v-slider>
                             </v-form>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="py-0">
-                            <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
-                            <v-btn text color="#6563FF" @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                         </v-col>
                     </v-row>
                 </v-col>
