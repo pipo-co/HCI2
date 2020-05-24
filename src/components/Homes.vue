@@ -110,7 +110,8 @@
                         >
                             <v-container fluid>
                                 <v-carousel
-                                        hide-delimiters :show-arrows="homedevs && (homedevs.length - 1) / 6 >= 1"
+                                        hide-delimiters
+                                        :show-arrows="homedevs && (homedevs.length - 1) / 6 >= 1"
                                         show-arrows-on-hover
                                         continuous
                                         height="150"
