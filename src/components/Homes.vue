@@ -401,7 +401,7 @@
             changeHomes(){
                 Api.home.getAll()
                     .then(data => {
-                        if (data.result === null || data.result.length === 0){
+                        if ( !data.result  || data.result.length === 0){
                             this.homes = null;
                             return;
                         }
