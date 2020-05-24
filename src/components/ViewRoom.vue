@@ -1,9 +1,9 @@
 <template>
     <div>
         <nav-bar :home="home.name" :room="room.name"/>
-        <v-container fluid v-if="cards && cards.length !== 0">
-            <v-row >
-                <v-col>
+        <v-container class="pa-0" fluid v-if="cards && cards.length !== 0">
+            <v-row>
+                <v-col class="pa-0">
                     <v-btn height="70" width="350"
                            :to="{ name:'nuevodispositivo', params: { 'previousRoute': 'room', 'homeID': home.id, 'roomID': room.id } }"
                            class="text--secondary border-dashed" outlined>
@@ -12,7 +12,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-row wrap>
+            <v-row wrap no-gutters>
                 <v-col>
                      <card-holder :card-array="cards"/>
                 </v-col>
