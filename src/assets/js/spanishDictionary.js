@@ -87,9 +87,4 @@ export default {
     horizontalSwing: "Barrido horizontal",
     fanSpeed: "Velocidad del ventilador",
     roomId: "Habitacion",
-
-
-
-
-
 }
