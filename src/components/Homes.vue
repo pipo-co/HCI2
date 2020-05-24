@@ -167,135 +167,136 @@
                         </v-col>
                     </v-row>
 
-                    <v-row v-for="room in roomMap" :key="room.roomName" class="my-4 rounded">
-                        <v-card flat elevation="4"
-                                class="ma-auto rounded"
-                                width="750"
-                        >
-                            <v-container fluid class="py-0">
-                                <v-row align="center" no-gutters>
-                                    <v-col cols="1">
-                                        <v-menu offset-y
-                                                transition="slide-y-transition"
-                                                bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn text top fab
-                                                       v-on="on"
-                                                       @click="auxRoomId = room.id">
-                                                    <v-icon>mdi-dots-vertical</v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <v-list>
-                                                <v-list-item>
-                                                    <v-dialog
-                                                            v-model="RoomEditDialog"
-                                                            width="500"
+                <v-row v-for="room in roomMap" :key="room.roomName" class="my-4 rounded">
+                    <v-card flat elevation="4"
+                            class="ma-auto rounded"
+                            width="750"
+                    >
+                        <v-container fluid class="py-0">
+                            <v-row align="center" no-gutters>
+                                <v-col cols="1">
+                                    <v-menu offset-y
+                                            transition="slide-y-transition"
+                                            bottom>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn text top fab
+                                                   v-on="on"
+                                                   @click="auxRoomId = room.id">
+                                                <v-icon>mdi-dots-vertical</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <v-list>
+                                            <v-list-item>
+                                            <v-dialog
+                                                    v-model="RoomEditDialog"
+                                                    width="500"
+                                            >
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn
+                                                            text
+                                                            v-on="on"
+                                                            @click="roomName = ''"
                                                     >
-                                                        <template v-slot:activator="{ on }">
-                                                            <v-btn
-                                                                    text
-                                                                    v-on="on"
-                                                                    @click="roomName = ''"
-                                                            >
-                                                                Editar
-                                                            </v-btn>
-                                                        </template>
-                                                        <v-card class="rounded">
-                                                            <v-container fluid>
-                                                                <v-row no-gutters align="center">
-                                                                    <v-col cols="1">
-                                                                    </v-col>
+                                                        Editar
+                                                    </v-btn>
+                                                </template>
+                                                <v-card class="rounded">
+                                                    <v-container fluid>
+                                                        <v-row no-gutters align="center">
+                                                            <v-col cols="1">
+                                                            </v-col>
+                                                            <v-col>
+                                                                <v-form
+                                                                        ref="form"
+                                                                        v-model="roomNameValid"
+                                                                        lazy-validation
+                                                                        @submit="saveRoomChanges() && false"
+                                                                >
+                                                                    <v-text-field
+                                                                            v-model="roomName"
+                                                                            :label="room.roomName.split('_').pop()"
+                                                                            :rules="newRoomRules"
+                                                                            :error-messages="roomerrormessage(roomEditDialog)"
+                                                                            autofocus
+                                                                    >
+                                                                    </v-text-field>
+                                                                </v-form>
+                                                            </v-col>
+                                                            <v-col cols="1"></v-col>
+                                                            <v-col >
+                                                                <v-btn
+                                                                        class="ma-auto"
+                                                                        color="#65C2AD"
+                                                                        dark
+                                                                        @click='saveRoomChanges()'
+                                                                >
+                                                                    Guardar cambios
+                                                                </v-btn>
+                                                            </v-col>
+                                                        </v-row>
+                                                    </v-container>
+                                                </v-card>
+                                            </v-dialog>
+                                            </v-list-item>
+                                            <v-list-item>
+                                                <v-dialog
+                                                        v-model="roomEliminateDialog"
+                                                        max-width="500px"
+                                                >
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn
+                                                                text
+                                                                v-on="on"
+                                                        >
+                                                            Eliminar
+                                                        </v-btn>
+                                                    </template>
+                                                    <v-card class="rounded">
+                                                        <v-card-title>
+                                                            <v-container>
+                                                                <v-row align="center" wrap no-gutters>
                                                                     <v-col>
-                                                                        <v-form
-                                                                                ref="form"
-                                                                                v-model="roomNameValid"
-                                                                                lazy-validation
-                                                                                @submit="saveRoomChanges() && false"
-                                                                        >
-                                                                            <v-text-field
-                                                                                    v-model="roomName"
-                                                                                    :label="room.roomName.split('_').pop()"
-                                                                                    :rules="newRoomRules"
-                                                                                    autofocus
-                                                                            >
-                                                                            </v-text-field>
-                                                                        </v-form>
-                                                                    </v-col>
-                                                                    <v-col cols="1"></v-col>
-                                                                    <v-col >
-                                                                        <v-btn
-                                                                                class="ma-auto"
-                                                                                color="#65C2AD"
-                                                                                dark
-                                                                                @click='saveRoomChanges()'
-                                                                        >
-                                                                            Guardar cambios
-                                                                        </v-btn>
+                                                                        <p class="red--text">Si elimina la habitacion, se borraran todos los dispositivos en ella.</p>
+                                                                        <p class="red--text">¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}? </p>
                                                                     </v-col>
                                                                 </v-row>
                                                             </v-container>
-                                                        </v-card>
-                                                    </v-dialog>
-                                                </v-list-item>
-                                                <v-list-item>
-                                                    <v-dialog
-                                                            v-model="roomEliminateDialog"
-                                                            max-width="500px"
-                                                    >
-                                                        <template v-slot:activator="{ on }">
-                                                            <v-btn
-                                                                    text
-                                                                    v-on="on"
-                                                            >
-                                                                Eliminar
-                                                            </v-btn>
-                                                        </template>
-                                                        <v-card class="rounded">
-                                                            <v-card-title>
-                                                                <v-container>
-                                                                    <v-row align="center" wrap no-gutters>
-                                                                        <v-col>
-                                                                            <p class="red--text">Si elimina la habitacion, se borraran todos los dispositivos en ella.</p>
-                                                                            <p class="red--text">¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}? </p>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                </v-container>
-                                                            </v-card-title>
-                                                            <v-card-actions>
-                                                                <v-container fluid><v-row align="center">
-                                                                    <v-col>
-                                                                        <v-btn
-                                                                                color="primary"
-                                                                                dark
-                                                                                @click="roomEliminateDialog = false"
-                                                                        >
-                                                                            Cancelar
-                                                                        </v-btn>
-                                                                    </v-col>
-                                                                    <v-col>
-                                                                        <v-btn
-                                                                                color="red"
-                                                                                dark
-                                                                                @click="deleteCurrentRoom()"
-                                                                        >
-                                                                            Eliminar
-                                                                        </v-btn>
-                                                                    </v-col>
-                                                                </v-row></v-container>
-                                                            </v-card-actions>
-                                                        </v-card>
-                                                    </v-dialog>
-                                                </v-list-item>
-                                            </v-list>
-                                        </v-menu>
-                                    </v-col>
-                                    <v-col cols="5">
-                                        <v-list-item-content>
-                                            <v-list-item-title align="left" class="headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
-                                        </v-list-item-content>
-                                    </v-col>
-                                    <v-spacer></v-spacer>
-                                    <span v-for="(dispositive, i) in room.deviceTypeArray" :key="i">
+                                                        </v-card-title>
+                                                        <v-card-actions>
+                                                            <v-container fluid><v-row align="center">
+                                                                <v-col>
+                                                                    <v-btn
+                                                                            color="primary"
+                                                                            dark
+                                                                            @click="roomEliminateDialog = false"
+                                                                    >
+                                                                        Cancelar
+                                                                    </v-btn>
+                                                                </v-col>
+                                                                <v-col>
+                                                                    <v-btn
+                                                                            color="red"
+                                                                            dark
+                                                                            @click="deleteCurrentRoom()"
+                                                                    >
+                                                                        Eliminar
+                                                                    </v-btn>
+                                                                </v-col>
+                                                            </v-row></v-container>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-dialog>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="5">
+                                    <v-list-item-content>
+                                        <v-list-item-title align="left" class="headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-col>
+                                <v-spacer></v-spacer>
+                                <span v-for="(dispositive, i) in room.deviceTypeArray" :key="i">
                                     <v-col cols="1" v-if="i<3" >
                                         <v-list-item-avatar  class="mx-1" :color="dispositive.iconInfo.bgColor">
                                             <v-icon large :color="dispositive.iconInfo.color">{{dispositive.iconInfo.src}}</v-icon>
@@ -416,14 +417,20 @@
                 else
                     return '';
             },
+            roomerrormessage(flag) {
+                if(flag){
+                    return 'El nombre de la habitacion ya existe, por favor elija otro nombre';
+                }
+                else
+                    return '';
+            },
             eliminateHome(name, id){
                 this.dialog2 = true;
                 this.auxiliarName= name;
                 this.auxHomeId=id;
             },
             changeHomeDevices() {
-                /*//eslint-disable-next-line no-debugger
-                debugger;*/
+
                 getDeviceTypesInHome(this.currentHome.id).then(data => {
                     this.homedevs = data;
                 }).catch(error => {
@@ -462,8 +469,8 @@
                 })
             },
             saveRoomChanges(){
-                //eslint-disable-next-line no-debugger
-                debugger;
+               /* //eslint-disable-next-line no-debugger
+                debugger;*/
                 console.log(this.auxRoomId);
                 let flag = false;
                 if(this.roomNameValid){

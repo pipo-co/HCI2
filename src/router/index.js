@@ -30,7 +30,7 @@ const routes = [
     }, {
         component: () => import("../components/NuevoDispositivo/NuevoDispositivo1"),
         name: "editardispositivo",
-        path: "/dispositivo/nuevodispositivo1/:edit/:id/:typeid/:deviceName/"
+        path: "/dispositivo/nuevodispositivo1/:edit/:device"
     },
 
     {

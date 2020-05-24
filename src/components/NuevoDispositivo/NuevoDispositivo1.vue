@@ -19,10 +19,10 @@
         </v-app-bar>
         <v-container class="pa-2">
             <v-row no-gutters class="ma-auto pa-auto">
-                <v-col cols="3" md="3" class=" ma-1 pa-0" >
+                <v-col cols="3"  class=" ma-1 pa-0" >
                     <v-btn class="ml-5 rounded"  light outlined text @click="cancelProcess()"> Cancelar</v-btn>
                 </v-col>
-                <v-col cols="6" md="6">
+                <v-col cols="6" >
                     <v-stepper class="rounded my-4" v-model="stepController.value">
                         <v-stepper-header>
                             <v-stepper-step :complete="stepController.value > 1" step="1"></v-stepper-step>
@@ -277,7 +277,11 @@
     import {
         createDevice,
         createDeviceFromNotExistingRoom,
-        createDeviceFromScratch, getSupportedDeviceTypes,
+        createDeviceFromScratch,
+        getSupportedDeviceTypes,
+        updateDeviceToExistingRoom,
+        updateDeviceToNewHome,
+        updateDeviceToNewRoom,
     } from "../../assets/js/lib";
     import Home from "../../assets/js/Home";
     import Room from "../../assets/js/Room";
@@ -286,8 +290,8 @@
         name: "NuevoDispositivo1",
         data() {
             return {
-                routeHomeID:null,
-                routeRoomID:null,
+                routeHomeID: null,
+                routeRoomID: null,
                 validHome: false,
                 validRoom: false,
                 validDisp: false,
@@ -295,7 +299,7 @@
                 disptypes: null,
                 rooms: null,
                 disps: null,
-                editFlag:false,
+                editFlag: false,
                 stepController: {
                     value: 1,
                 },
@@ -314,12 +318,11 @@
                     v => (v && v.length >= 3 && v.length <= 26) || 'El nombre debe tener entre 3 y 26 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
-                olddisp:{
-                    home:null,
-                    room:null,
-                    typeid:null,
-                    id:null,
-                    dispname:null,
+                olddisp: {
+                    home: null,
+                    room: null,
+                    disp: null,
+                    dispname: null,
                 },
                 newdisp: {
                     home: null,
@@ -338,11 +341,11 @@
             this.routeHomeID = this.$route.params.homeID;
             this.routeRoomID = this.$route.params.roomID;
             if (this.$route.params.edit != null)
-                this.editFlag=true;
-            if(this.editFlag ){
-                this.olddisp.typeid = this.$route.params.typeid;
-                this.olddisp.dispname = this.$route.params.deviceName;
-                this.olddisp.id = this.$route.params.id;
+                this.editFlag = true;
+            if (this.editFlag) {
+                this.olddisp.disp = this.$route.params.device;
+                this.olddisp.dispname= this.olddisp.disp.name.split('_').pop();
+                //this.olddisp.home= this.olddisp.disp.room.home;
             }
             Api.home.getAll()
                 .then(data => {
@@ -365,14 +368,14 @@
             }
         },
         computed: {
-            title(){
-                if(this.editFlag)
+            title() {
+                if (this.editFlag)
                     return 'EDITAR DISPOSITIVO';
                 else
                     return 'NUEVO DISPOSITIVO';
-                },
-            thirdStepValidation(){
-                if(!this.editFlag)
+            },
+            thirdStepValidation() {
+                if (!this.editFlag)
                     return this.stepController.value > 3;
                 else
                     return false;
@@ -423,20 +426,20 @@
                 } else
                     return null;
             },
-            disp(){
-                if(this.editFlag)
+            disp() {
+                if (this.editFlag)
                     return this.olddisp;
                 else
                     return this.newdisp;
             },
-            lastStepValue(){
-                if(this.editFlag)
-                    return this.stepController.value-1;
+            lastStepValue() {
+                if (this.editFlag)
+                    return this.stepController.value - 1;
                 else
                     return this.stepController.value;
             },
-            lastStepsub(){
-                if(this.editFlag)
+            lastStepsub() {
+                if (this.editFlag)
                     return 'Edite el nombre del dispositivo';
                 else
                     return 'Elija el nombre del dispositivo';
@@ -453,10 +456,12 @@
                 this.flagErrorDisp = false;
             },
             controllerBack() {
-                this.stepController.value--;
+                if(this.editFlag && this.stepController.value === 4)
+                    this.stepController.value-=2;
+                else
+                    this.stepController.value--;
             },
             getRooms(id) {
-
                 Api.home.getHomeRooms(id)
                     .then(data => {
                         this.rooms = data.result
@@ -471,13 +476,13 @@
             },
             controllerNextPlus() {
                 if (!this.validation) {
-                   if(this.editFlag)
-                      this.controllerEdit();
-                   else
-                       this.controllerCreate();
+                    if (this.editFlag)
+                        this.controllerEdit();
+                    else
+                        this.controllerCreate();
                 }
             },
-            controllerCreate(){
+            controllerCreate() {
                 if (this.stepController.value === 1) {
                     if (this.newdisp.home === null || this.newdisp.home === 0) {
                         if (this.homes !== null && this.homes.some(elem => elem.name === this.newhomename)) {
@@ -523,29 +528,32 @@
                         this.getRooms(this.olddisp.home.id)
                         this.stepController.value++;
                     }
-                }
-                else if (this.stepController.value === 2) {
+                } else if (this.stepController.value === 2) {
                     if (this.olddisp.room === 0) {
                         if (this.rooms != null && this.rooms.some(elem => elem.name === `${this.olddisp.home.id}_${this.newroomname}`)) {
                             this.flagErrorRoom = true;
                         } else {
                             this.flagErrorHome = false;
-                            this.stepController.value+=2;
+                            this.stepController.value += 2;
                         }
-                    } else
-                        this.stepController.value+=2;
+                    } else{
+                        this.stepController.value += 2;
+                        Api.room.getRoomDevices(this.olddisp.room.id)
+                            .then(data => this.disps = data.result)
+                            .catch(error => console.log(`Error ${error}`));
+                    }
                 }
             },
             saveDisp() {
-                if(!this.editFlag)
+                if (this.editFlag)
+                    this.editDisp();
+                else
                     this.createDisp();
-                // else
-                //     this.editDisp();
             },
-            createDisp(){
-                if (this.disp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.disp.home.id}_${this.disp.room.id}_${this.disp.dispname}`)) {
+            createDisp() {
+                if (this.newdisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.newdisp.home.id}_${this.newdisp.room.id}_${this.newdisp.dispname}`)) {
                     this.flagErrorDisp = true;
-                } else if (this.disp.home === 0) {
+                } else if (this.newdisp.home === 0) {
                     createDeviceFromScratch(this.newhomename, this.newroomname, this.disp.dispname, this.disp.typeid)
                         .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
@@ -557,6 +565,33 @@
                     createDevice(this.newdisp.dispname, this.newdisp.typeid, new Room(this.newdisp.room.id, this.newdisp.room.name, this.newdisp.room.meta, this.newdisp.home))
                         .then(() => this.$router.push(this.route))
                         .catch(error => console.log(`Error ${error}`));
+                }
+            },
+            editDisp() {
+                // eslint-disable-next-line no-debugger
+                debugger
+                if (this.olddisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.olddisp.home.id}_${this.olddisp.room.id}_${this.olddisp.dispname}`)) {
+                    this.flagErrorDisp = true;
+                } else if (this.olddisp.home === 0) {
+                    this.olddisp.disp.setNewName(this.olddisp.dispname);
+                    updateDeviceToNewHome(this.newhomename, this.newroomname, this.olddisp.disp)
+                        .then(() => this.$router.push(this.route))
+                        .catch(error => console.log(`Error ${error}`));
+                } else if (this.olddisp.room === 0) {
+                    this.olddisp.disp.setNewName( this.olddisp.dispname);
+                    updateDeviceToNewRoom(new Home(this.olddisp.home.id, this.olddisp.home.name, this.olddisp.home.meta), this.newroomname, this.olddisp.disp)
+                        .then(() => this.$router.push(this.route))
+                        .catch(error => console.log(`Error ${error}`));
+                } else {
+                    console.log(this.olddisp.disp);
+                    this.olddisp.disp.setNewName( this.olddisp.dispname);
+                    console.log(this.olddisp.disp.name);
+                    updateDeviceToExistingRoom(new Room(this.olddisp.room.id, this.olddisp.room.name, this.olddisp.room.meta, this.olddisp.home), this.olddisp.disp)
+                        .then(() => {
+                            console.log(this.olddisp.disp.name);
+                        this.$router.push(this.route); })
+                        .catch(error => console.log(`Error ${error}`));
+
                 }
             },
             cancelProcess() {
