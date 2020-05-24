@@ -26,7 +26,7 @@ class Device {
     return new Promise((resolve, reject) => {
       Api.device.delete(this.id)
           .then( () => {
-            Room.emptyCheck(this.room)
+            Room.emptyCheck(this.room.id, this.room.home.id)
                 .then(resolve)
                 .catch(error => {
                   console.log(error);

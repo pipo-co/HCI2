@@ -84,7 +84,7 @@
                         message: 'Editar',
                         eventName: 'edit',
                         handle: () => this.$router
-                            .push({ name: 'editardispositivo', params: { edit: 'true', id: this.device.id, typeid: this.device.type.id, deviceName: this.device.getName()}}),
+                            .push({ name: 'editardispositivo', params: { edit: 'true', device: this.device}}),
                     },
                     history: {
                         message: 'Historial',
@@ -123,10 +123,14 @@
                 else
                     this.device.fav();
             },
-            removeFromDom(){
-                this.device.isDeleted = true;
-                let elem = document.getElementById(`#${this.device.id}`).parentNode;
-                elem.parentNode.removeChild(elem);
+            removeFromDom(wasCascade){
+                if(wasCascade)
+                    this.$router.push({name: 'homes'});
+                else{
+                    this.device.isDeleted = true;
+                    let elem = document.getElementById(`#${this.device.id}`).parentNode;
+                    elem.parentNode.removeChild(elem);
+                }
             }
         }
 

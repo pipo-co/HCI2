@@ -11,21 +11,53 @@ class Room {
     this.home = home;
   }
 
-  static emptyCheck(room){
+  static emptyCheck(roomId, homeId){
     return new Promise((resolve, reject) => {
-      Api.room.getRoomDevices(room.id)
+      Api.room.getRoomDevices(roomId)
           .then( data => {
-            if(data.result.length === 0) {
-              Api.room.delete(room.id)
-                  .then(() => Home.emptyCheck(room.home.id))
+            if(data.result.length === 0)
+              Api.room.delete(roomId)
+                  .then(() => {
+                      Home.emptyCheck(homeId)
+                          .catch(console.log)
+                          .finally(() => resolve(true));
+                  })
                   .catch(console.log);
-              resolve(true);
-            } else
+            else
               resolve(false);
           })
           .catch(reject);
     });
+  }
 
+  static removeDevice(deviceId, roomId, homeId){
+    return new Promise((resolve, reject) => {
+      Api.room.removeDevice(deviceId)
+          .then(response => {
+            this.emptyCheck(roomId, homeId)
+                .finally(() => resolve(response))
+          })
+          .catch(reject);
+    });
+  }
+
+  static deleteRoom(roomId, homeId){
+      return new Promise((resolve, reject) => {
+          Api.room.delete(roomId)
+              .then( () => {
+                  Home.emptyCheck(homeId)
+                      .then(resolve)
+                      .catch(error => {
+                          console.log(error);
+                          resolve(false);
+                      });
+              })
+              .catch(reject);
+      });
+  }
+
+  static persistNewName(id, newName, meta){
+    return Api.room.modify({id: id, name: newName, meta: meta});
   }
 
   persistChange(){
@@ -61,14 +93,6 @@ class Room {
 
   addDevice(deviceId){
     return Api.room.addDevice(this.id, deviceId);
-  }
-
-  removeDevice(deviceId){
-    return Api.room.removeDevice(deviceId);
-  }
-
-  static persistNewName(id, newName, meta){
-    return Api.room.modify({id: id, name: newName, meta: meta});
   }
 }
 export default Room;

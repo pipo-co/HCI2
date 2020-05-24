@@ -104,7 +104,70 @@ export function createDeviceFromNotExistingRoom(home, roomName, deviceName, type
 }
 
 export function updateDeviceToNewHome(homeName, newRoom, device){
-    Api.
+    return new Promise((resolve, reject) => {
+        Room.removeDevice(device.id, device.room.id, device.room.home.id)
+            .then(() => {
+                createHome(homeName)
+                    .then(home => {
+                        createRoom(newRoom, home)
+                            .then(room => {
+                                room.addDevice(device.id)
+                                    .then( () => {
+                                        device.room = room;
+                                        device.setNewName(device.getName());
+                                        device.persistChanges();
+                                        resolve(device);
+                                    })
+                                    .catch(reject);
+                            })
+                            .catch(reject);
+                    })
+                    .catch(reject);
+            })
+            .catch(reject);
+    });
+}
+
+export function updateDeviceToNewRoom(home, newRoom, device){
+    return new Promise((resolve, reject) => {
+        Room.removeDevice(device.id, device.room.id, device.room.home.id)
+            .then(() => {
+                createRoom(newRoom, home)
+                    .then(room => {
+                        room.addDevice(device.id)
+                            .then( () => {
+                                device.room = room;
+                                device.setNewName(device.getName());
+                                device.persistChanges();
+                                resolve(device);
+                            })
+                            .catch(reject);
+                    })
+                    .catch(reject);
+            })
+            .catch(reject);
+    });
+}
+
+export function updateDeviceToExistingRoom(room, device){
+    return new Promise((resolve, reject) => {
+        Room.removeDevice(device.id, device.room.id, device.room.home.id)
+            .then(() => {
+                // eslint-disable-next-line no-debugger
+                debugger
+                room.addDevice(device.id)
+                    .then( () => {
+                        device.room = room;
+                        device.setNewName(device.getName());
+                        device.persistChanges();
+                        console.log(room.id);
+                        console.log(device.name);
+                        resolve(device);
+                    })
+                    .catch(reject);
+            })
+            .catch(reject);
+    });
 }
 
 export function getActionParams(actions, action){
@@ -159,6 +222,60 @@ export function loadAllSupportedValues(deviceID, actions) {
         })
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
+/*export function supportedDisp() {
+    return [
+        { name: 'Aire Acondicionado', icon: {
+                bgColor: '#FFF3C8',
+                color: '#FDC701',
+                src: 'mdi-fan'
+            } },
+        { name: 'Persiana', icon: {
+                bgColor: '#f2d6ff',
+                color: '#BF38FF',
+                src:'mdi-window-shutter'
+            }},
+        { name: 'Parlante', icon: {
+                bgColor: '#E1E0FE',
+                color: '#6563FF',
+                src:'mdi-speaker'
+            }},
+        { name: 'Horno', icon: {
+                bgColor: '#FFBBBB',
+                color: '#C01616',
+                src:'mdi-stove'
+            }},
+        { name: 'Regador', icon:{
+                bgColor: '#B5FFB4',
+                color: '#08B106',
+                src:'mdi-sprinkler-variant'
+            } },
+        {
+            name:'Lampara', icon:{
+                bgColor: '#FFFBDB',
+                color: '#E9D94D',
+                src:'mdi-lamp'
+            }
+        },
+        {
+            name:'Aspiradora', icon:{
+                bgColor: "#BEF3FF",
+                color: "#0091B1",
+                src:'mdi-robot-vacuum-variant'
+            }
+        },
+        {
+            name:'Puerta', icon: {
+                bgColor: "#C8A776",
+                color: "#6D4201",
+                src: "mdi-door"
+            }
+        }
+    ];
+}*/
+const supportedDeviceTypes = [
+    'ac','oven','speaker','lamp',
+    'faucet', 'vacuum','blinds', 'door',
+]
 
 const iconInfo = {
     ac : {
@@ -208,6 +325,66 @@ export function getIconInfo(deviceName) {
     return iconInfo[deviceName];
 }
 
+export function getSupportedDeviceTypes() {
+    return new Promise((resolve, reject) => {
+        Api.deviceType.getAll().then(data => resolve(data.result
+            .filter(entry => supportedDeviceTypes.includes(entry.name))
+            .map(entry => {return{id: entry.id, name: entry.name, iconInfo: getIconInfo(entry.name)}})
+        )).catch(errors => reject(`getSupportedDeviceTypes ${errors}`))
+    });
+    //
+    //
+    // [
+    //     {
+    //         name: 'Aire Acondicionado', icon: {
+    //             bgColor: '#FFF3C8',
+    //             color: '#FDC701',
+    //             src: 'mdi-fan'
+    //         } },
+    //     { name: 'Persiana', icon: {
+    //             bgColor: '#f2d6ff',
+    //             color: '#BF38FF',
+    //             src:'mdi-window-shutter'
+    //         }},
+    //     { name: 'Parlante', icon: {
+    //             bgColor: '#E1E0FE',
+    //             color: '#6563FF',
+    //             src:'mdi-speaker'
+    //         }},
+    //     { name: 'Horno', icon: {
+    //             bgColor: '#FFBBBB',
+    //             color: '#C01616',
+    //             src:'mdi-stove'
+    //         }},
+    //     { name: 'Regador', icon:{
+    //             bgColor: '#B5FFB4',
+    //             color: '#08B106',
+    //             src:'mdi-sprinkler-variant'
+    //         } },
+    //     {
+    //         name:'Lampara', icon:{
+    //             bgColor: '#FFFBDB',
+    //             color: '#E9D94D',
+    //             src:'mdi-lamp'
+    //         }
+    //     },
+    //     {
+    //         name:'Aspiradora', icon:{
+    //             bgColor: "#BEF3FF",
+    //             color: "#0091B1",
+    //             src:'mdi-robot-vacuum-variant'
+    //         }
+    //     },
+    //     {
+    //         name:'Puerta', icon: {
+    //             bgColor: "#C8A776",
+    //             color: "#6D4201",
+    //             src: "mdi-door"
+    //         }
+    //     }
+    // ];
+}
+
 export function getDeviceTypesInHome(homeID) {
      return new Promise( (resolve, reject) => {
          Api.device.getAll().then(
@@ -253,7 +430,7 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
     });
 }
 
-export function deleteRoom(roomId){
+export function deleteRoom(roomId, homeId, upCascade = false){
     return new Promise( (resolve, reject) => {
         Api.room.getRoomDevices(roomId)
             .then(data => {
@@ -261,9 +438,14 @@ export function deleteRoom(roomId){
                     Api.room.removeDevice(device.id).catch(error => reject(`Remove device ${device.name} from Room ${error}`));
                     Api.device.delete(device.id).catch(error => reject(`Delete device ${device.name} ${error}`));
                 });
-                Api.room.delete(roomId)
-                    .then(response => resolve(response.result))
-                    .catch(error => reject(`Delete room ${error}`));
+                if(upCascade)
+                    Room.deleteRoom(roomId, homeId)
+                        .then(resolve)
+                        .catch(error => reject(`Delete room ${error}`));
+                else
+                    Api.room.delete(roomId)
+                        .then(response => resolve(response.result))
+                        .catch(error => reject(`Delete room ${error}`));
             })
             .catch(error => reject(`Get room devices ${error}`));
     });
@@ -415,10 +597,10 @@ export function getActionsItemsArray(deviceTypeID) {
 }
 
 export function searchDevicesByName(name){
-    name = name.trim();
+    name = name.trim().toLowerCase();
     return new Promise( (resolve, reject) => {
         Api.device.getAll().then(data => resolve(data.result
-            .filter(elem => elem.name.split("_").pop().includes(name))
+            .filter(elem => elem.name.split("_").pop().toLowerCase().includes(name))
             .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
         ).catch( error => reject(`searchDevicesByName: ${error}`));
     });
