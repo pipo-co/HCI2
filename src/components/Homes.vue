@@ -389,14 +389,6 @@
                 this.changeHomeDevices();
                 this.changeRoomMap();
             },
-            /*'homes'(){
-                Api.home.getAll().then(data => {
-                    this.homes = data.result;
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
-
-            }*/
         },
         methods: {
             changeHomes(){
@@ -411,7 +403,7 @@
                         this.currentHome = this.homes[0];
                         this.homes.forEach(elem => {
                             this.auxHome[elem.id] = {name:'', valid:false, flagErrorHome:false};
-                        } )
+                        })
                         this.changeHomeDevices();
                         this.changeRoomMap();
                     })
@@ -471,15 +463,11 @@
                             } )
                             this.auxHome[elem.id].name = '';
                         }
-
                     }
                         this.dialog = flag;
                 })
             },
             saveRoomChanges(){
-               /* //eslint-disable-next-line no-debugger
-                debugger;*/
-                console.log(this.auxRoomId);
                 let flag = false;
                 if(this.roomNameValid){
                     if(this.roomMap.some(elem => elem.roomName.split('_').pop().toUpperCase().trim() === this.roomName.toUpperCase().trim() )){

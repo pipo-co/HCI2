@@ -173,34 +173,27 @@ export function getActionParams(actions, action){
     return actions.find(elem => elem.name === action).params;
 }
 
-// No se que preferis Nacho, un array mezclado, o las dos arrays separadas.
 export function getFavs() {
-    let p1 = Api.device.getAll();
-    let p2 = Api.routine.getAll();
-
     return new Promise( (resolve, reject) => {
-        Promise.all([p1, p2])
-            .then( values => resolve( [].concat(
-                values[0].result
+        Api.device.getAll()
+            .then( data => resolve(
+                data.result
                     .filter( elem => elem.meta.fav )
-                    .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)),
-                values[1].result
-                    .filter( elem => elem.meta.fav)
-                    .map( elem => new Routine(elem.id, elem.name, elem.meta))
-            )))
-            .catch( error => reject(`Get Favs: ${error}`));
+                    .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room))
+            ))
+            .catch(reject);
     });
 }
 
-export function suscribeToDeviceEvent(f, deviceId){
-    let source;
-    if(deviceId)
-        source = Api.device.getEventSource(deviceId);
-    else
-        source = Api.device.getAllEventSource();
-
-    source.addEventListener('message', event => f(JSON.parse(event.data)), false);
-}
+// export function suscribeToDeviceEvent(f, deviceId){
+//     let source;
+//     if(deviceId)
+//         source = Api.device.getEventSource(deviceId);
+//     else
+//         source = Api.device.getAllEventSource();
+//
+//     source.addEventListener('message', event => f(JSON.parse(event.data)), false);
+// }
 
 export function setStatePolling(stateChangeHandler, timeout = 5000){
     return setInterval(() => {
@@ -221,56 +214,6 @@ export function loadAllSupportedValues(deviceID, actions) {
         })
         .catch( error => console.log(`Load all supported values: ${error}`));
 }
-/*export function supportedDisp() {
-    return [
-        { name: 'Aire Acondicionado', icon: {
-                bgColor: '#FFF3C8',
-                color: '#FDC701',
-                src: 'mdi-fan'
-            } },
-        { name: 'Persiana', icon: {
-                bgColor: '#f2d6ff',
-                color: '#BF38FF',
-                src:'mdi-window-shutter'
-            }},
-        { name: 'Parlante', icon: {
-                bgColor: '#E1E0FE',
-                color: '#6563FF',
-                src:'mdi-speaker'
-            }},
-        { name: 'Horno', icon: {
-                bgColor: '#FFBBBB',
-                color: '#C01616',
-                src:'mdi-stove'
-            }},
-        { name: 'Regador', icon:{
-                bgColor: '#B5FFB4',
-                color: '#08B106',
-                src:'mdi-sprinkler-variant'
-            } },
-        {
-            name:'Lampara', icon:{
-                bgColor: '#FFFBDB',
-                color: '#E9D94D',
-                src:'mdi-lamp'
-            }
-        },
-        {
-            name:'Aspiradora', icon:{
-                bgColor: "#BEF3FF",
-                color: "#0091B1",
-                src:'mdi-robot-vacuum-variant'
-            }
-        },
-        {
-            name:'Puerta', icon: {
-                bgColor: "#C8A776",
-                color: "#6D4201",
-                src: "mdi-door"
-            }
-        }
-    ];
-}*/
 const supportedDeviceTypes = [
     'ac','oven','speaker','lamp',
     'faucet', 'vacuum','blinds', 'door',
@@ -331,57 +274,6 @@ export function getSupportedDeviceTypes() {
             .map(entry => {return{id: entry.id, name: entry.name, iconInfo: getIconInfo(entry.name)}})
         )).catch(errors => reject(`getSupportedDeviceTypes ${errors}`))
     });
-    //
-    //
-    // [
-    //     {
-    //         name: 'Aire Acondicionado', icon: {
-    //             bgColor: '#FFF3C8',
-    //             color: '#FDC701',
-    //             src: 'mdi-fan'
-    //         } },
-    //     { name: 'Persiana', icon: {
-    //             bgColor: '#f2d6ff',
-    //             color: '#BF38FF',
-    //             src:'mdi-window-shutter'
-    //         }},
-    //     { name: 'Parlante', icon: {
-    //             bgColor: '#E1E0FE',
-    //             color: '#6563FF',
-    //             src:'mdi-speaker'
-    //         }},
-    //     { name: 'Horno', icon: {
-    //             bgColor: '#FFBBBB',
-    //             color: '#C01616',
-    //             src:'mdi-stove'
-    //         }},
-    //     { name: 'Regador', icon:{
-    //             bgColor: '#B5FFB4',
-    //             color: '#08B106',
-    //             src:'mdi-sprinkler-variant'
-    //         } },
-    //     {
-    //         name:'Lampara', icon:{
-    //             bgColor: '#FFFBDB',
-    //             color: '#E9D94D',
-    //             src:'mdi-lamp'
-    //         }
-    //     },
-    //     {
-    //         name:'Aspiradora', icon:{
-    //             bgColor: "#BEF3FF",
-    //             color: "#0091B1",
-    //             src:'mdi-robot-vacuum-variant'
-    //         }
-    //     },
-    //     {
-    //         name:'Puerta', icon: {
-    //             bgColor: "#C8A776",
-    //             color: "#6D4201",
-    //             src: "mdi-door"
-    //         }
-    //     }
-    // ];
 }
 
 export function getDeviceTypesInHome(homeID) {

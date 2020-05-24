@@ -110,7 +110,7 @@
                                 <v-list > <!--class="px-7" -->
                                     <v-list-item-title class="title">Lista de reporduccion:</v-list-item-title>
                                     <v-list-item-group color="primary">
-                                        <v-list-item v-for="song in this.playlist" :key="song.title">
+                                        <v-list-item v-for="song in this.playlist" :key="song.title" dense>
                                             <v-list-item-icon>
                                                 <v-icon>mdi-minus</v-icon>
                                             </v-list-item-icon>
