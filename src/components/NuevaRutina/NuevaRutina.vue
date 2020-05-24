@@ -512,7 +512,7 @@
                 this.validSave = this.isValidState();
             },
             isValidState(){
-                return !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem)));
+                return !this.addFlag && (!this.hasParams || (this.params && this.params.every(elem => elem !== null)));
             },
             resetActionForm(){
                 this.home = null;
