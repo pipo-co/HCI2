@@ -110,16 +110,7 @@ export function updateDeviceToNewHome(homeName, newRoom, device){
                 createHome(homeName)
                     .then(home => {
                         createRoom(newRoom, home)
-                            .then(room => {
-                                room.addDevice(device.id)
-                                    .then( () => {
-                                        device.room = room;
-                                        device.setNewName(device.getName());
-                                        device.persistChanges();
-                                        resolve(device);
-                                    })
-                                    .catch(reject);
-                            })
+                            .then(room => persistUpdatesOnDevice(room, device, resolve, reject))
                             .catch(reject);
                     })
                     .catch(reject);
@@ -130,44 +121,52 @@ export function updateDeviceToNewHome(homeName, newRoom, device){
 
 export function updateDeviceToNewRoom(home, newRoom, device){
     return new Promise((resolve, reject) => {
-        Room.removeDevice(device.id, device.room.id, device.room.home.id)
-            .then(() => {
-                createRoom(newRoom, home)
-                    .then(room => {
-                        room.addDevice(device.id)
-                            .then( () => {
-                                device.room = room;
-                                device.setNewName(device.getName());
-                                device.persistChanges();
-                                resolve(device);
-                            })
-                            .catch(reject);
-                    })
-                    .catch(reject);
-            })
-            .catch(reject);
+
+        // Nueva casa, hay que hacer cascade
+        if(home.id !== device.room.home.id)
+            Room.removeDevice(device.id, device.room.id, device.room.home.id)
+                .then(() => {
+                    createRoom(newRoom, home)
+                        .then(room => persistUpdatesOnDevice(room, device, resolve, reject))
+                        .catch(reject);
+                })
+                .catch(reject);
+
+        // Misma casa, no hay que hacer cascade
+        else {
+            let oldRoomId = device.room.id;
+            let homeId = home.id;
+            Api.room.removeDevice(device.id)
+                .then(() => {
+                    createRoom(newRoom, home)
+                        .then(room => {
+                            persistUpdatesOnDevice(room, device, resolve, reject);
+                            Room.emptyCheck(oldRoomId, homeId);
+                        })
+                        .catch(reject);
+                })
+                .catch(reject);
+        }
     });
 }
 
 export function updateDeviceToExistingRoom(room, device){
     return new Promise((resolve, reject) => {
         Room.removeDevice(device.id, device.room.id, device.room.home.id)
-            .then(() => {
-                // eslint-disable-next-line no-debugger
-                debugger
-                room.addDevice(device.id)
-                    .then( () => {
-                        device.room = room;
-                        device.setNewName(device.getName());
-                        device.persistChanges();
-                        console.log(room.id);
-                        console.log(device.name);
-                        resolve(device);
-                    })
-                    .catch(reject);
-            })
+            .then(() => persistUpdatesOnDevice(room, device, resolve, reject))
             .catch(reject);
     });
+}
+
+function persistUpdatesOnDevice(room, device, resolve, reject){
+    room.addDevice(device.id)
+        .then( () => {
+            device.room = room;
+            device.setNewName(device.getName());
+            device.persistChanges();
+            resolve(device);
+        })
+        .catch(reject);
 }
 
 export function getActionParams(actions, action){
