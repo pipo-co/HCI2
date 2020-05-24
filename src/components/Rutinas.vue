@@ -144,7 +144,6 @@
             executeRoutine(routineID, title){
                 this.auxRoutine[routineID].loadingFlag = true;
                 this.currentRoutine = title;
-                console.log(routineID);
                 Api.routine.execute(routineID)
                     .then( data => {
                         console.log(data);
