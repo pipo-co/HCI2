@@ -13,7 +13,7 @@
         <v-container >
             <v-row v-if="!loadingPage" justify="center" :id="`#${device.id}`">
                 <v-col cols="8">
-                    <v-card>
+                    <v-card shaped>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" class="py-0">
