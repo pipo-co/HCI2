@@ -1,20 +1,24 @@
 <template>
     <v-container fluid class="py-0 px-0">
         <v-row align="center">
-            <v-col cols="9" class="py-0 px-0">
-                <v-list-item class="pr-0">
-                    <v-list-item-avatar :color="iconInfo.bgColor" >
-                        <v-icon large :color="iconInfo.color">{{iconInfo.src}}</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
-                        <v-list-item-title class="title d-inline-block text-truncate text--darken-1 indigo--text">{{device.getName()}}</v-list-item-title>
-                        <v-list-item-subtitle v-if="state" class="text--primary">{{state}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
+            <v-col cols="2" class="py-0 px-0">
+                <v-avatar :color="iconInfo.bgColor">
+                    <v-icon :color="iconInfo.color">{{iconInfo.src}}</v-icon>
+                </v-avatar>
+            </v-col>
+            <v-col cols="7">
+                <v-list class="mx-auto">
+                    <v-list-item-group>
+                        <v-list-item-content>
+                            <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
+                            <v-list-item-title class="title d-inline-block text-truncate text--darken-1 indigo--text">{{device.getName()}}</v-list-item-title>
+                            <v-list-item-subtitle v-if="state" class="text--primary">{{state}}<slot name="state"></slot></v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item-group>
+                </v-list>
             </v-col>
 
-            <v-col class="pl-0">
+            <v-col cols="3" class="pl-0">
                 <v-btn icon>
                     <v-icon :color="color" @click="this.handleFav">mdi-heart</v-icon>
                 </v-btn>
@@ -31,25 +35,24 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <v-dialog v-model="overflowOptions.delete.dialog" max-width="290">
-                    <v-card>
-                        <v-card-title class="headline">Borrar dispositivo</v-card-title>
+                <v-dialog v-model="overflowOptions.delete.dialog" max-width="330">
+                    <v-alert class="my-0 pa-0" border="top" colored-border color="red">
+                        <v-card-text class="pb-0 display-1">Eliminar dispositivo</v-card-text>
                         <v-card-text>
                             Se perdera toda la informacion vinculada al dispositivo
                         </v-card-text>
-                        <v-card-actions>
-                            <v-btn outlined @click="cancelRemove()">
-                                Cancelar
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn color="error"  @click="executeRemove()">
-                                Borrar
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-<!--                    <v-alert border="top" colored-border type="error" elevation="2">-->
-<!--                        Fusce commodo aliquam arcu. Pellentesque posuere. Phasellus tempus. Donec posuere vulputate arcu.-->
-<!--                    </v-alert>-->
+                        <v-card tile class="blue-grey lighten-5">
+                            <v-card-actions>
+                                <v-btn depressed color="white" @click="cancelRemove()">
+                                    Cancelar
+                                </v-btn>
+                                <v-spacer></v-spacer>
+                                <v-btn color="error"  @click="executeRemove()">
+                                    Eliminar
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-alert>
                 </v-dialog>
             </v-col>
         </v-row>
@@ -138,5 +141,7 @@
 </script>
 
 <style scoped>
-
+    .v-list-item__content{
+        text-align: left;
+    }
 </style>

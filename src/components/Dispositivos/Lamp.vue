@@ -1,12 +1,13 @@
 <template>
     <v-card :id="`#${props.id}`">
-        <v-container >
+        <v-container class="pt-0">
             <v-row no-gutters dense>
                 <v-col cols="12" class="px-5">
-                    <disp-info
-                            :device="props"
-                            :state="state"
-                    ></disp-info>
+                    <disp-info :device="props" :state="state">
+                        <template v-slot:state>
+                            <v-avatar size="16" :color="actualColor"></v-avatar>
+                        </template>
+                    </disp-info>
                 </v-col>
                 <v-col md="12"  class="px-5">
                     <v-container fluid class="py-0"> <!--class="px-3 py-0" -->
@@ -51,8 +52,8 @@
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
-                            <v-col cols="12">
-                                <color-picker :hue="color.hue" variant="persistent" v-model="color.hue" :disabled="color.awaitingResponse" @change="changeColor"></color-picker>
+                            <v-col>
+                                <color-picker class="mx-auto" :hue="color.hue" variant="persistent" v-model="color.hue" :disabled="color.awaitingResponse" @change="changeColor"></color-picker>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -66,6 +67,7 @@
     import ColorPicker from '@radial-color-picker/vue-color-picker';
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
+    import {ExtraControls} from "../../assets/js/DevicesLib";
     const lib = require("../../assets/js/lib");
     export default {
         name:"lamp",
@@ -80,10 +82,7 @@
             return {
                 iconInfo: lib.getIconInfo(this.props.type.name),
                 statePolling: null,
-                extraControllers: {
-                    value: false,
-                    message: 'Mas'
-                },
+                extraControllers: new ExtraControls(),
                 booleanStatus: {
                     value: this.props.state.status === 'on',
                     actionTrue: 'turnOn',
@@ -118,9 +117,12 @@
         computed: {
             state() {
                 if(this.props.state.status === 'off')
-                    return 'Off';
-                return `Prendido: ${this.props.state.color} ${this.props.state.brightness}%`;
+                    return 'Apagado';
+                return `Prendido: brillo - ${this.props.state.brightness}% `;
             },
+            actualColor(){
+                return `#${this.props.state.color}`;
+            }
         },
         methods: {
             controllerHandler() {
