@@ -87,4 +87,12 @@ export default {
     fanSpeed: "Velocidad del ventilador",
     roomId: "Habitación",
     auto: "Auto",
+
+    ml: 'ml',
+    cl: 'cl',
+    dl: 'dl',
+    l: 'l',
+    dal: 'dal',
+    hl: 'hl',
+    kl: 'kl',
 }
