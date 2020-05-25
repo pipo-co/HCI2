@@ -49,7 +49,7 @@
                                                         Cancelar
                                                     </v-btn>
                                                     <v-spacer></v-spacer>
-                                                    <v-btn color="error"  @click="deleteCurrentRoutine(routine.id)">
+                                                    <v-btn color="error" @click="deleteCurrentRoutine(routine.id)">
                                                         Eliminar
                                                     </v-btn>
                                                 </v-card-actions>
@@ -130,16 +130,12 @@
                     this.routines.forEach(elem =>{
                         this.auxRoutine[elem.id] = {loadingFlag : false};
                     })
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
+                }).catch(console.log);
             },
             deleteCurrentRoutine(routineID){
                 Api.routine.delete(routineID).
                 then(()=> this.getRoutines())
-                    .catch(error => {
-                        console.log(`Error ${error}`);
-                    });
+                    .catch(console.log);
             },
             executeRoutine(routineID, title){
                 this.auxRoutine[routineID].loadingFlag = true;
@@ -148,7 +144,6 @@
                     .then( data => {
                         console.log(data);
                         this.getRoutines();
-
 
                         setTimeout(function () {
                             this.alert=false;

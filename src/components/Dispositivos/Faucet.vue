@@ -68,7 +68,7 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
-    const lib = require("../../assets/js/lib");
+    import {getIconInfo, loadAllSupportedValues, setStatePolling} from "../../assets/js/lib";
 
     export default {
         name: "faucet",
@@ -81,7 +81,7 @@
         },
         data(){
             return {
-                iconInfo: lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 statePolling: null,
                 booleanStatus: {
                     value: this.props.state.status === 'closed',
@@ -174,11 +174,11 @@
                 clearInterval(this.statePolling);
         },
         mounted(){
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this));
             let actions = [
                 {action: this.dispense.action, handler: this.loadSupportedDispense}
             ];
-            lib.loadAllSupportedValues(this.props.type.id, actions);
+            loadAllSupportedValues(this.props.type.id, actions);
         }
     }
 </script>

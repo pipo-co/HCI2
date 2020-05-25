@@ -27,7 +27,7 @@
 <script>
     import CardHolder from "./CardHolder";
     import NavBar from "./NavBar";
-    const lib = require("../assets/js/lib.js");
+    import {getRoomDevices} from "../assets/js/lib";
 
 
     export default {
@@ -48,7 +48,7 @@
             }
         },
         mounted(){
-            lib.getRoomDevices(this.room.id).then(this.loadCards).catch(error => console.log(`Favorites ${error}`));
+            getRoomDevices(this.room.id).then(this.loadCards).catch(console.log);
         },
         methods:{
             loadCards(data){

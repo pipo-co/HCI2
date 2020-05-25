@@ -111,8 +111,8 @@
                                             </v-col>
                                             <v-col>
                                                 <v-list class="mx-5">
-                                                    <v-list-item-title class="headline" align="left">{{action.deviceName}}</v-list-item-title>
-                                                    <v-list-item-subtitle align="left">{{action.homeName}}-{{action.roomName}}</v-list-item-subtitle>
+                                                    <v-list-item-title class="headline" >{{action.deviceName}}</v-list-item-title>
+                                                    <v-list-item-subtitle >{{action.homeName}}-{{action.roomName}}</v-list-item-subtitle>
                                                 </v-list>
                                             </v-col>
                                             <v-col></v-col>
@@ -381,8 +381,7 @@
         mounted() {
             getHomeItemsArray().then( data => {
                 this.homeItems = data;
-            }).catch(error => {
-                console.log(`Error ${error}`)});
+            }).catch(console.log);
         },
         computed: {
             validRoutine(){
@@ -420,7 +419,6 @@
                         return;
                     }
 
-
                     this.newRoutine.actions.push(displayAction);
                     this.dialog = false;
 
@@ -442,28 +440,23 @@
             getRoomItems(homeID){
                 getRoomItemsArray(homeID).then( data => {
                     this.roomItems = data;
-                }).catch(error => {
-                    console.log(`Error ${error}`)});
+                }).catch(console.log);
             },
             getDispsItems(roomID){
                 getDeviceItemsArray(roomID).then( data => {
                     this.dispItems = data;
-                }).catch(error => {
-                    console.log(`Error ${error}`)});
+                }).catch(console.log);
             },
             getActItems(dispType){
                 getActionsItemsArray(dispType).then( data => {
                     data.forEach(entry => entry.text = this.$vuetify.lang.t(`$vuetify.${entry.text}`));
                     this.actItems = data;
-                }).catch(error => {
-                    console.log(`Error ${error}`)});
+                }).catch(console.log);
             },
             changeRoomMap() {
                 getRoomsAndDeviceTypesMapFromHome(this.room).then(data => {
                     this.dispItems = data;
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
+                }).catch(console.log);
             },
             homeReset(){
                 this.addRoomFlag=true;

@@ -75,7 +75,6 @@
                 require: false,
                 default: false
             }
-
         },
         data(){
             return{

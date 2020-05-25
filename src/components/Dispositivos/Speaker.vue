@@ -38,7 +38,7 @@
                                 </v-btn>
                             </v-col>
                             <v-col ><!--class="pr-10" -->
-                                <v-btn color="#6563FF" text @click="controllerHandler()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
+                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -88,21 +88,6 @@
                             </v-col>
                         </v-row>
                     </v-container>
-<!--                    -->
-<!--                    <v-container fluid class="py-0">-->
-<!--                        <v-row align="center" justify="start">-->
-<!--                            <v-col cols="3" class="py-0 px-0">-->
-<!--                                <v-select-->
-<!--                                        v-model="genre.value"-->
-<!--                                        :items="genre.supportedValues"-->
-<!--                                        label="Genero"-->
-<!--                                        @change="changeGenre"-->
-<!--                                        :loading="genre.awaitingResponse"-->
-<!--                                        :disabled="genre.awaitingResponse"-->
-<!--                                ></v-select>-->
-<!--                            </v-col>-->
-<!--                        </v-row>-->
-<!--                    </v-container>-->
                 </v-col>
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0">
@@ -140,7 +125,7 @@
         ExtraControls,
         NumberField, SelectionField
     } from "@/assets/js/DevicesLib";
-    const lib = require("../../assets/js/lib")
+    import {getIconInfo, loadAllSupportedValues, setStatePolling} from "../../assets/js/lib";
 
     export default {
         name: "speaker",
@@ -153,7 +138,7 @@
         },
         data(){
             return{
-                iconInfo:lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
                 statePolling: null,
 
@@ -189,16 +174,6 @@
             }
         },
         methods:{
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
-            },
-            controllerHandler(){
-                this.extraControllers.value = ! this.extraControllers.value;
-                if(this.extraControllers.value)
-                    this.extraControllers.message = 'Menos';
-                else
-                    this.extraControllers.message = 'Mas';
-            },
             changeGenre(){
                 this.genre.awaitingResponse = true;
                 this.props.execute(this.genre.action, [this.genre.value])
@@ -276,9 +251,9 @@
                 this.volume.getActionLoaderObject(),
                 this.genre.getActionLoaderObject()
             ];
-            lib.loadAllSupportedValues(this.props.type.id, actions);
+            loadAllSupportedValues(this.props.type.id, actions);
 
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 1000);
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this), 1000);
         },
         beforeDestroy() {
             if(this.statePolling)

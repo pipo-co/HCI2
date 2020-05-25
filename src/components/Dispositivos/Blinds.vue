@@ -75,7 +75,7 @@
     import DispInfo from "./DispInfo";
     import Device from "@/assets/js/Device";
     import { ExtraControls, NumberField} from "@/assets/js/DevicesLib";
-    const lib = require("../../assets/js/lib");
+    import {getIconInfo, loadAllSupportedValues, setStatePolling} from "../../assets/js/lib";
 
     export default {
         name: "Blinds",
@@ -88,7 +88,7 @@
         },
         data(){
             return{
-                iconInfo: lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
                 level: new NumberField(this.props, 'level', 'setLevel'),
                 statePolling: null
@@ -96,7 +96,6 @@
         },
         computed: {
             state() {
-                // console.log(this.props.state.level);
                 if (this.props.state.level >= 75) {
                     return 'Abierta';
                 } else if (this.props.state.level >=25)
@@ -122,9 +121,9 @@
             let actions = [
                 this.level.getActionLoaderObject()
             ]
-            lib.loadAllSupportedValues(this.props.type.id, actions);
+            loadAllSupportedValues(this.props.type.id, actions);
 
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
         beforeDestroy() {
             if(this.statePolling)

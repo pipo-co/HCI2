@@ -35,7 +35,7 @@
                                 </v-form>
                             </v-col>
                             <v-col cols="3" class="ma-0 pa-0"><!--class="pr-10" -->
-                                <v-btn color="#6563FF" text @click="controllerHandler">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
+                                <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -68,7 +68,7 @@
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
     import {ExtraControls} from "../../assets/js/DevicesLib";
-    const lib = require("../../assets/js/lib");
+    import {getIconInfo, hexToHSL, HSLtoHex, loadAllSupportedValues, setStatePolling} from "../../assets/js/lib";
     export default {
         name:"lamp",
         components: { ColorPicker, DispInfo},
@@ -80,7 +80,7 @@
         },
         data() {
             return {
-                iconInfo: lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 statePolling: null,
                 extraControllers: new ExtraControls(),
                 booleanStatus: {
@@ -125,13 +125,6 @@
             }
         },
         methods: {
-            controllerHandler() {
-                this.extraControllers.value = !this.extraControllers.value;
-                if (this.extraControllers.value)
-                    this.extraControllers.message = 'Menos';
-                else
-                    this.extraControllers.message = 'Mas';
-            },
             loadSupportedBrightness(params){
                 this.brightness.minValue = params[0].minValue;
                 this.brightness.maxValue = params[0].maxValue;
@@ -147,7 +140,7 @@
                 }
             },
             changeColor(){
-                let hex = lib.HSLtoHex(this.color.hue, this.color.saturation, this.color.luminosity);
+                let hex = HSLtoHex(this.color.hue, this.color.saturation, this.color.luminosity);
                 this.color.awaitingResponse = true;
                 this.props.execute(this.color.action, [hex])
                     .then( response => response.result && (this.props.state.color = hex))
@@ -173,7 +166,7 @@
             stateChangeHandler(newState){
                 this.booleanStatus.value = newState.status === 'on';
 
-                this.color.hue = lib.hexToHSL(newState.color).hue;
+                this.color.hue = hexToHSL(newState.color).hue;
 
                 this.brightness.selectedValue = newState.brightness;
             }
@@ -183,13 +176,13 @@
                 clearInterval(this.statePolling);
         },
         mounted(){
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this));
 
             let actions = [
                 {action: this.brightness.action, handler: this.loadSupportedBrightness}
             ];
-            lib.loadAllSupportedValues(this.props.type.id, actions);
-            this.color.hue = lib.hexToHSL(this.props.state.color).hue;
+            loadAllSupportedValues(this.props.type.id, actions);
+            this.color.hue = hexToHSL(this.props.state.color).hue;
         }
     };
 </script>

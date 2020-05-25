@@ -196,13 +196,13 @@
 <script>
     import DispInfo from "./DispInfo";
     import Device from "../../assets/js/Device";
-    const lib = require("../../assets/js/lib")
     import {
         BooleanStatus,
         ExtraControls,
         NumberFieldWithButtons,
         SelectionField,
     } from "@/assets/js/DevicesLib";
+    import {getIconInfo, loadAllSupportedValues, setStatePolling} from "../../assets/js/lib";
 
     export default {
         name: "ac",
@@ -216,7 +216,7 @@
 
         data() {
             return {
-                iconInfo: lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 extraControllers: new ExtraControls(),
 
                 status: new BooleanStatus(this.props,'status','turnOn','turnOff','on','off'),
@@ -263,9 +263,9 @@
                     this.temperature.getActionLoaderObject(),
             ];
 
-            lib.loadAllSupportedValues(this.props.type.id, actions);
+            loadAllSupportedValues(this.props.type.id, actions);
 
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
         beforeDestroy() {
             if(this.statePolling)

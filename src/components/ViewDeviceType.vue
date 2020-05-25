@@ -14,7 +14,7 @@
 <script>
     import CardHolder from "./CardHolder";
     import NavBar from "./NavBar";
-    const lib = require("../assets/js/lib.js");
+    import {getDevicesByHomeAndType} from "../assets/js/lib";
 
 
     export default {
@@ -32,9 +32,9 @@
             }
         },
         mounted(){
-            lib.getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeName)
+            getDevicesByHomeAndType(this.$route.params.homeID, this.$route.params.deviceTypeName)
                 .then(this.loadCards)
-                .catch(error => console.log(`View Device Types ${error}`));
+                .catch(console.log);
         },
         methods:{
             loadCards(data){

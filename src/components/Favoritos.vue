@@ -17,7 +17,7 @@
 <script>
     import CardHolder from "./CardHolder";
     import NavBar from "./NavBar";
-    const lib = require("../assets/js/lib.js");
+    import {getFavs} from "../assets/js/lib";
 
     export default {
         name: "Favoritos",
@@ -29,9 +29,9 @@
             }
         },
         mounted(){
-            lib.getFavs()
+            getFavs()
                 .then(this.loadCards)
-                .catch(error => console.log(`Favorites ${error}`))
+                .catch(console.log)
         },
         methods:{
             loadCards(data){

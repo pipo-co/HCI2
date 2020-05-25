@@ -19,13 +19,9 @@ export function createDevice(name, typeId, room) {
                     device.room = room;
                     resolve(device);
                 })
-                .catch(error => {
-                    reject(`Add Device to Room: ${error}`);
-                });
+                .catch(reject);
         })
-        .catch( error => {
-            reject(`Add Device: ${error}`);
-        });
+        .catch(reject);
     });
 }
 
@@ -40,13 +36,9 @@ export function createRoom(name, home){
                         room.home = home;
                         resolve(room);
                     })
-                    .catch( error => {
-                        reject(`Add Room to Home: ${error}`);
-                    });
+                    .catch(reject);
             })
-            .catch( error => {
-                reject(`Add Room: ${error}`);
-            });
+            .catch(reject);
     });
 }
 
@@ -58,9 +50,7 @@ export function createHome(name){
                 home.id = data.result.id;
                 resolve(home);
             })
-            .catch( error => {
-                reject(`Couldn't Add Home: ${error}`);
-            });
+            .catch(reject);
     });
 }
 
@@ -72,7 +62,7 @@ export function createRoutine(name, actions, description = ""){
                 routine.id = data.result.id;
                 resolve(routine);
             })
-            .catch( error => reject(error)))
+            .catch(reject))
 }
 
 export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
@@ -83,11 +73,11 @@ export function createDeviceFromScratch(homeName, roomName, deviceName, typeId){
                     .then( room => {
                         createDevice(deviceName, typeId, room)
                             .then( device => resolve(device) )
-                            .catch( errors => reject(`Create Device ${deviceName} ${errors}`) );
+                            .catch(reject);
                     })
-                    .catch( errors => reject(`Create Room ${roomName} ${errors}`) );
+                    .catch(reject);
             })
-            .catch( errors => reject(`Create Home ${homeName} ${errors}`) );
+            .catch(reject);
     });
 }
 
@@ -97,9 +87,9 @@ export function createDeviceFromNotExistingRoom(home, roomName, deviceName, type
             .then( room => {
                 createDevice(deviceName, typeId, room)
                     .then( device => resolve(device) )
-                    .catch( errors => reject(`Create Device ${deviceName} ${errors}`) );
+                    .catch(reject);
             })
-            .catch( errors => reject(`Create Room ${roomName} ${errors}`) );
+            .catch(reject);
     });
 }
 
@@ -185,16 +175,6 @@ export function getFavs() {
     });
 }
 
-// export function suscribeToDeviceEvent(f, deviceId){
-//     let source;
-//     if(deviceId)
-//         source = Api.device.getEventSource(deviceId);
-//     else
-//         source = Api.device.getAllEventSource();
-//
-//     source.addEventListener('message', event => f(JSON.parse(event.data)), false);
-// }
-
 export function setStatePolling(stateChangeHandler, timeout = 5000){
     return setInterval(() => {
         this.props.getState()
@@ -212,7 +192,7 @@ export function loadAllSupportedValues(deviceID, actions) {
             let actionsArray = data.result.actions;
             actions.forEach( entry => entry.handler(getActionParams(actionsArray, entry.action)))
         })
-        .catch( error => console.log(`Load all supported values: ${error}`));
+        .catch(console.log);
 }
 const supportedDeviceTypes = [
     'ac','oven','speaker','lamp',
@@ -272,7 +252,7 @@ export function getSupportedDeviceTypes() {
         Api.deviceType.getAll().then(data => resolve(data.result
             .filter(entry => supportedDeviceTypes.includes(entry.name))
             .map(entry => {return{id: entry.id, name: entry.name, iconInfo: getIconInfo(entry.name)}})
-        )).catch(errors => reject(`getSupportedDeviceTypes ${errors}`))
+        )).catch(reject)
     });
 }
 
@@ -288,7 +268,7 @@ export function getDeviceTypesInHome(homeID) {
                      return {deviceTypeName: typeName, iconInfo: getIconInfo(typeName)}
                  });
                  resolve(ans);
-             }).catch(error => reject(`Load all supported values: ${error}`));
+             }).catch(reject);
      });
 }
 
@@ -301,7 +281,7 @@ export function getDeviceTypesInRoom(roomID) {
                 ans = ans.filter((entry, index) => ans.indexOf(entry) === index);
                 ans = ans.map(entry => { return {deviceTypeName: entry, iconInfo: getIconInfo(entry)}});
                 resolve(ans);
-            }).catch(error => reject(`Load all supported values: ${error}`));
+            }).catch(reject);
     });
 }
 
@@ -317,7 +297,7 @@ export function getRoomsAndDeviceTypesMapFromHome(homeID) {
                 ans.push(aux);
             }).catch(console.log));
             resolve(ans);
-        }).catch(error => reject(`Load all supported values: ${error}`));
+        }).catch(reject);
     });
 }
 
@@ -326,19 +306,19 @@ export function deleteRoom(roomId, homeId, upCascade = false){
         Api.room.getRoomDevices(roomId)
             .then(data => {
                 data.result.forEach(device => {
-                    Api.room.removeDevice(device.id).catch(error => reject(`Remove device ${device.name} from Room ${error}`));
-                    Api.device.delete(device.id).catch(error => reject(`Delete device ${device.name} ${error}`));
+                    Api.room.removeDevice(device.id).catch(reject);
+                    Api.device.delete(device.id).catch(reject);
                 });
                 if(upCascade)
                     Room.deleteRoom(roomId, homeId)
                         .then(resolve)
-                        .catch(error => reject(`Delete room ${error}`));
+                        .catch(reject);
                 else
                     Api.room.delete(roomId)
                         .then(response => resolve(response.result))
-                        .catch(error => reject(`Delete room ${error}`));
+                        .catch(reject);
             })
-            .catch(error => reject(`Get room devices ${error}`));
+            .catch(reject);
     });
 }
 
@@ -347,14 +327,14 @@ export function deleteHome(homeId){
         Api.home.getHomeRooms(homeId)
             .then(data => {
                 data.result.forEach(room => {
-                    Api.home.removeRoom(room.id).catch(error => reject(`Remove room ${room.name} from Home ${error}`));
-                    deleteRoom(room.id).then().catch(error => reject(`Delete room ${room.name} ${error}`));
+                    Api.home.removeRoom(room.id).catch(reject);
+                    deleteRoom(room.id).then().catch(reject);
                 });
                 Api.home.delete(homeId)
                     .then(response => resolve(response.result))
-                    .catch(error => reject(`Delete home ${error}`));
+                    .catch(reject);
             })
-            .catch(error => reject(`Get home rooms ${error}`));
+            .catch(reject);
     });
 }
 
@@ -441,7 +421,7 @@ export function getRoomDevices(roomID){
         Api.device.getAll().then(data => resolve(data.result
         .filter(elem => elem.room.id === roomID)
         .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
-    ).catch( error => reject(`getRoomDevices: ${error}`));
+    ).catch(reject);
     });
 }
 
@@ -451,7 +431,7 @@ export function getDevicesByHomeAndType(homeID, typeName){
         Api.device.getAll().then(data => resolve(data.result
             .filter(elem => elem.room.home.id === homeID && elem.type.name === typeName)
             .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
-        ).catch( error => reject(`getRoomDevices: ${error}`));
+        ).catch(reject);
     });
 }
 
@@ -459,7 +439,7 @@ export function getHomeItemsArray(){
     return new Promise((resolve, reject) => {
         Api.home.getAll()
             .then(data => resolve(data.result.map(home => { return {text: home.name , value: { id: home.id, name: home.name }} })))
-            .catch( error => reject(`getHomeItemsArray: ${error}`));
+            .catch(reject);
     })
 }
 
@@ -467,7 +447,7 @@ export function getRoomItemsArray(homeID){
     return new Promise((resolve, reject) => {
         Api.home.getHomeRooms(homeID)
             .then(data => resolve(data.result.map(room => {return {text: room.name.split("_").pop() , value: { id: room.id, name: room.name.split("_").pop() }} })))
-            .catch( error => reject(`getRoomItemsArray: ${error}`));
+            .catch(reject);
     })
 }
 
@@ -475,7 +455,7 @@ export function getDeviceItemsArray(roomID) {
     return new Promise((resolve, reject) => {
         Api.room.getRoomDevices(roomID)
             .then(data => resolve(data.result.map(device => {return {text: device.name.split("_").pop() , value: device }})))
-            .catch( error => reject(`getRoomItemsArray: ${error}`));
+            .catch(reject);
     })
 }
 
@@ -483,7 +463,7 @@ export function getActionsItemsArray(deviceTypeID) {
     return new Promise((resolve, reject) => {
         Api.deviceType.get(deviceTypeID)
             .then(data => resolve(data.result.actions.map(action => {return {text: action.name , value: action }})))
-            .catch( error => reject(`getRoomItemsArray: ${error}`));
+            .catch(reject);
     })
 }
 
@@ -493,6 +473,6 @@ export function searchDevicesByName(name){
         Api.device.getAll().then(data => resolve(data.result
             .filter(elem => elem.name.split("_").pop().toLowerCase().includes(name))
             .map( elem => new Device(elem.id, elem.name, elem.type, elem.meta, elem.state, elem.room)))
-        ).catch( error => reject(`searchDevicesByName: ${error}`));
+        ).catch(reject);
     });
 }

@@ -45,8 +45,8 @@
                             </v-col>
                             <v-col>
                                 <v-list class="mx-5">
-                                    <v-list-item-title class="headline" align="left">Seleccione el hogar</v-list-item-title>
-                                    <v-list-item-subtitle align="left">Elegir el hogar al cual va a pertenecer el nuevo dispositivo</v-list-item-subtitle>
+                                    <v-list-item-title class="headline">Seleccione el hogar</v-list-item-title>
+                                    <v-list-item-subtitle>Elegir el hogar al cual va a pertenecer el nuevo dispositivo</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -102,8 +102,8 @@
                             </v-col>
                             <v-col>
                                 <v-list class="mx-5">
-                                    <v-list-item-title class="headline" align="left">Seleccionar la habitacion</v-list-item-title>
-                                    <v-list-item-subtitle align="left">Elegir la habitacion a la cual va a pertenecer el nuevo dispositivo</v-list-item-subtitle>
+                                    <v-list-item-title class="headline">Seleccionar la habitacion</v-list-item-title>
+                                    <v-list-item-subtitle >Elegir la habitacion a la cual va a pertenecer el nuevo dispositivo</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -162,8 +162,8 @@
                             </v-col>
                             <v-col>
                                 <v-list class="mx-5">
-                                    <v-list-item-title class="headline" align="left">Seleccionar el tipo de dispositivo</v-list-item-title>
-                                    <v-list-item-subtitle align="left">Elegir el tipo de dispositivo que desea agregar</v-list-item-subtitle>
+                                    <v-list-item-title class="headline" >Seleccionar el tipo de dispositivo</v-list-item-title>
+                                    <v-list-item-subtitle >Elegir el tipo de dispositivo que desea agregar</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -209,8 +209,8 @@
                             </v-col>
                             <v-col>
                                 <v-list class="mx-5">
-                                    <v-list-item-title class="headline" align="left">Finalizar</v-list-item-title>
-                                    <v-list-item-subtitle align="left">{{lastStepsub}}</v-list-item-subtitle>
+                                    <v-list-item-title class="headline" >Finalizar</v-list-item-title>
+                                    <v-list-item-subtitle >{{lastStepsub}}</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -220,7 +220,7 @@
                                     <v-col cols="4" >
                                         <v-list-item class="pa-1 mt-1">
                                             <v-list-item-content class="ml-1 my-0 md-0">
-                                                <v-list-item-title class="pt-2 px-1 md-0" align="left"> Nombre del dispositivo: </v-list-item-title>
+                                                <v-list-item-title class="pt-2 px-1 md-0" > Nombre del dispositivo: </v-list-item-title>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-col>
@@ -272,7 +272,7 @@
 </template>
 
 <script>
-    import Api from "@/assets/js/Api.js";
+    import Api from "../../assets/js/Api.js";
     import {
         createDevice,
         createDeviceFromNotExistingRoom,
@@ -285,7 +285,6 @@
     import Home from "../../assets/js/Home";
     import Room from "../../assets/js/Room";
     import Device from "../../assets/js/Device";
-    // const lib = require('../../assets/js/lib.js')
     export default {
         name: "NuevoDispositivo1",
         data() {
@@ -357,11 +356,11 @@
                                 this.newdisp.home = elem;
                         });
                 })
-                .catch(error => console.log(`Error ${error}`));
+                .catch(console.log);
 
             getSupportedDeviceTypes()
                 .then(data => this.disptypes = data)
-                .catch(error => console.log(`Error ${error}`));
+                .catch(console.log);
 
             if (this.routeHomeID !== undefined && this.routeRoomID !== undefined) {
                 this.stepController.value = 3;
@@ -479,7 +478,7 @@
                                     this.newdisp.room = elem;
                             })
                         }
-                    }).catch(error => console.log(`Error ${error}`));
+                    }).catch(console.log);
             },
             controllerNextPlus() {
                 if (!this.validation) {
@@ -516,7 +515,7 @@
                     if (this.newdisp.room !== null && this.newdisp.room !== 0) {
                         Api.room.getRoomDevices(this.newdisp.room.id)
                             .then(data => this.disps = data.result)
-                            .catch(error => console.log(`Error ${error}`));
+                            .catch(console.log);
                         this.stepController.value++;
                     } else
                         this.stepController.value++;
@@ -547,7 +546,7 @@
                         this.stepController.value += 2;
                         Api.room.getRoomDevices(this.olddisp.room.id)
                             .then(data => this.disps = data.result)
-                            .catch(error => console.log(`Error ${error}`));
+                            .catch(console.log);
                     }
                 }
             },
@@ -565,20 +564,18 @@
                 } else if (this.newdisp.home === 0) {
                     createDeviceFromScratch(this.newhomename, this.newroomname, this.disp.dispname, this.disp.typeid)
                         .then(() => this.$router.push(this.route))
-                        .catch(error => console.log(`Error ${error}`));
+                        .catch(console.log);
                 } else if (this.disp.room === 0) {
                     createDeviceFromNotExistingRoom(new Home(this.newdisp.home.id, this.newdisp.home.name, this.newdisp.home.meta), this.newroomname, this.newdisp.dispname, this.newdisp.typeid)
                         .then(() => this.$router.push(this.route))
-                        .catch(error => console.log(`Error ${error}`));
+                        .catch(console.log);
                 } else {
                     createDevice(this.newdisp.dispname, this.newdisp.typeid, new Room(this.newdisp.room.id, this.newdisp.room.name, this.newdisp.room.meta, this.newdisp.home))
                         .then(() => this.$router.push(this.route))
-                        .catch(error => console.log(`Error ${error}`));
+                        .catch(console.log);
                 }
             },
             editDisp() {
-                // eslint-disable-next-line no-debugger
-                //debugger
                 if (this.olddisp.room !== 0 && this.disps != null && this.disps.some(elem => elem.name === `${this.olddisp.home.id}_${this.olddisp.room.id}_${this.olddisp.dispname}`)) {
                     this.flagErrorDisp = true;
 
@@ -587,7 +584,7 @@
                     this.olddisp.disp.setNewName(this.olddisp.dispname);
                     updateDeviceToNewHome(this.newhomename, this.newroomname, this.olddisp.disp)
                         .then(() => this.$router.push(this.route))
-                        .catch(error => console.log(`Error ${error}`));
+                        .catch(console.log);
 
                     // Nueva habitacion
                 } else if (this.olddisp.room === 0) {
@@ -596,7 +593,7 @@
                     this.olddisp.disp.setNewName( this.olddisp.dispname);
                     updateDeviceToNewRoom(new Home(this.olddisp.home.id, this.olddisp.home.name, this.olddisp.home.meta), this.newroomname, this.olddisp.disp)
                         .then(() => this.$router.push(this.route))
-                        .catch(error => console.log(`Error ${error}`));
+                        .catch(console.log);
 
                     // Cambias a una habitacion existente
                 } else if (this.olddisp.disp.room.id !== this.olddisp.room.id) {

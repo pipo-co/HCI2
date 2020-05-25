@@ -18,9 +18,6 @@
             card: {
                 type: Object,
                 require: true,
-                // validator(value){
-                //     return value instanceof Device
-                // }
             }
         },
         components:{

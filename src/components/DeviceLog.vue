@@ -81,7 +81,6 @@
     import NavBar from "./NavBar";
     import {getIconInfo} from "../assets/js/lib"
     import {getLocation} from "../assets/js/DevicesLib";
-    //let moment = require('moment');
 
     export default {
         name: "deviceLog",

@@ -29,7 +29,7 @@
     import DispInfo from "./DispInfo";
     import Device from "@/assets/js/Device";
     import {ButtonStatus} from "@/assets/js/DevicesLib";
-    const lib = require("../../assets/js/lib");
+    import {getIconInfo, setStatePolling} from "../../assets/js/lib";
 
     export default {
         name: "door",
@@ -42,7 +42,7 @@
         },
         data(){
             return{
-                iconInfo: lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 statePolling: null,
                 open: new ButtonStatus(this.props, 'status', 'open', 'close', 'opened', 'closed'),
                 lock: new ButtonStatus(this.props, 'lock', 'lock', 'unlock', 'locked', 'unlocked')
@@ -74,9 +74,6 @@
             },
         },
         methods: {
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
-            },
             stateChangeHandler(newState) {
                 this.open.value = newState.status === this.open.statusTrue;
 
@@ -84,7 +81,7 @@
             }
         },
         mounted() {
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
         beforeDestroy() {
             if(this.statePolling)

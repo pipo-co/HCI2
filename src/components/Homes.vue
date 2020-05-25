@@ -116,7 +116,7 @@
                                         continuous
                                         height="150"
                                 >
-                                    <v-carousel-item v-for="j in (0, 2)" :key="j">
+                                    <v-carousel-item v-for="j in 2" :key="j">
                                         <v-row align="center" wrap no-gutters>
                                             <v-col v-for="(dispositive, i) in homedevs" :key="i" cols="4" md="4">
                                                 <span v-if="(j === 1)? i < 6: i >= 6">
@@ -247,62 +247,13 @@
                                                         </v-card>
                                                     </v-alert>
                                                 </v-dialog>
-
-<!--                                                <v-dialog-->
-<!--                                                        v-model="roomEliminateDialog"-->
-<!--                                                        max-width="500px"-->
-<!--                                                >-->
-<!--                                                    <template v-slot:activator="{ on }">-->
-<!--                                                        <v-btn-->
-<!--                                                                text-->
-<!--                                                                v-on="on"-->
-<!--                                                        >-->
-<!--                                                            Eliminar-->
-<!--                                                        </v-btn>-->
-<!--                                                    </template>-->
-<!--                                                    <v-card class="rounded">-->
-<!--                                                        <v-card-title>-->
-<!--                                                            <v-container>-->
-<!--                                                                <v-row align="center" wrap no-gutters>-->
-<!--                                                                    <v-col>-->
-<!--                                                                        <p class="red&#45;&#45;text">Si elimina la habitacion, se borraran todos los dispositivos en ella.</p>-->
-<!--                                                                        <p class="red&#45;&#45;text">¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}? </p>-->
-<!--                                                                    </v-col>-->
-<!--                                                                </v-row>-->
-<!--                                                            </v-container>-->
-<!--                                                        </v-card-title>-->
-<!--                                                        <v-card-actions>-->
-<!--                                                            <v-container fluid><v-row align="center">-->
-<!--                                                                <v-col>-->
-<!--                                                                    <v-btn-->
-<!--                                                                            color="primary"-->
-<!--                                                                            dark-->
-<!--                                                                            @click="roomEliminateDialog = false"-->
-<!--                                                                    >-->
-<!--                                                                        Cancelar-->
-<!--                                                                    </v-btn>-->
-<!--                                                                </v-col>-->
-<!--                                                                <v-col>-->
-<!--                                                                    <v-btn-->
-<!--                                                                            color="red"-->
-<!--                                                                            dark-->
-<!--                                                                            @click="deleteCurrentRoom()"-->
-<!--                                                                    >-->
-<!--                                                                        Eliminar-->
-<!--                                                                    </v-btn>-->
-<!--                                                                </v-col>-->
-<!--                                                            </v-row></v-container>-->
-<!--                                                        </v-card-actions>-->
-<!--                                                    </v-card>-->
-<!--                                                </v-dialog>-->
-
                                             </v-list-item>
                                         </v-list>
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="5">
                                     <v-list-item-content>
-                                        <v-list-item-title align="left" class="headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
+                                        <v-list-item-title class="headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
                                     </v-list-item-content>
                                 </v-col>
                                 <v-spacer></v-spacer>
@@ -331,7 +282,6 @@
             <h3>Para agregar un nuevo dispositivo, apretar el boton (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
             <h3>Al hacer click aparecera un menu. Ahi se debe seleccionar la opcion de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
         </div>
-        <!--TODO que no se muestre si hay casa-->
         <div v-else>
             <p>Loading...</p>
         </div>
@@ -339,19 +289,17 @@
 </template>
 
 <script>
-    import Api from "@/assets/js/Api.js";
+    import Api from "../assets/js/Api.js";
     import {
         deleteHome, deleteRoom,
         getDeviceTypesInHome,
         getRoomsAndDeviceTypesMapFromHome,
-        // getRoomsFromHome
     } from "../assets/js/lib";
     import Home from "../assets/js/Home";
     import Room from "../assets/js/Room";
     import NavBar from "./NavBar";
     import Fab from "./Fab";
-    //import Home from "../../assets/js/Home";
-    //import Room from "../../assets/js/Room";
+
     export default {
         name: "Homes",
         components: {Fab, NavBar},
@@ -385,7 +333,6 @@
                     v=> (v && v.length >= 3 && v.length <= 43) || 'El nombre debe tener entre 3 y 43 caracteres',
                     v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
                 ],
-
             }
         },
         computed : {
@@ -417,7 +364,7 @@
                         this.changeHomeDevices();
                         this.changeRoomMap();
                     })
-                    .catch(error => console.log(`Error ${error}`))
+                    .catch(console.log)
                     .finally( () => this.loading = false);
             },
             homeerrormessage(flag) {
@@ -443,16 +390,12 @@
 
                 getDeviceTypesInHome(this.currentHome.id).then(data => {
                     this.homedevs = data;
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
+                }).catch(console.log);
             },
             changeRoomMap() {
                 getRoomsAndDeviceTypesMapFromHome(this.currentHome.id).then(data => {
                     this.roomMap = data;
-                }).catch(error => {
-                    console.log(`Error ${error}`);
-                });
+                }).catch(console.log);
             },
             saveChanges(){
                 let flag = false;
@@ -460,14 +403,9 @@
                     let nameaux=this.auxHome[elem.id].name.trim();
                     if(this.auxHome[elem.id].valid && nameaux !=='') {
 
-                        if (this.homes.some(elem => elem.name.toUpperCase().trim() === nameaux.toUpperCase() ))
-                        {
-                            // eslint-disable-next-line no-debugger
-                            debugger;
-
+                        if (this.homes.some(elem => elem.name.toUpperCase().trim() === nameaux.toUpperCase() )) {
                             this.auxHome[elem.id].flagErrorHome = true;
                             flag = true;
-
                         } else {
                             Home.persistNewName(elem.id, nameaux, {});
                             this.homes.forEach(elem2 => {
@@ -502,7 +440,7 @@
                 deleteHome(this.auxHomeId).then( () => {
                         this.changeHomes();
                     }
-                ).catch(error => console.log(`Error ${error}`));
+                ).catch(console.log);
                 this.dialog2 = false;
                 this.dialog = false;
             },
@@ -514,7 +452,7 @@
                     this.changeRoomMap();
                     this.changeHomeDevices();
                     }
-                ).catch(error => console.log(`Error ${error}`));
+                ).catch(console.log);
 
                 this.roomEliminateDialog = false;
             }

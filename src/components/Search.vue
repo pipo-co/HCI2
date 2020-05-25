@@ -13,7 +13,7 @@
 <script>
     import CardHolder from "./CardHolder";
     import NavBar from "./NavBar";
-    const lib = require("../assets/js/lib.js");
+    import {searchDevicesByName} from "../assets/js/lib";
 
     export default {
         name: "Search",
@@ -29,13 +29,12 @@
             start(){
                 this.loading = true;
                 this.successfulSearch = false;
-                lib.searchDevicesByName(this.$route.params.name)
+                searchDevicesByName(this.$route.params.name)
                     .then(this.loadCards)
-                    .catch(error => console.log(`Search ${error}`))
+                    .catch(console.log)
                     .finally(() => this.loading = false);
             },
             loadCards(data){
-                console.log(data);
                 if(data.length !== 0) {
                     this.cards = data;
                     this.successfulSearch = true;

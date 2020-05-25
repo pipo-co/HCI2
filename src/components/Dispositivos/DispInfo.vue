@@ -118,7 +118,7 @@
                 this.overflowOptions.delete.dialog = false;
                 this.device.delete()
                     .then(this.removeFromDom)
-                    .catch(error => console.log(`Load all supported values: ${error}`));
+                    .catch(console.log);
             },
             handleFav(){
                 if (this.device.isFav())

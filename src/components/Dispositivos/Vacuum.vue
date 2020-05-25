@@ -60,7 +60,7 @@
     import Device from "../../assets/js/Device";
     import Api from "../../assets/js/Api";
     import {SelectionField} from "../../assets/js/DevicesLib";
-    const lib = require("../../assets/js/lib");
+    import {getIconInfo, loadAllSupportedValues, setStatePolling} from "../../assets/js/lib";
 
     export default {
         name: "vacuum",
@@ -73,7 +73,7 @@
         },
         data(){
             return {
-                iconInfo: lib.getIconInfo(this.props.type.name),
+                iconInfo: getIconInfo(this.props.type.name),
                 multivaluedState: {
                     values: [
                         { state: 'active', text: 'Prender', action: 'start'},
@@ -160,12 +160,12 @@
             if(!this.props.state.location)
                 this.props.state.location = {id: this.props.room.id, name: this.props.room.name};
 
-            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+            this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this));
 
             let actions = [
                 this.mode.getActionLoaderObject()
             ];
-            lib.loadAllSupportedValues(this.props.type.id, actions);
+            loadAllSupportedValues(this.props.type.id, actions);
 
             this.multivaluedState.selectedValue = this.multivaluedState.values.findIndex(elem => elem.state === this.props.state.status);
             this.loadRooms();

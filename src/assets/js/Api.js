@@ -29,31 +29,6 @@ class Api {
     });
   }
 
-  // static fetch(url, init) {
-  //   return new Promise((resolve, reject) => {
-  //     let controller = new AbortController();
-  //     let signal = controller.signal;
-  //
-  //     setTimeout(() => controller.abort(), Api.timeout);
-  //
-  //     init.signal = signal
-  //
-  //     fetch(url, init)
-  //     .then(response => {
-  //       if (!response.ok)
-  //         reject(new Error(response.statusText));
-  //
-  //       return response.json();
-  //     })
-  //     .then(data => {
-  //       resolve(data);
-  //     })
-  //     .catch(error => {
-  //       reject(error);
-  //     });
-  //   });
-  // }
-
   static get(url) {
     return Api.fetch(url, {})
   }
