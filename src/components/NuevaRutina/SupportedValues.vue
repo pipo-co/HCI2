@@ -27,7 +27,7 @@
         },
         data(){
             return{
-                supportedValues: this.params.supportedValues,
+                supportedValues: this.params.supportedValues.map(entry => {return{text: this.$vuetify.lang.t(`$vuetify.${entry}`), value: entry}}),
                 value: null
             }
         }

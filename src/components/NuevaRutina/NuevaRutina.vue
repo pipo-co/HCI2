@@ -45,7 +45,7 @@
                                     <v-row no-gutters>
                                         <v-col cols="2">
                                             <v-list class="ml-3 ">
-                                                <v-list-item-subtitle class="headline">Titulo:</v-list-item-subtitle>
+                                                <v-list-item-subtitle class="headline">Título:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
@@ -57,7 +57,9 @@
                                                 <v-text-field
                                                         v-model="newRoutine.name"
                                                         :rules="newRoutine.titleRules"
+                                                        :error-messages="newroutineerrormessage"
                                                         class="pa-0 my-0"
+                                                        @click="flagErrorRoutine = false"
                                                         @keydown.enter.prevent="false"
                                                 ></v-text-field>
                                             </v-form>
@@ -80,7 +82,7 @@
                                                         class="pa-0" height="15"
                                                         :rules="newRoutine.descRules"
                                                         @keydown.enter.prevent="false"
-                                                        label="Opcional">
+                                                >
                                                 </v-text-field>
                                             </v-form>
                                         </v-col>
@@ -110,8 +112,8 @@
                                                 </v-list-item-avatar>
                                             </v-col>
                                             <v-col>
-                                                <v-list class="mx-5">
-                                                    <v-list-item-title class="headline" >{{action.deviceName}}</v-list-item-title>
+                                                <v-list class="ml-5">
+                                                    <v-list-item-title class="headline mr-7">{{action.deviceName}}</v-list-item-title>
                                                     <v-list-item-subtitle >{{action.homeName}}-{{action.roomName}}</v-list-item-subtitle>
                                                 </v-list>
                                             </v-col>
@@ -123,7 +125,7 @@
                                             </v-col >
                                         </v-row>
                                         <v-row no-gutters>
-                                            <v-col class="px-0" cols="10">
+                                            <v-col class="px-0" cols="7">
                                                 <v-list>
                                                     <v-list-item class="px-0">
                                                         <v-list-item-title>Acción: {{$vuetify.lang.t(`$vuetify.${action.action.actionName}`)}}</v-list-item-title>
@@ -147,7 +149,7 @@
                                             <v-col class="px-0" v-else v-for="(param, index) in action.action.params" :key="index">
                                                 <v-list>
                                                     <v-list-item  class="px-0">
-                                                        <v-list-item-title>{{param}}</v-list-item-title>
+                                                        <v-list-item-title>{{translateName(param)}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
@@ -347,6 +349,7 @@
                 roomItems: [],
                 room: null,
                 dispItems: [],
+                routines: [],
                 dispositive: null,
                 action: null,
                 actItems: [],
@@ -359,6 +362,7 @@
                 hasParams: false,
                 params: null,
                 dialog: false,
+                flagErrorRoutine:false,
 
                 newRoutine: {
                     actions: [],
@@ -379,6 +383,9 @@
             }
         },
         mounted() {
+            Api.routine.getAll().
+                then(data => this.routines = data.result)
+                    .catch(console.log);
             getHomeItemsArray().then( data => {
                 this.homeItems = data;
             }).catch(console.log);
@@ -386,9 +393,20 @@
         computed: {
             validRoutine(){
                 return this.newRoutine.nameValid && this.newRoutine.descValid && this.newRoutine.actions.length !== 0;
-            }
+            },
+            newroutineerrormessage() {
+                if (this.flagErrorRoutine) {
+                    return 'El título de la rutina ya existe, por favor elija otro nombre';
+                } else
+                    return null;
+            },
         },
         methods: {
+            translateName(name){
+                if(!isNaN(name))
+                    return name;
+                return this.$vuetify.lang.t(`$vuetify.${name}`);
+            },
             paramControl(value, index){
                 this.params[index] = value;
                 this.checkValidSave();
@@ -429,7 +447,10 @@
                 this.newRoutine.actions.splice(index, 1);
             },
             saveNewRoutine() {
-                if(this.validRoutine){
+                if(this.routines !== null && this.routines.some( elem => elem.name === this.newRoutine.name)){
+                   this.flagErrorRoutine = true;
+                }
+                else if(this.validRoutine){
                     let desc = (this.newRoutine.desc)? this.newRoutine.desc : "";
                     let actions = this.newRoutine.actions.map(elem => elem.action);
                     createRoutine(this.newRoutine.name, actions, desc)
