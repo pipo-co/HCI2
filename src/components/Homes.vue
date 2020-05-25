@@ -12,7 +12,7 @@
                                     Editar Hogares
                                 </v-btn>
                             </template>
-                            <v-card class="rounded">
+                            <v-card shaped>
                                 <v-container fluid>
                                     <v-row no-gutters align="center" v-for="home in homes" :key="home.name">
                                         <v-col cols="1">
@@ -104,7 +104,7 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-card elevation="3" class="mx-auto rounded"
+                        <v-card elevation="3" shaped class="mx-auto"
                                 width="700"
                                 height="150"
                         >
@@ -148,7 +148,8 @@
 
                 <v-row v-for="room in roomMap" :key="room.roomName" class="my-4 rounded">
                     <v-card flat elevation="4"
-                            class="ma-auto rounded"
+                            shaped
+                            class="ma-auto"
                             width="750"
                             @click="$router.push({ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }})"
                     >
@@ -180,7 +181,7 @@
                                                         Editar
                                                     </v-btn>
                                                 </template>
-                                                <v-card class="rounded">
+                                                <v-card shaped>
                                                     <v-container fluid>
                                                         <v-row no-gutters align="center">
                                                             <v-col cols="1">
@@ -265,9 +266,7 @@
                                     </v-col>
                                     </span>
                                     <v-col cols="1">
-                                        <v-btn text fab right>
-                                            <v-icon color="#65C2AD" large class="px-4">mdi-chevron-right</v-icon>
-                                        </v-btn>
+                                        <v-icon color="#65C2AD" large class="px-4">mdi-chevron-right</v-icon>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -461,9 +460,6 @@
 </script>
 
 <style scoped>
-    .rounded{
-        border-radius: 25px;
-    }
     .v-card.rounded.v-sheet{
         border-radius: 25px;
     }
@@ -476,11 +472,5 @@
     }
     .font-weight-bold{
         color: #3C3F58 !important;
-    }
-    .border-dashed{
-        border-radius: 25px 25px 25px 25px;
-        -moz-border-radius: 25px 25px 25px 25px;
-        -webkit-border-radius: 25px 25px 25px 25px;
-        border: 3px dashed #a6a6a6;
     }
 </style>

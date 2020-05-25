@@ -235,7 +235,7 @@
             state() {
                 if (this.props.state.status === 'off')
                     return 'Apagado'
-                return `Prendido: ${this.props.state.mode} ${this.props.state.temperature}º`
+                return `Prendido: ${this.$vuetify.lang.t(`$vuetify.${this.props.state.mode}`)} ${this.props.state.temperature}º`
             },
         },
 
