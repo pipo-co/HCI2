@@ -49,9 +49,9 @@
                 maxValue: this.params.maxValue,
                 value: this.params.minValue,
                 rules: [
-                    entry => /[0-9]+/.test(entry) || "El valor debe ser un numero",
-                    entry => entry >= this.minValue || "Valor por debajo del minimo",
-                    entry => entry <= this.maxValue || "Valor por arriba del maximo",
+                    entry => /[0-9]+/.test(entry) || "El valor debe ser un número",
+                    entry => entry >= this.minValue || "Valor por debajo del mínimo",
+                    entry => entry <= this.maxValue || "Valor por arriba del máximo",
                 ],
             }
         },

@@ -6,13 +6,13 @@ export default {
     speaker: "Parlante",
     ac: "Aire",
     oven: "Horno",
-    lamp: "Lampara",
+    lamp: "Lámpara",
     door: "Puerta",
     blinds: "Persiana",
     faucet: "Regador",
     vacuum: "Aspiradora",
 
-    cool: "Frio",
+    cool: "Frío",
     heat: "Calor",
     fan: "Ventilador",
 
@@ -21,16 +21,16 @@ export default {
     top: "Arriba",
 
     off: "Apagado",
-    eco: "Ecologico",
+    eco: "Ecológico",
     large: "Grande",
     normal: "Normal",
 
     pop: "Pop",
     rock: "Rock & Roll",
-    classical: "Clasica",
+    classical: "Clásica",
     country: "Country",
     latina: "Latina",
-    dance: "Electronica",
+    dance: "Electrónica",
 
     mop: "Trapear",
 
@@ -47,9 +47,9 @@ export default {
     pause: "Pausar",
     stop: "Detener",
     resume: "Reanudar",
-    nextSong: "Siguiente cancion",
-    previousSong: "Cancion anterior",
-    setGenre: "Elegir genero",
+    nextSong: "Siguiente canción",
+    previousSong: "Canción anterior",
+    setGenre: "Elegir género",
     getPlaylist: "Solicitar playlist",
 
     open: "Abrir",
@@ -63,17 +63,17 @@ export default {
 
     setHeat: "Elegir fuente de calor",
     setGrill: "Elegir parrilla",
-    setConvection: "Elegir modo de conveccion",
+    setConvection: "Elegir modo de convección",
 
     lock: "Bloquear",
     unlock: "Desbloquear",
 
     start: "Iniciar",
     dock: "Cargar",
-    setLocation: "Elegir Ubicacion",
+    setLocation: "Elegir Ubicación",
 
     volume: "Volumen",
-    genre: "Genero",
+    genre: "Género",
     quantity: "Cantidad",
     unit: "Unidad",
     level: "Nivel",
@@ -81,10 +81,10 @@ export default {
     brightness: "Brillo",
     temperature: "Temperatura",
     grill: "Parrilla",
-    convection: "Conveccion",
+    convection: "Convección",
     mode: "Modo",
     verticalSwing: "Barrido vertical",
     horizontalSwing: "Barrido horizontal",
     fanSpeed: "Velocidad del ventilador",
-    roomId: "Habitacion",
+    roomId: "Habitación",
 }

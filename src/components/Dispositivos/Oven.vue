@@ -109,7 +109,7 @@
                                 <v-col cols="3">
                                     <v-list-item class="px-0">
                                         <v-list-item-content>
-                                            <v-list-item-title class="subtitle-1">Conveccion</v-list-item-title>
+                                            <v-list-item-title class="subtitle-1">Convección</v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-col>
@@ -165,7 +165,7 @@
         computed:{
             state(){
                 if(!this.status.value)
-                    return 'Off'
+                    return 'Apagado'
                 return `Prendido: ${this.props.state.heat} ${this.props.state.temperature}º`
             }
         },

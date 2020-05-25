@@ -117,7 +117,7 @@
                                             :label="homeroom.name.split('_').pop()"
                                             :value="homeroom"
                                     ></v-radio>
-                                    <v-radio :label="`Crear nueva Habitacion`" :value="null"></v-radio>
+                                    <v-radio :label="`Crear nueva Habitación`" :value="null"></v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
@@ -136,7 +136,7 @@
                                             @click="changeRoomFlag()"
                                             :rules="newRoomRules"
                                             :error-messages="roomerrormessage"
-                                            label="Crear nueva Habitacion"
+                                            label="Crear nueva Habitación"
                                     ></v-text-field>
                                 </v-form>
                             </v-col>
@@ -305,17 +305,17 @@
                 newHomeRules: [
                     v => !!v || 'Es necesario un nombre',
                     v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, números o espacios',
                 ],
                 newRoomRules: [
                     v => !!v || 'Es necesario un nombre',
                     v => (v && v.length >= 3 && v.length <= 43) || 'El nombre debe tener entre 3 y 43 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, números o espacios',
                 ],
                 newDispRules: [
                     v => !!v || 'Es necesario un nombre',
                     v => (v && v.length >= 3 && v.length <= 26) || 'El nombre debe tener entre 3 y 26 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, números o espacios',
                 ],
                 olddisp: {
                     home: null,
@@ -377,15 +377,15 @@
             },
             firstMessage(){
                 if (this.editFlag)
-                    return 'Seleccione el antiguo hogar del dispositivo o modifiquelo si lo desea';
+                    return 'Seleccione el antiguo hogar del dispositivo o modifíquelo si lo desea';
                 else
                     return 'Elegir el hogar al cual va a pertenecer el nuevo dispositivo';
             },
             secondMessage(){
                 if (this.editFlag)
-                    return 'Elegir la habitacion a la cual pertenecera el dispositivo';
+                    return 'Elegir la habitación a la cual pertenecerá el dispositivo';
                 else
-                    return 'Elegir la habitacion a la cual pertenecera el nuevo dispositivo';
+                    return 'Elegir la habitación a la cual pertenecerá el nuevo dispositivo';
             },
             thirdStepValidation() {
                 if (!this.editFlag)
@@ -429,7 +429,7 @@
             },
             roomerrormessage() {
                 if (this.flagErrorRoom) {
-                    return 'El nombre de la habitacion ya existe, por favor elija otro nombre';
+                    return 'El nombre de la habitación ya existe, por favor elija otro nombre';
                 } else
                     return null;
             },

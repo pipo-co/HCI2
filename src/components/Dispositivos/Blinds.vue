@@ -99,7 +99,7 @@
             state() {
                 if (this.props.state.level >= 75) {
                     return 'Abierta';
-                } else if (this.props.state.level >=25)
+                } else if (this.props.state.level >= 25)
                     return 'Entreabierta';
                 else
                     return 'Cerrada';

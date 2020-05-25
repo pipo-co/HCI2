@@ -19,7 +19,7 @@
             </v-row>
         </v-container>
         <div v-else>
-            <p>Loading...</p>
+            <p>Cargando...</p>
         </div>
     </div>
 </template>

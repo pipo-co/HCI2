@@ -41,7 +41,7 @@
                                         <v-alert class="my-0 pa-0" border="top" colored-border color="red">
                                             <v-card-text class="pb-0 display-1">Eliminar Rutina</v-card-text>
                                             <v-card-text class="subtitle-2">
-                                                ¿Esta seguro que quiere borrar la Rutina: "{{routine.name}}"?
+                                                ¿Está seguro que quiere borrar la Rutina: "{{routine.name}}"?
                                             </v-card-text>
                                             <v-card tile class="blue-grey lighten-5">
                                                 <v-card-actions>

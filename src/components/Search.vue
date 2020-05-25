@@ -4,9 +4,9 @@
         <h1>Dispositivos encontrados al buscar: {{$route.params.name}}</h1>
         <card-holder v-if="successfulSearch" :card-array="cards"/>
         <div v-else-if="!loading">
-            <p>Tu busqueda no fue exitosa. Intenta de nuevo</p>
+            <p>Tu búsqueda no fue exitosa. Intenta de nuevo</p>
         </div>
-        <p v-else>Loading...</p>
+        <p v-else>Cargando...</p>
     </div>
 </template>
 

@@ -103,9 +103,9 @@ class NumberField{
         this.validInput = true;
         this.rules =
             [
-                entry => /[0-9]+/.test(entry) || "La temperatura debe ser un numero",
-                entry => entry >= this.minValue || "Valor por debajo del minimo",
-                entry => entry <= this.maxValue || "Valor por arriba del maximo",
+                entry => /[0-9]+/.test(entry) || "La temperatura debe ser un número",
+                entry => entry >= this.minValue || "Valor por debajo del mínimo",
+                entry => entry <= this.maxValue || "Valor por arriba del máximo",
             ];
     }
 
@@ -162,7 +162,7 @@ class ExtraControls {
 
     constructor() {
         this.value = false;
-        this.message = 'Mas'
+        this.message = 'Más'
         this.icon = 'mdi-chevron-down'
     }
 
@@ -173,7 +173,7 @@ class ExtraControls {
             this.icon = 'mdi-chevron-up';
         }
         else {
-            this.message = 'Mas';
+            this.message = 'Más';
             this.icon = 'mdi-chevron-down';
         }
     }

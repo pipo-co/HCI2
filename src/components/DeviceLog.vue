@@ -99,8 +99,8 @@
                         align: 'start',
                         value: 'timestamp',
                     },
-                    { text: 'Accion', value: 'action' },
-                    { text: 'Parametros', value: 'params' },
+                    { text: 'Acción', value: 'action' },
+                    { text: 'Parámetros', value: 'params' },
                 ],
                 blacklistActions: [
                     'getPlaylist'

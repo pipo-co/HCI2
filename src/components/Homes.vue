@@ -61,9 +61,9 @@
                             <v-alert class="my-0 pa-0" border="top" colored-border color="red">
                                 <v-card-text class="pb-0 display-1">Eliminar Hogar</v-card-text>
                                 <v-card-text>
-                                    Si elimina el hogar, se perderan todas las habitaciones y dispositivos en ellas.
+                                    Si elimina el hogar, se perderán todas las habitaciones y dispositivos en ellas.
                                 </v-card-text>
-                                <v-card-text>¿Esta seguro que quiere borrar el Hogar: {{this.auxiliarName}} ?</v-card-text>
+                                <v-card-text>¿Está seguro que quiere borrar el Hogar: {{this.auxiliarName}} ?</v-card-text>
                                 <v-card tile class="blue-grey lighten-5">
                                     <v-card-actions>
                                         <v-btn depressed color="white"  @click=" dialog2 = false">
@@ -231,9 +231,9 @@
                                                     <v-alert class="my-0 pa-0" border="top" colored-border color="red">
                                                         <v-card-text class="pb-0 display-1">Eliminar Hogar</v-card-text>
                                                         <v-card-text>
-                                                            Si elimina la habitacion, se borraran todos los dispositivos en ella.
+                                                            Si elimina la habitación, se borrarán todos los dispositivos en ella.
                                                         </v-card-text>
-                                                        <v-card-text>¿Esta seguro que quiere borrar la habitacion: {{room.roomName.split('_').pop()}}?</v-card-text>
+                                                        <v-card-text>¿Esta seguro que quiere borrar la habitación: {{room.roomName.split('_').pop()}}?</v-card-text>
                                                         <v-card tile class="blue-grey lighten-5">
                                                             <v-card-actions>
                                                                 <v-btn depressed color="white"  @click="roomEliminateDialog = false">
@@ -277,13 +277,13 @@
             </v-card>
         </div>
         <div v-else-if="!loading" >
-            <h1>Todavia no hay dispositivos registrados.</h1>
+            <h1>Todavía no hay dispositivos registrados.</h1>
             <br>
-            <h3>Para agregar un nuevo dispositivo, apretar el boton (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
-            <h3>Al hacer click aparecera un menu. Ahi se debe seleccionar la opcion de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
+            <h3>Para agregar un nuevo dispositivo, apretar el botón (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
+            <h3>Al hacer click aparecerá un menú. Ahí se debe seleccionar la opción de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
         </div>
         <div v-else>
-            <p>Loading...</p>
+            <p>Cargando...</p>
         </div>
     </div>
 </template>
@@ -325,13 +325,13 @@
                 roomMap: null,
                 newHomeRules:[
                     v=> !!v || 'Es necesario un nombre',
-                    v=> (v && v.length >= 3 && v.length <= 15) || 'El nombre debe tener entre 3 y 15 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros, \'_\' o espacios',
+                    v=> (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, números, \'_\' o espacios',
                 ],
                 newRoomRules:[
                     v=> !!v || 'Es necesario un nombre',
                     v=> (v && v.length >= 3 && v.length <= 43) || 'El nombre debe tener entre 3 y 43 caracteres',
-                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                    v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, números o espacios',
                 ],
             }
         },
@@ -376,7 +376,7 @@
             },
             roomerrormessage(flag) {
                 if(flag){
-                    return 'El nombre de la habitacion ya existe, por favor elija otro nombre';
+                    return 'El nombre de la habitación ya existe, por favor elija otro nombre';
                 }
                 else
                     return '';

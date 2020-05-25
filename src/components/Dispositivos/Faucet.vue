@@ -103,7 +103,7 @@
                     awaitingResponse: false,
                     validate:
                         [
-                            v => /[0-9]+/.test(v) || "Debe ingresar un valor numerico",
+                            v => /[0-9]+/.test(v) || "Debe ingresar un valor numérico",
                             v => v >= this.dispense.minValue && v <= this.dispense.maxValue || `El valor debe estar entre ${this.dispense.minValue} y ${this.dispense.maxValue}`
                         ]
                 }

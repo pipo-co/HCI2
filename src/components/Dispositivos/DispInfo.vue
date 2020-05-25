@@ -39,7 +39,7 @@
                     <v-alert class="my-0 pa-0" border="top" colored-border color="red">
                         <v-card-text class="pb-0 display-1">Eliminar dispositivo</v-card-text>
                         <v-card-text>
-                            Se perdera toda la informacion vinculada al dispositivo
+                            Se perderá toda la información vinculada al dispositivo
                         </v-card-text>
                         <v-card tile class="blue-grey lighten-5">
                             <v-card-actions>

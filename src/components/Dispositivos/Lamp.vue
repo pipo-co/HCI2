@@ -100,7 +100,7 @@
                     awaitingResponse: false,
                     validate:
                         [
-                            v => !!v || "Debe ingresar un valor numerico",
+                            v => !!v || "Debe ingresar un valor numérico",
                             v => v >= this.dispense.minValue && v <= this.dispense.maxValue || `El valor debe estar entre ${this.dispense.minValue} y ${this.dispense.maxValue}`
                         ]
                 },
@@ -118,7 +118,7 @@
             state() {
                 if(this.props.state.status === 'off')
                     return 'Apagado';
-                return `Prendido: brillo - ${this.props.state.brightness}% `;
+                return `Prendido: Brillo - ${this.props.state.brightness}% `;
             },
             actualColor(){
                 return `#${this.props.state.color}`;

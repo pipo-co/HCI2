@@ -14,7 +14,7 @@
                 <v-img class="ma-auto" src="../assets/404.png" height="50%" width="50%"></v-img>
             </v-col>
         </v-row>
-        <p class="display-1">Oh no! Pagina no encontrada</p>
+        <p class="display-1">Oh no! Página no encontrada</p>
         <p class="display-1">Clickea en SMARTIFY para volver al inicio</p>
     </div>
 </template>

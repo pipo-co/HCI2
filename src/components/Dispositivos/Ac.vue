@@ -234,7 +234,7 @@
         computed: {
             state() {
                 if (this.props.state.status === 'off')
-                    return 'Off'
+                    return 'Apagado'
                 return `Prendido: ${this.props.state.mode} ${this.props.state.temperature}º`
             },
         },

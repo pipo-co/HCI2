@@ -37,7 +37,7 @@
                                         <v-col class="py-0 px-0">
                                             <v-list-item class="px-0">
                                                 <v-list-item-content>
-                                                    <v-list-item-title class="title">Ubicacion:</v-list-item-title>
+                                                    <v-list-item-title class="title">Ubicación:</v-list-item-title>
                                                 </v-list-item-content>
                                             </v-list-item>
                                         </v-col>
@@ -106,7 +106,7 @@
             enoughBattery(){
                 return this.props.state.batteryLevel >= 6;
             },
-            invalidRoomChange(){ // Verificar
+            invalidRoomChange(){
                 return this.props.state.status !== 'active' || !this.enoughBattery;
             }
         },

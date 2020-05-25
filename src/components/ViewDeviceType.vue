@@ -5,7 +5,7 @@
             <card-holder :card-array="cards"/>
         </div>
         <div v-else>
-            <p>Loading...</p>
+            <p>Cargando...</p>
         </div>
 
     </div>

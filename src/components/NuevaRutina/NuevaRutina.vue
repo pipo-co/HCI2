@@ -66,7 +66,7 @@
                                     <v-row no-gutters class="ma-0 pa-0">
                                         <v-col cols="2">
                                             <v-list class="ml-3 pa-0" >
-                                                <v-list-item-subtitle >Descripcion:</v-list-item-subtitle>
+                                                <v-list-item-subtitle >Descripción:</v-list-item-subtitle>
                                             </v-list>
                                         </v-col>
                                         <v-col>
@@ -94,7 +94,7 @@
                             <v-col cols="4" md="4" class="pa-0 my-0" >
                                 <v-list-item class="py-0 my-0">
                                     <v-list-item-content class="py-0 my-0">
-                                        <v-list-item-title class="pa-0 md-0"> Acciones agregados: </v-list-item-title>
+                                        <v-list-item-title class="pa-0 md-0"> Acciones agregadas: </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -126,7 +126,7 @@
                                             <v-col class="px-0" cols="10">
                                                 <v-list>
                                                     <v-list-item class="px-0">
-                                                        <v-list-item-title>Accion: {{$vuetify.lang.t(`$vuetify.${action.action.actionName}`)}}</v-list-item-title>
+                                                        <v-list-item-title>Acción: {{$vuetify.lang.t(`$vuetify.${action.action.actionName}`)}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
@@ -169,7 +169,7 @@
                                                 <template v-slot:activator="{ on }">
                                                     <v-btn height="70" width="450" v-on="on" class="md-12 text--secondary border-dashed" outlined>
                                                         <v-icon large dark outlined>mdi-plus</v-icon>
-                                                        Agregar Accion
+                                                        Agregar Acción
                                                     </v-btn>
                                                 </template>
                                                 <v-card class="rounded ma-auto"
@@ -211,7 +211,7 @@
                                                                         <v-col cols="8">
                                                                             <v-list>
                                                                                 <v-list-item>
-                                                                                    <v-list-item-title>Seleccione la habitacion del dispositivo:</v-list-item-title>
+                                                                                    <v-list-item-title>Seleccione la habitación del dispositivo:</v-list-item-title>
                                                                                 </v-list-item>
                                                                             </v-list>
                                                                         </v-col>
@@ -267,7 +267,7 @@
                                                                         <v-col cols="8">
                                                                             <v-list>
                                                                                 <v-list-item>
-                                                                                    <v-list-item-title>Seleccione la accion del dispositivo:</v-list-item-title>
+                                                                                    <v-list-item-title>Seleccione la acción del dispositivo:</v-list-item-title>
                                                                                 </v-list-item>
                                                                             </v-list>
                                                                         </v-col>
@@ -301,7 +301,7 @@
                                                                         dark
                                                                         color="#65C2AD"
                                                                         :disabled="!validSave">
-                                                                    Agregar Accion
+                                                                    Agregar Acción
                                                                 </v-btn>
                                                             </v-col>
                                                         </v-row>
@@ -367,13 +367,13 @@
                     desc: null,
                     descValid: false,
                     titleRules: [
-                        v => !!v || 'Es necesario un titulo',
+                        v => !!v || 'Es necesario un título',
                         v => (v && v.length >= 3 && v.length <= 60) || 'El nombre debe tener entre 3 y 60 caracteres',
-                        v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, numeros o espacios',
+                        v => /^[A-Z a-z0-9]+$/.test(v) || 'El nombre solo puede contener letras, números o espacios',
                     ],
                     descRules: [
-                        v => (!v || v.length <= 80) || 'La descripcion debe tener como maximo 80 caracteres',
-                        v => !v || /^[A-Z a-z0-9]+$/.test(v) || 'La descripcion solo puede contener letras, numeros o espacios'
+                        v => (!v || v.length <= 80) || 'La descripción debe tener como maximo 80 caracteres',
+                        v => !v || /^[A-Z a-z0-9]+$/.test(v) || 'La descripción solo puede contener letras, números o espacios'
                     ]
                 },
             }

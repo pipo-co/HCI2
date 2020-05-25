@@ -73,7 +73,7 @@
                             <v-col cols="3">
                                 <v-list-item class="px-0">
                                     <v-list-item-content>
-                                        <v-list-item-title class="subtitle-1">Genero</v-list-item-title>
+                                        <v-list-item-title class="subtitle-1">Género</v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
@@ -95,7 +95,7 @@
                         <v-row>
                             <v-col class="py-0 px-0">
                                 <v-list > <!--class="px-7" -->
-                                    <v-list-item-title class="title">Lista de reporduccion:</v-list-item-title>
+                                    <v-list-item-title class="title">Lista de reporducción:</v-list-item-title>
                                     <v-list-item-group color="primary">
                                         <v-list-item v-for="song in this.playlist" :key="song.title" dense>
                                             <v-list-item-icon>
@@ -156,7 +156,7 @@
             state(){
                 let song = this.props.state.song;
                 if(this.stopped || !song)
-                    return 'Off';
+                    return 'Apagado';
                 else if(this.paused)
                     return `${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
                 return `${song.progress}/${song.duration} - ${song.title} - Vol. ${this.props.state.volume}`;
