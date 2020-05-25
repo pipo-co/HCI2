@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar :home="home.name" :room="room.name"/>
+        <nav-bar :home="home.name" :room="room.name" :show-back="true"/>
         <div v-if="cards && cards.length !== 0">
             <card-holder :card-array="cards"/>
         </div>

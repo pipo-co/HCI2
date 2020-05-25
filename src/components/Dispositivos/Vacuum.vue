@@ -110,14 +110,6 @@
             }
         },
         methods: {
-            handleDispInfoEvents(event){
-                this.eventHandlers[event.eventName](this);
-            },
-            excecuteAction(action, params){
-                this.props.execute(action, params)
-                    .then(console.log)
-                    .catch( errors => console.log(`${action} -  ${errors}`) );
-            },
             loadRooms(){
                 Api.home.getHomeRooms(this.props.room.home.id)
                     .then(data => {
@@ -125,14 +117,13 @@
                         this.activeRoom.selectedRoom = this.activeRoom.rooms.findIndex( elem => elem.id === this.props.state.location.id);
                     })
                     .catch(console.log);
-                //this.activeRoom.selectedRoom = this.props.state.location.id;
             },
             changeState(){
                 let i = this.multivaluedState.selectedValue;
                 if(i < this.multivaluedState.values.length && i >= 0) {
                     let value = this.multivaluedState.values[i];
                     this.multivaluedState.awaitingResponse = true;
-                    this.props.execute(value.action) // Falta validar insuficient battery level
+                    this.props.execute(value.action)
                         .then( response => response.result && (this.props.state.status = value.state))
                         .catch(console.log)
                         .finally( () => this.multivaluedState.awaitingResponse = false);
@@ -156,20 +147,20 @@
             stateChangeHandler(newState){
                 this.multivaluedState.selectedValue = this.multivaluedState.values.findIndex(elem => elem.state === newState.status);
 
-                this.activeRoom.selectedRoom = this.activeRoom.rooms.findIndex( elem => elem.id === newState.location.id);
+                if(newState.location)
+                    this.activeRoom.selectedRoom = this.activeRoom.rooms.findIndex( elem => elem.id === newState.location.id);
+                else
+                    this.props.state.location = {id: this.props.room.id, name: this.props.room.name};
 
                 this.mode.value = newState.mode;
             }
         },
         mounted(){
             // Vacuum empieza sin una setLocation, hay que configurarselo la primera vez.
-            if(!this.props.state.location) {
-                this.props.execute('setLocation', [this.props.room.id])
-                    .then( this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this)) )
-                    .catch(error => console.log(`Critical Error ${error}`));
+            if(!this.props.state.location)
                 this.props.state.location = {id: this.props.room.id, name: this.props.room.name};
-            } else
-                this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
+
+            this.statePolling = lib.setStatePolling.call(this, this.stateChangeHandler.bind(this));
 
             let actions = [
                 this.mode.getActionLoaderObject()

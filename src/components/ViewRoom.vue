@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar :home="home.name" :room="room.name"/>
+        <nav-bar :home="home.name" :room="room.name" :show-back="true"/>
         <v-container class="pa-0" fluid v-if="cards && cards.length !== 0">
             <v-row>
                 <v-col class="pa-0">
