@@ -5,7 +5,7 @@
                 <v-col cols="12" class="px-5">
                     <disp-info :device="props" :state="state" @delete="freeResources()">
                         <template v-slot:state>
-                            <v-avatar size="16" :color="actualColor"></v-avatar>
+                            <v-avatar v-show="state !== 'Apagado'" size="16" :color="actualColor"></v-avatar>
                         </template>
                     </disp-info>
                 </v-col>
