@@ -70,11 +70,11 @@
                                         ref="form"
                                         v-model="validHome"
                                         lazy-validation
-                                        @submit="controllerNextPlus() && false"
                                 >
                                     <v-text-field
                                             class="ma-auto"
                                             @click="changeHomeFlag()"
+                                            @keydown.enter.prevent="controllerNextPlus"
                                             v-model="newhomename"
                                             autofocus
                                             :rules="newHomeRules"
@@ -127,13 +127,13 @@
                                         ref="form"
                                         v-model="validRoom"
                                         lazy-validation
-                                        @submit="controllerNextPlus() && false"
                                 >
                                     <v-text-field
                                             class="ma-auto"
                                             v-model="newroomname"
                                             autofocus
                                             @click="changeRoomFlag()"
+                                            @keydown.enter.prevent="controllerNextPlus"
                                             :rules="newRoomRules"
                                             :error-messages="roomerrormessage"
                                             label="Registrar nueva Habitación"
@@ -232,13 +232,13 @@
                                                             ref="form"
                                                             v-model="validDisp"
                                                             lazy-validation
-                                                            @submit="saveDisp() && false"
                                                     >
                                                         <v-text-field
                                                                 autofocus
                                                                 v-model="disp.dispname"
                                                                 :rules="newDispRules"
                                                                 @click="changeDispFlag()"
+                                                                @keydown.enter.prevent="saveDisp"
                                                                 :error-messages="disperrormessage"
                                                                 class="py-0 pr-2" height="25" ></v-text-field>
                                                     </v-form>

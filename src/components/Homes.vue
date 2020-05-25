@@ -22,7 +22,6 @@
                                                     ref="form"
                                                     v-model="auxHome[home.id].valid"
                                                     lazy-validation
-                                                    @submit="saveChanges() && false"
                                             >
                                                 <v-text-field
                                                         v-model="auxHome[home.id].name"
@@ -30,6 +29,7 @@
                                                         :error-messages="homeerrormessage(auxHome[home.id].flagErrorHome)"
                                                         :rules="newHomeRules"
                                                         @click="auxHome[home.id].flagErrorHome = false"
+                                                        @keydown.enter.prevent="saveChanges"
                                                 ></v-text-field>
                                             </v-form>
                                         </v-col>
@@ -190,13 +190,13 @@
                                                                         ref="form"
                                                                         v-model="roomNameValid"
                                                                         lazy-validation
-                                                                        @submit="saveRoomChanges() && false"
                                                                 >
                                                                     <v-text-field
                                                                             v-model="roomName"
                                                                             :label="room.roomName.split('_').pop()"
                                                                             :rules="newRoomRules"
                                                                             :error-messages="roomerrormessage(flagErrorRoom)"
+                                                                            @keydown.enter.prevent="saveRoomChanges"
                                                                             autofocus
                                                                     >
                                                                     </v-text-field>

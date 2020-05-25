@@ -53,12 +53,12 @@
                                                     ref="form"
                                                     v-model="newRoutine.nameValid"
                                                     lazy-validation
-                                                    @submit="false"
                                             >
                                                 <v-text-field
                                                         v-model="newRoutine.name"
                                                         :rules="newRoutine.titleRules"
                                                         class="pa-0 my-0"
+                                                        @keydown.enter.prevent="false"
                                                 ></v-text-field>
                                             </v-form>
                                         </v-col>
@@ -74,12 +74,12 @@
                                                     ref="form"
                                                     v-model="newRoutine.descValid"
                                                     lazy-validation
-                                                    @submit="false"
                                             >
                                                 <v-text-field
                                                         v-model="newRoutine.desc"
                                                         class="pa-0" height="15"
                                                         :rules="newRoutine.descRules"
+                                                        @keydown.enter.prevent="false"
                                                         label="Opcional">
                                                 </v-text-field>
                                             </v-form>

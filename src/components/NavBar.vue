@@ -29,14 +29,14 @@
                     <v-text-field
                             class="my-0" background-color="#67CDB3"
                             placeholder="Buscar"
-                              autofocus solo flat dense hide-details v-model="searchBar.value"
-                              @keydown.enter="executeSearch">
-                    <template v-slot:append>
-                        <v-btn dense v-show="searchBar.value" text @click="executeSearch">
-                            Buscar
-                        </v-btn>
-                    </template>
-                </v-text-field>
+                            autofocus solo flat dense hide-details v-model="searchBar.value"
+                            @keydown.enter.prevent="executeSearch">
+                        <template v-slot:append>
+                            <v-btn dense v-show="searchBar.value" text @click="executeSearch">
+                                Buscar
+                            </v-btn>
+                        </template>
+                    </v-text-field>
                 </v-form>
             </v-col>
             <v-col cols="1">
