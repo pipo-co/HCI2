@@ -41,7 +41,7 @@
                                         <v-alert class="my-0 pa-0" border="top" colored-border color="red">
                                             <v-card-text class="pb-0 display-1">Eliminar Rutina</v-card-text>
                                             <v-card-text class="subtitle-2">
-                                                ¿Está seguro que quiere borrar la Rutina: "{{routine.name}}"?
+                                                ¿Está seguro que quiere eliminar la Rutina: "{{routine.name}}"?
                                             </v-card-text>
                                             <v-card tile class="blue-grey lighten-5">
                                                 <v-card-actions>
@@ -91,7 +91,7 @@
                 <v-col align-self="center" justify="center" cols="6">
                     <v-btn height="70" width="750"  class="ma-auto text--secondary border-dashed rounded" :to="{ name: 'nuevarutina' }"  text>
                         <v-icon large dark>mdi-plus</v-icon>
-                        Agregar Rutina
+                        Registrar Rutina
                     </v-btn>
                 </v-col>
                 <v-col cols="3">

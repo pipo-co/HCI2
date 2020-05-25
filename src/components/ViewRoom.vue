@@ -8,7 +8,7 @@
                            :to="{ name:'nuevodispositivo', params: { 'previousRoute': 'room', 'homeID': home.id, 'roomID': room.id } }"
                            class="text--secondary border-dashed" outlined>
                         <v-icon large dark outlined >mdi-plus</v-icon>
-                        Agregar Dispositivo
+                        Registrar Dispositivo
                     </v-btn>
                 </v-col>
             </v-row>

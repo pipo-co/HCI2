@@ -5,7 +5,7 @@
         <div v-else-if="!loading">
             <h1>No hay dispositivos marcados como favoritos.</h1>
             <br>
-            <h3>Para agregar un dispositivo, busque la tarjeta correspondiente y aprete el corazon (<v-icon>mdi-heart</v-icon>). </h3>
+            <h3>Para marcar un dispositivo como tal, busque la tarjeta correspondiente y aprete el corazon (<v-icon>mdi-heart</v-icon>). </h3>
             <h3>Si el corazón está de color rojo (<v-icon color="red">mdi-heart</v-icon>) indica que la tarjeta está marcada como favorito</h3>
         </div>
         <div v-else>
