@@ -46,7 +46,7 @@
                             <v-col>
                                 <v-list class="mx-5">
                                     <v-list-item-title class="headline">Seleccione el hogar</v-list-item-title>
-                                    <v-list-item-subtitle>Elegir el hogar al cual va a pertenecer el nuevo dispositivo</v-list-item-subtitle>
+                                    <v-list-item-subtitle>{{firstMessage}}</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -103,7 +103,7 @@
                             <v-col>
                                 <v-list class="mx-5">
                                     <v-list-item-title class="headline">Seleccionar la habitacion</v-list-item-title>
-                                    <v-list-item-subtitle >Elegir la habitacion a la cual va a pertenecer el nuevo dispositivo</v-list-item-subtitle>
+                                    <v-list-item-subtitle>{{secondMessage}}</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -374,6 +374,18 @@
                     return 'EDITAR DISPOSITIVO';
                 else
                     return 'NUEVO DISPOSITIVO';
+            },
+            firstMessage(){
+                if (this.editFlag)
+                    return 'Seleccione el antiguo hogar del dispositivo o modifiquelo si lo desea';
+                else
+                    return 'Elegir el hogar al cual va a pertenecer el nuevo dispositivo';
+            },
+            secondMessage(){
+                if (this.editFlag)
+                    return 'Elegir la habitacion a la cual pertenecera el dispositivo';
+                else
+                    return 'Elegir la habitacion a la cual pertenecera el nuevo dispositivo';
             },
             thirdStepValidation() {
                 if (!this.editFlag)
