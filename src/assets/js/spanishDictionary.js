@@ -2,7 +2,6 @@ import es from 'vuetify/es5/locale/es'
 
 export default {
     ...es,
-
     speaker: "Parlante",
     ac: "Aire",
     oven: "Horno",
@@ -87,4 +86,5 @@ export default {
     horizontalSwing: "Barrido horizontal",
     fanSpeed: "Velocidad del ventilador",
     roomId: "Habitación",
+    auto: "Auto",
 }

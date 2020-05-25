@@ -123,9 +123,8 @@
                                 log.timestamp = new Date(log.timestamp).toLocaleString()
                                 log.action = this.$vuetify.lang.t(`$vuetify.${log.action}`)
                                 if(log.params.length !== 0){
-                                    let aux = this.$vuetify.lang.t(`$vuetify.${log.params}`)
-                                    if( ! aux.includes("$vuetify"))
-                                        log.params = aux;
+                                    if(isNaN(log.params))
+                                        log.params = this.$vuetify.lang.t(`$vuetify.${log.params}`)
                                 }
                             })
                         })

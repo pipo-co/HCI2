@@ -147,7 +147,7 @@
                                             <v-col class="px-0" v-else v-for="(param, index) in action.action.params" :key="index">
                                                 <v-list>
                                                     <v-list-item  class="px-0">
-                                                        <v-list-item-title>{{param}}</v-list-item-title>
+                                                        <v-list-item-title>{{translateName(param)}}</v-list-item-title>
                                                     </v-list-item>
                                                 </v-list>
                                             </v-col>
@@ -389,6 +389,11 @@
             }
         },
         methods: {
+            translateName(name){
+                if(!isNaN(name))
+                    return name;
+                return this.$vuetify.lang.t(`$vuetify.${name}`);
+            },
             paramControl(value, index){
                 this.params[index] = value;
                 this.checkValidSave();
