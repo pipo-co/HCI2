@@ -11,7 +11,7 @@
                     <v-list-item-group >
                         <v-list-item-content class="py-0">
                             <v-list-item-subtitle>{{location}}</v-list-item-subtitle>
-                            <v-list-item-title class="title d-inline-block text-truncate text--darken-1 indigo--text">{{device.getName()}}</v-list-item-title>
+                            <v-list-item-title class="title d-inline-block text-truncate">{{device.getName()}}</v-list-item-title>
                             <v-list-item-subtitle v-if="state" class="text--primary">{{state}}<slot name="state"></slot></v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item-group>
@@ -146,5 +146,8 @@
 <style scoped>
     .v-list-item__content{
         text-align: left;
+    }
+    .title{
+        color: #3C3F58 !important;
     }
 </style>

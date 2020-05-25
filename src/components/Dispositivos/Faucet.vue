@@ -24,8 +24,8 @@
                                 <v-btn color="#72E1C7" class="black--text mx-2" rounded @click="invertState()" :loading="booleanStatus.awaitingResponse" :disabled="booleanStatus.awaitingResponse" >{{invertedState}}</v-btn>
                             </v-col>
                             <v-col cols="4">
-                                <v-progress-circular v-show="isDispensing" :value="percentDispense"></v-progress-circular>
-                                <v-btn color="#72E1C7" class="black--text mx-2" rounded @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
+                                <v-progress-circular color="#72E1C7" v-show="isDispensing" :value="percentDispense"></v-progress-circular>
+                                <v-btn color="#72E1C7" v-show="!isDispensing" class="black--text mx-2" rounded @click="excecuteDispense()" :loading="dispense.awaitingResponse" :disabled="!validDispense || dispense.awaitingResponse">Dispensar</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>

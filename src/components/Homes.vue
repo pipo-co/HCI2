@@ -8,7 +8,7 @@
                     <v-col cols="12" md="12">
                         <v-dialog v-model="dialog" width="500">
                             <template v-slot:activator="{ on }">
-                                <v-btn color="#72E1C7" class="teal--text text--darken-4 font-weight-bold" dark v-on="on">
+                                <v-btn color="#72E1C7" class="font-weight-bold" dark v-on="on">
                                     Editar Hogares
                                 </v-btn>
                             </template>
@@ -92,8 +92,8 @@
                                 background-color="#72E1C7"
                                 dark
                         >
-                            <v-tabs-slider color="teal"></v-tabs-slider>
-                            <v-tab class="teal--text text--darken-4 font-weight-bold" v-for="home in homes" :key="home.id" >
+                            <v-tabs-slider color="#3C3F58"></v-tabs-slider>
+                            <v-tab class="font-weight-bold" v-for="home in homes" :key="home.id" >
                                 {{home.name}}
                             </v-tab>
                         </v-tabs>
@@ -473,6 +473,9 @@
     }
     .rooms{
         text-align: left;
+    }
+    .font-weight-bold{
+        color: #3C3F58 !important;
     }
     .border-dashed{
         border-radius: 25px 25px 25px 25px;
