@@ -6,6 +6,7 @@
                     <disp-info
                             :device="props"
                             :state="state"
+                            @delete="freeResources()"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -167,11 +168,14 @@
             },
             stateChangeHandler(newState){
                 this.booleanStatus.value = newState.status === 'closed';
+            },
+            freeResources(){
+                if(this.statePolling)
+                    clearInterval(this.statePolling);
             }
         },
         beforeDestroy() {
-            if(this.statePolling)
-                clearInterval(this.statePolling);
+            this.freeResources();
         },
         mounted(){
             this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this));

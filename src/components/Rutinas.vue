@@ -7,10 +7,10 @@
                 transition="scale-transition"
                 dense
                 text
-                type="success"
+                :type="alertType"
                 class="ma-auto"
         >
-            Rutina {{currentRoutine}} ejecutada correctamente
+            {{alertMessage}}
         </v-alert>
         <v-card v-for="routine in routines" :key="routine.name" elevation="5" class="mx-auto my-2 rounded"
                 max-width="750"
@@ -115,6 +115,7 @@
                 routineEliminateDialog:false,
                 currentRoutineID:false,
                 currentRoutine: null,
+                currentRoutineSuccess: true,
                 alert:false,
                 auxRoutine: {},
                 timeout: 3000,
@@ -141,19 +142,32 @@
                 this.auxRoutine[routineID].loadingFlag = true;
                 this.currentRoutine = title;
                 Api.routine.execute(routineID)
-                    .then( data => {
-                        console.log(data);
+                    .then( () => {
                         this.getRoutines();
-
                         setTimeout(function () {
                             this.alert=false;
                         }.bind(this),3000);
+                        this.currentRoutineSuccess = true;
                     })
-                    .catch(console.log)
+                    .catch(error => {
+                        console.log(error);
+                        this.currentRoutineSuccess = false;
+                    })
                     .finally( () => {
                         this.auxRoutine[routineID].loadingFlag = false;
-                        this.alert=true;
+                        this.alert = true;
                     });
+            }
+        },
+        computed: {
+            alertType(){
+                return (this.currentRoutineSuccess)? 'success' : 'error';
+            },
+            alertMessage(){
+                if(this.currentRoutineSuccess)
+                    return `Rutina ${this.currentRoutine} ejecutada correctamente`;
+                else
+                    return `Hubo un error al ejecutar la rutina ${this.currentRoutine}. Verifique que todos los dispositivos de la rutina estén habilitados`;
             }
         }
     }

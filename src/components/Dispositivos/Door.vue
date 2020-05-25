@@ -6,6 +6,7 @@
                     <disp-info
                             :device="props"
                             :state="state"
+                            @delete="freeResources()"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -71,21 +72,24 @@
                     return "Desbloquear";
                 }else
                     return "Bloquear";
-            },
+            }
         },
         methods: {
             stateChangeHandler(newState) {
                 this.open.value = newState.status === this.open.statusTrue;
 
                 this.lock.value = newState.lock === this.lock.statusTrue;
+            },
+            freeResources(){
+                if(this.statePolling)
+                    clearInterval(this.statePolling);
             }
         },
         mounted() {
             this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this), 10000);
         },
         beforeDestroy() {
-            if(this.statePolling)
-                clearInterval(this.statePolling);
+            this.freeResources();
         }
     }
 

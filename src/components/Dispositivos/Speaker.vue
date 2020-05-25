@@ -6,6 +6,7 @@
                     <disp-info
                             :device="props"
                             :state="state"
+                            @delete="freeResources()"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -235,6 +236,10 @@
                 } else
                     this.updatePlaylistBeginning();
             },
+            freeResources(){
+                if(this.statePolling)
+                    clearInterval(this.statePolling);
+            },
             getTranslation(baseArray){
                 if(baseArray)
                     return baseArray.map(entry => {return {value: entry, text: this.$vuetify.lang.t(`$vuetify.${entry}`)}})
@@ -256,8 +261,7 @@
             this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this), 1000);
         },
         beforeDestroy() {
-            if(this.statePolling)
-                clearInterval(this.statePolling);
+            this.freeResources();
         }
     }
 </script>

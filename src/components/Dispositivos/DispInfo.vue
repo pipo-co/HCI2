@@ -117,7 +117,10 @@
             executeRemove(){
                 this.overflowOptions.delete.dialog = false;
                 this.device.delete()
-                    .then(this.removeFromDom)
+                    .then(wasCascade => {
+                        this.removeFromDom(wasCascade);
+                        this.$emit('delete');
+                    })
                     .catch(console.log);
             },
             handleFav(){

@@ -6,6 +6,7 @@
                     <disp-info
                             :device="props"
                             :state="state"
+                            @delete="freeResources()"
                     ></disp-info>
                 </v-col>
                 <v-col cols="12" class="px-5">
@@ -153,10 +154,14 @@
                     this.props.state.location = {id: this.props.room.id, name: this.props.room.name};
 
                 this.mode.value = newState.mode;
+            },
+            freeResources(){
+                if(this.statePolling)
+                    clearInterval(this.statePolling);
             }
         },
         mounted(){
-            // Vacuum empieza sin una setLocation, hay que configurarselo la primera vez.
+            // Vacuum empieza sin una setLocation, hay que configurarselo hasta que lo tenga.
             if(!this.props.state.location)
                 this.props.state.location = {id: this.props.room.id, name: this.props.room.name};
 
@@ -171,8 +176,7 @@
             this.loadRooms();
         },
         beforeDestroy() {
-            if(this.statePolling)
-                clearInterval(this.statePolling);
+            this.freeResources();
         },
     }
 </script>

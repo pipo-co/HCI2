@@ -3,7 +3,7 @@
         <v-container class="pt-0">
             <v-row no-gutters dense>
                 <v-col cols="12" class="px-5">
-                    <disp-info :device="props" :state="state">
+                    <disp-info :device="props" :state="state" @delete="freeResources()">
                         <template v-slot:state>
                             <v-avatar size="16" :color="actualColor"></v-avatar>
                         </template>
@@ -169,11 +169,14 @@
                 this.color.hue = hexToHSL(newState.color).hue;
 
                 this.brightness.selectedValue = newState.brightness;
+            },
+            freeResources(){
+                if(this.statePolling)
+                    clearInterval(this.statePolling);
             }
         },
         beforeDestroy() {
-            if(this.statePolling)
-                clearInterval(this.statePolling);
+            this.freeResources();
         },
         mounted(){
             this.statePolling = setStatePolling.call(this, this.stateChangeHandler.bind(this));
