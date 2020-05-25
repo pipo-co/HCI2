@@ -39,7 +39,7 @@
                         </v-row>
                         <v-form v-model="level.validInput">
                             <v-row>
-                                <v-col class="pr-4">
+                                <v-col cols="9" class="pr-4">
                                         <v-slider
                                                 color="#65C0AB"
                                                 thumb-color="#65C0AB"
@@ -52,7 +52,7 @@
                                                 :min='level.minValue'
                                                 hide-details></v-slider>
                                 </v-col>
-                                 <v-col class="pr-4">
+                                 <v-col cols="3" class="pr-4">
                                      <v-text-field
                                              :disabled="level.awaitingResponse"
                                              :loading="level.awaitingResponse"
