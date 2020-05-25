@@ -30,7 +30,7 @@
                                     <v-icon color="#6563FF">mdi-minus</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col cols="2">
+                            <v-col cols="3">
                                 <v-form v-model="temperature.validInput">
                                     <v-text-field
                                             v-model="temperature.value"
@@ -52,7 +52,7 @@
                                 </v-btn>
                             </v-col>
 
-                            <v-col cols="2"><!--class="pr-10" -->
+                            <v-col cols="3"><!--class="pr-10" -->
                                 <v-btn text color="#6563FF" @click="extraControllers.changeState()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
