@@ -230,7 +230,7 @@
                                                         </v-btn>
                                                     </template>
                                                     <v-alert class="my-0 pa-0" border="top" colored-border color="red">
-                                                        <v-card-text class="pb-0 display-1">Eliminar Hogar</v-card-text>
+                                                        <v-card-text class="pb-0 display-1">Eliminar Habitacion</v-card-text>
                                                         <v-card-text>
                                                             Si elimina la habitación, se borrarán todos los dispositivos en ella.
                                                         </v-card-text>

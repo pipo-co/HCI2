@@ -93,7 +93,7 @@
                     </v-container>
                     <v-container class="py-0 my-0">
                         <v-row class="py-0 my-0">
-                            <v-col cols="4" md="4" class="pa-0 my-0" >
+                            <v-col cols="4"  class="pa-0 my-0" >
                                 <v-list-item class="py-0 my-0">
                                     <v-list-item-content class="py-0 my-0">
                                         <v-list-item-title class="pa-0 md-0"> Acciones agregadas: </v-list-item-title>
@@ -183,7 +183,7 @@
                                                                     width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters>
-                                                                        <v-col cols="8">
+                                                                        <v-col cols="6">
                                                                             <v-list>
                                                                                 <v-list-item>
                                                                                     <v-list-item-title>Seleccione el hogar del dispositivo:</v-list-item-title>
@@ -210,7 +210,7 @@
                                                                     width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters>
-                                                                        <v-col cols="8">
+                                                                        <v-col cols="6">
                                                                             <v-list>
                                                                                 <v-list-item>
                                                                                     <v-list-item-title>Seleccione la habitación del dispositivo:</v-list-item-title>
@@ -238,7 +238,7 @@
                                                                     width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters>
-                                                                        <v-col cols="8">
+                                                                        <v-col cols="6">
                                                                             <v-list>
                                                                                 <v-list-item>
                                                                                     <v-list-item-title>Seleccione el dispositivo:</v-list-item-title>
@@ -266,7 +266,7 @@
                                                                     width="700">
                                                                 <v-container fluid class="pa-0">
                                                                     <v-row no-gutters >
-                                                                        <v-col cols="8">
+                                                                        <v-col cols="6">
                                                                             <v-list>
                                                                                 <v-list-item>
                                                                                     <v-list-item-title>Seleccione la acción del dispositivo:</v-list-item-title>
