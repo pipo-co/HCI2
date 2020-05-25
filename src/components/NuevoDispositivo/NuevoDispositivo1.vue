@@ -60,7 +60,7 @@
                                             :label="home.name"
                                             :value="home"
                                     ></v-radio>
-                                    <v-radio label="Crear nuevo Hogar" :value="null"></v-radio>
+                                    <v-radio label="Registrar nuevo Hogar" :value="null"></v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
@@ -117,7 +117,7 @@
                                             :label="homeroom.name.split('_').pop()"
                                             :value="homeroom"
                                     ></v-radio>
-                                    <v-radio :label="`Crear nueva Habitación`" :value="null"></v-radio>
+                                    <v-radio :label="`Registrar nueva Habitación`" :value="null"></v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
@@ -136,7 +136,7 @@
                                             @click="changeRoomFlag()"
                                             :rules="newRoomRules"
                                             :error-messages="roomerrormessage"
-                                            label="Crear nueva Habitación"
+                                            label="Registrar nueva Habitación"
                                     ></v-text-field>
                                 </v-form>
                             </v-col>
@@ -149,7 +149,7 @@
                             </v-col>
                             <v-col cols="6"></v-col>
                             <v-col>
-                                <v-btn rounded outlined  @click='controllerNextPlus()'  :disabled="validation">
+                                <v-btn rounded outlined  @click='controllerNextPlus()' :disabled="validation">
                                     Siguiente
                                 </v-btn>
                             </v-col>
@@ -163,7 +163,7 @@
                             <v-col>
                                 <v-list class="mx-5">
                                     <v-list-item-title class="headline" >Seleccionar el tipo de dispositivo</v-list-item-title>
-                                    <v-list-item-subtitle >Elegir el tipo de dispositivo que desea agregar</v-list-item-subtitle>
+                                    <v-list-item-subtitle >Elegir el tipo de dispositivo que desea registrar</v-list-item-subtitle>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -379,7 +379,7 @@
                 if (this.editFlag)
                     return 'Seleccione el antiguo hogar del dispositivo o modifíquelo si lo desea';
                 else
-                    return 'Elegir el hogar al cual va a pertenecer el nuevo dispositivo';
+                    return 'Elegir el hogar al cual pertenecerá el nuevo dispositivo';
             },
             secondMessage(){
                 if (this.editFlag)

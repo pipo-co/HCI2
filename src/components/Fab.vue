@@ -19,7 +19,7 @@
                     <v-icon color="#3C3F58">mdi-clipboard-list-outline</v-icon>
                 </v-btn>
             </template>
-            <span>Agregar Rutina</span>
+            <span>Registrar Rutina</span>
         </v-tooltip>
         <v-tooltip disabled nudge-left="25" left :value="true">
             <template v-slot:activator="{ on }">
@@ -27,7 +27,7 @@
                     <v-icon color="#3C3F58">mdi-plus</v-icon>
                 </v-btn>
             </template>
-            <span>Agregar Dispositivo</span>
+            <span>Registrar Dispositivo</span>
         </v-tooltip>
     </v-speed-dial>
 </template>

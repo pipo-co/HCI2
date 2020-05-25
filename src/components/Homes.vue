@@ -63,7 +63,7 @@
                                 <v-card-text>
                                     Si elimina el hogar, se perderán todas las habitaciones y dispositivos en ellas.
                                 </v-card-text>
-                                <v-card-text>¿Está seguro que quiere borrar el Hogar: {{this.auxiliarName}} ?</v-card-text>
+                                <v-card-text>¿Está seguro que quiere eliminar el Hogar: {{this.auxiliarName}} ?</v-card-text>
                                 <v-card tile class="blue-grey lighten-5">
                                     <v-card-actions>
                                         <v-btn depressed color="white"  @click=" dialog2 = false">
@@ -233,7 +233,7 @@
                                                         <v-card-text>
                                                             Si elimina la habitación, se borrarán todos los dispositivos en ella.
                                                         </v-card-text>
-                                                        <v-card-text>¿Esta seguro que quiere borrar la habitación: {{room.roomName.split('_').pop()}}?</v-card-text>
+                                                        <v-card-text>¿Esta seguro que quiere eliminar la habitación: {{room.roomName.split('_').pop()}}?</v-card-text>
                                                         <v-card tile class="blue-grey lighten-5">
                                                             <v-card-actions>
                                                                 <v-btn depressed color="white"  @click="roomEliminateDialog = false">
@@ -279,8 +279,8 @@
         <div v-else-if="!loading" >
             <h1>Todavía no hay dispositivos registrados.</h1>
             <br>
-            <h3>Para agregar un nuevo dispositivo, apretar el botón (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
-            <h3>Al hacer click aparecerá un menú. Ahí se debe seleccionar la opción de "Agregar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
+            <h3>Para registrar un nuevo dispositivo, apretar el botón (<v-list-item-avatar color="#72E1C7" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>) en la parte inferior de la pantalla.</h3>
+            <h3>Al hacer click aparecerá un menú. Ahí se debe seleccionar la opción de "Registrar Dispositivo (<v-list-item-avatar color="#white" class="pa-0 ma-0"><v-icon class="pa-0 ma-0" color="#3C3F58">mdi-plus</v-icon></v-list-item-avatar>)"</h3>
         </div>
         <div v-else>
             <p>Cargando...</p>
