@@ -4,7 +4,7 @@
             <v-col cols="3">
                 <v-list-item class="px-0">
                     <v-list-item-content>
-                        <v-list-item-title class="subtitle-1">{{$vuetify.lang.t(`$vuetify.${params.name}`)}}</v-list-item-title>
+                        <v-list-item-title class="subtitle-1">{{translateName(params.name)}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-col>
@@ -25,12 +25,21 @@
               require: true,
           }
         },
+        methods:{
+            translateName(name){
+                console.log(name);
+                console.log(isNaN(name));
+                if(!isNaN(name))
+                    return name;
+                return this.$vuetify.lang.t(`$vuetify.${name}`);
+            },
+        },
         data(){
             return{
-                supportedValues: this.params.supportedValues.map(entry => {return{text: this.$vuetify.lang.t(`$vuetify.${entry}`), value: entry}}),
+                supportedValues: this.params.supportedValues.map(entry => {return{text: this.translateName(entry), value: entry}}),
                 value: null
             }
-        }
+        },
     }
 </script>
 
