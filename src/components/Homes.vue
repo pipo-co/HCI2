@@ -100,7 +100,7 @@
                     </v-row>
                     <v-row class="py-2 my-1" >
                         <v-col cols="12" md="12" >
-                            <h1 class="headline ma-0 pa-0 text-center">Tipos de dispositivo</h1>
+                            <h1 class="headline ma-0 pa-0 text-center">Tipos de dispositivos</h1>
                         </v-col>
                     </v-row>
                     <v-row>
