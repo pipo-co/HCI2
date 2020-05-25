@@ -253,7 +253,7 @@
                                 </v-col>
                                 <v-col cols="5">
                                     <v-list-item-content>
-                                        <v-list-item-title class="headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
+                                        <v-list-item-title class="rooms headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
                                     </v-list-item-content>
                                 </v-col>
                                 <v-spacer></v-spacer>
@@ -470,6 +470,9 @@
     .top-rounded{
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
+    }
+    .rooms{
+        text-align: left;
     }
     .border-dashed{
         border-radius: 25px 25px 25px 25px;
