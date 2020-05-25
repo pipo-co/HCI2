@@ -12,7 +12,7 @@
                 <v-col cols="12" class="px-5">
                     <v-container fluid class="py-0 px-0"> <!--class="px-3 py-0" -->
                         <v-row align="center" dense justify="space-around"><!--class="my-0 py-0" -->
-                            <v-col>
+                            <v-col cols="1">
                                 <v-switch
                                         color="#72E1C7"
                                         hide-details="true"
@@ -22,23 +22,23 @@
                                         :disabled="status.awaitingResponse">
                                 </v-switch><!--class="px-3 my-auto" -->
                             </v-col>
-                            <v-col>
+                            <v-col cols="3">
                                 <v-btn icon @click="skipSong(false)" :loading="awaitingSongChange" :disabled="stopped || paused || awaitingSongChange">
                                     <v-icon color="#6563FF">mdi-skip-previous</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col>
+                            <v-col cols="3">
                                 <v-btn icon :disabled="stopped || mode.awaitingResponse" :loading="mode.awaitingResponse"
                                        rounded class="mx-1" @click="mode.changeState()">
                                     <v-icon color="#6563FF">{{playPauseIcon}}</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col>
+                            <v-col cols="2">
                                 <v-btn icon @click="skipSong(true)" :loading="awaitingSongChange" :disabled="!playing || awaitingSongChange">
                                     <v-icon color="#6563FF">mdi-skip-next</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col ><!--class="pr-10" -->
+                            <v-col  cols="3"><!--class="pr-10" -->
                                 <v-btn color="#6563FF" text @click="extraControllers.changeState()">{{extraControllers.message}}<v-icon>{{extraControllers.icon}}</v-icon></v-btn>
                             </v-col>
                         </v-row>
