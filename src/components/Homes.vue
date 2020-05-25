@@ -9,7 +9,7 @@
                         <v-dialog v-model="dialog" width="500">
                             <template v-slot:activator="{ on }">
                                 <v-btn color="#72E1C7" class="teal--text text--darken-4 font-weight-bold" dark v-on="on">
-                                    Editar Hogares
+                                    Editar <Hogares></Hogares>
                                 </v-btn>
                             </template>
                             <v-card class="rounded">
@@ -146,15 +146,15 @@
                         </v-col>
                     </v-row>
 
-                <v-row v-for="room in roomMap" :key="room.roomName" class="my-4 rounded">
+                <v-row v-for="room in roomMap" :key="room.roomName" class="my-4" >
                     <v-card flat elevation="4"
                             class="ma-auto rounded"
                             width="750"
                             @click="$router.push({ name: 'room', params: { 'homeID' : currentHome.id ,'roomID': room.id }})"
                     >
                         <v-container fluid class="py-0">
-                            <v-row align="center" no-gutters>
-                                <v-col cols="1">
+                            <v-row align="center" no-gutters justify="start">
+                                <v-col cols="1" >
                                     <v-menu offset-y
                                             transition="slide-y-transition"
                                             bottom>
@@ -229,7 +229,7 @@
                                                         </v-btn>
                                                     </template>
                                                     <v-alert class="my-0 pa-0" border="top" colored-border color="red">
-                                                        <v-card-text class="pb-0 display-1">Eliminar Hogar</v-card-text>
+                                                        <v-card-text class="pb-0 display-1">Eliminar Habitación</v-card-text>
                                                         <v-card-text>
                                                             Si elimina la habitación, se borrarán todos los dispositivos en ella.
                                                         </v-card-text>
@@ -251,8 +251,8 @@
                                         </v-list>
                                     </v-menu>
                                 </v-col>
-                                <v-col cols="5">
-                                    <v-list-item-content>
+                                <v-col cols="2">
+                                    <v-list-item-content class="pa-0 ma-0">
                                         <v-list-item-title class="headline black--text">{{room.roomName.split("_").pop()}}</v-list-item-title>
                                     </v-list-item-content>
                                 </v-col>
