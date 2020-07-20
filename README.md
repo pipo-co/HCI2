@@ -1,8 +1,5 @@
 ## API setup
-### In the API folder run the command:
-```
-npm start
-```
+### Follow the instructions inside the API folder
 
 ## Project setup
 ```
