@@ -1,4 +1,8 @@
-# test-router
+## API setup
+### In the API folder run the command:
+```
+npm start
+```
 
 ## Project setup
 ```
